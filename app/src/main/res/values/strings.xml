@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">POS1</string>
+    <string name="add_staff">Add Staff</string>
+    <string name="edit_user">Edit User</string>
+    <string name="edit_fragment_title">Edit User</string>
+    <string name="edit_fragment_title1">Edit Table</string>
+    <string name="add_table">Add Table</string>
+    <string name="delete_question">Are you sure you want to delete?</string>
+    <string name="delete_question_all">Are you sure you want to delete all items?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="button_save">Save</string>
+    <string name="empty_not_saved">Table not saved because it is empty.</string>
+    <string name="action_select_image">Select img\n</string>
+    <string name="capital_off">OFF</string>
+    <string-array name="spinner">
+        <item>Admin</item>
+        <item>Staff</item>
+        <item>Kitchen</item>
+    </string-array>
+
+</resources>

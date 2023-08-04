@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Add Table"
+        app:titleTextColor="@color/white"
+        android:background="#3F51B5"
+        app:menu="@menu/backmenu"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <EditText
+        android:id="@+id/edit_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/min_height"
+        android:fontFamily="sans-serif-light"
+        android:hint="number"
+        android:maxLength="4"
+        android:inputType="number"
+        android:layout_margin="@dimen/big_padding"
+        android:textSize="20dp" />
+    <EditText
+        android:id="@+id/edit_capacity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/min_height"
+        android:hint="Capacity"
+        android:fontFamily="sans-serif-light"
+        android:layout_margin="@dimen/big_padding"
+        android:inputType="number"
+        android:maxLength="2"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_save"
+        android:layout_margin="@dimen/big_padding">
+</Button>
+</LinearLayout>

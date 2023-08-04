@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".editmenu.ItemDetailFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Edit Item"
+        app:titleTextColor="@color/white"
+        android:background="#3F51B5"
+        app:menu="@menu/backmenu"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/background1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/explanation_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:background="@drawable/background1"
+            android:text="Product Name:"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#9475CC"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/background1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:text="Type:"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#9475CC"/>
+
+        <TextView
+            android:id="@+id/type"
+            android:textSize="20dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/black"/>
+
+    <!-- Repeat for other LinearLayouts -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/background1"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:background="@drawable/background1"
+            android:text="Stock:"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#9475CC"/>
+
+        <TextView
+            android:id="@+id/stock"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:background="@drawable/background1"
+            android:text="Price:"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#9475CC"/>
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:background="@drawable/background1"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/black"/>
+
+    <TextView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        tools:text="Screwdrivers"
+        android:background="@drawable/background1"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:layout_height="50dp"/>
+
+    <Button
+        android:id="@+id/delete_item"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/address" />
+
+    <Button
+        android:id="@+id/edit_item"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_gravity="center" />
+
+</LinearLayout>

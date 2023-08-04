@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".User.UserDetailFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3F51B5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/backmenu"
+        app:title="User Detail"
+        app:titleTextColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Staff ID:" />
+
+        <TextView
+            android:id="@+id/staff_id"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Password:" />
+
+        <TextView
+            android:id="@+id/pass_word"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:text="*****"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Staff Name:" />
+
+        <TextView
+            android:id="@+id/staff_name"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Staff Age:" />
+
+        <TextView
+            android:id="@+id/staff_age"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Position:" />
+
+        <TextView
+            android:id="@+id/position"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tel:" />
+
+        <TextView
+            android:id="@+id/tel"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Address:" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="0dp"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/delete_item"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Delete" />
+
+        <Button
+            android:id="@+id/edit_item"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Edit" />
+    </LinearLayout>
+</LinearLayout>

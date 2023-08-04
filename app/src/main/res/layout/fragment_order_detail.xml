@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Order Detail"
+        app:titleTextColor="@color/white"
+        android:background="#3F51B5"
+        app:menu="@menu/menu2"/>
+    <LinearLayout
+        android:id="@+id/topLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+       >
+
+        <TextView
+            android:id="@+id/idTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID" />
+
+        <TextView
+            android:id="@+id/tableTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Table" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+      >
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E0E4E8"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E0E4E8"
+            android:text="Time" />
+
+        <TextView
+            android:id="@+id/quantity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E0E4E8"
+            android:text="Quantity" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E0E4E8"
+            android:text="price" />
+        <TextView
+            android:id="@+id/order_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E0E4E8"
+            android:text="Status" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Item count and amount"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
+
+    <Button
+        android:id="@+id/buttonCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Check" />
+    <Button
+        android:id="@+id/delete_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Delete all" />
+
+</LinearLayout>

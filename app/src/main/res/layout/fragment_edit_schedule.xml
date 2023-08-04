@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Add UI components and logic for editing a schedule here -->
+    <!-- For example, you can use EditText to display and update date, shift, and employee information -->
+    <!-- and a Button to save the changes to the database -->
+
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date" />
+
+    <EditText
+        android:id="@+id/etShift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Shift" />
+
+    <EditText
+        android:id="@+id/etEmployee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Employee" />
+
+    <Button
+        android:id="@+id/btnSaveChanges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Changes" />
+
+</LinearLayout>
