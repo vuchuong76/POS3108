@@ -19,7 +19,8 @@ class KitchenFragment : Fragment() {
     // Lấy view model chung sử dụng activityViewModels và OrderViewModelFactory
     private val sharedViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
-            (activity?.application as UserApplication).orderDatabase.orderDao()
+            (activity?.application as UserApplication).orderDatabase.orderDao(),
+            (activity?.application as UserApplication).orderDatabase.itemDao()
         )
     }
     private lateinit var binding: FragmentKitchenBinding
@@ -51,6 +52,10 @@ class KitchenFragment : Fragment() {
                 }
                 else -> false
             }
+        }
+        binding.stock.setOnClickListener {
+            val action = KitchenFragmentDirections.actionKitchenFragmentToStockFragment()
+            findNavController().navigate(action)
         }
 
 

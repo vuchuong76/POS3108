@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
@@ -42,7 +43,8 @@ class CheckOutFragment : Fragment() {
     // Lấy view model chung sử dụng activityViewModels và OrderViewModelFactory
     private val orderViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
-            (activity?.application as UserApplication).orderDatabase.orderDao()
+            (activity?.application as UserApplication).orderDatabase.orderDao(),
+            (activity?.application as UserApplication).orderDatabase.itemDao()
         )
     }
     private val orderlistViewModel: OrderlistViewModel by activityViewModels() {
@@ -81,7 +83,15 @@ class CheckOutFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        orderViewModel.getOrdersForPay()
+//vô hiệu hoá nút back
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Ở đây, không gọi super.handleOnBackPressed() để vô hiệu hoá nút "Back"
+                }
+            }
+        )
         binding.recieve.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -121,6 +131,7 @@ class CheckOutFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.home -> {
+//                    orderViewModel.cancel()
                     val action = CheckOutFragmentDirections.actionCheckOutFragmentToTabletFragment()
                     findNavController().navigate(action)
                     true
@@ -137,9 +148,7 @@ class CheckOutFragment : Fragment() {
         //xuất hóa đơn và thêm vào orderlist
 
         binding.cancelButton.setOnClickListener {
-            orderViewModel.cancel()
-
-
+//            orderViewModel.cancel()
             //sau khi nhấp tính tiền dẫn đến màn hình Check out
             val action = CheckOutFragmentDirections.actionCheckOutFragmentToTabletFragment()
             findNavController().navigate(action)
@@ -162,36 +171,6 @@ class CheckOutFragment : Fragment() {
                 binding.change.text = "Change: ${getChangeMoney(totalAmount)} $"
                 adapter.submitList(it)
 
-//                binding.receipt.setOnClickListener {
-//                    if (totalAmount > 0) {
-//                        if (binding.recieve.text?.toString().isNullOrEmpty().not()) {
-//                            if (getChangeMoney(totalAmount) >= 0) {
-//                                val staffIdValue = orderViewModel.id.toInt()
-//                                val amountValue = orderViewModel.amount1.value ?: 0
-//                                val a = Date().time.toString()
-//                                // Sử dụng CoroutineScope để gọi addNewOrderlist và nhận giá trị orId
-//                                lifecycleScope.launch {
-//                                    orderlistViewModel.addNewOrderlist(
-//                                        orId = a,
-//                                        tbnum = tablenum,
-//                                        staffId = staffIdValue,
-//                                        date = dateString,
-//                                        amount = amountValue,
-//                                        status = "payed",
-//                                        payment = "money"
-//                                    )
-//                                    orderViewModel.setSelectedId(a)
-//                                    val action =
-//                                        CheckOutFragmentDirections.actionCheckOutFragmentToDetailFragment()
-//                                    findNavController().navigate(action)
-//                                }
-//                            } else Toast.makeText(context, "Not Enough Money", Toast.LENGTH_SHORT)
-//                                .show()
-//
-//                        } else Toast.makeText(context, "Not Enough Money", Toast.LENGTH_SHORT)
-//                            .show()
-//                    } else Toast.makeText(context, "No item", Toast.LENGTH_SHORT).show()
-//                }
                 binding.receipt.setOnClickListener {
                     if (totalAmount > 0) {
                         val receivedMoney = binding.recieve.text.toString().trim().toIntOrNull()
@@ -226,6 +205,10 @@ class CheckOutFragment : Fragment() {
                 }
             }
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        orderViewModel.cancel()
     }
 
     fun getChangeMoney(total: Int): Int {

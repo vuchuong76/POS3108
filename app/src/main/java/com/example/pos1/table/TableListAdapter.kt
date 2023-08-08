@@ -40,7 +40,6 @@ class TableListAdapter(private val onItemClicked: (Table) -> Unit) :
     // Nó giữ các tham chiếu đến các thành phần trong layout của mục danh sách.
     // Phương thức bind được gọi để gán dữ liệu từ mục hiện tại vào các thành phần tương ứng trong ViewHolder.
     class TableViewHolder(var binding: TableItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(table: Table) {
             binding.tbnumber.text = table.number.toString()
             binding.capacity.text = table.capacity.toString() +" "+ "people"

@@ -17,9 +17,8 @@ class MenuListFragment : Fragment() {
         ItemViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.itemDao()
         )
-
     }
-    private lateinit  var binding: FragmentMenuListBinding
+    private lateinit var binding: FragmentMenuListBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,15 +52,17 @@ class MenuListFragment : Fragment() {
             }
         }
         binding.toolbar.setOnMenuItemClickListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.home -> {
                     val action =
                         MenuListFragmentDirections.actionMenuListFragmentToAdminAccessFragment()
                     findNavController().navigate(action)
                     true
                 }
+
                 else -> false
-            }}
+            }
+        }
         binding.floatingActionButton.setOnClickListener {
             val action = MenuListFragmentDirections.actionMenuListFragmentToNewItemFragment(
                 "Add Item"
@@ -69,19 +70,4 @@ class MenuListFragment : Fragment() {
             this.findNavController().navigate(action)
         }
     }
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        // Nạp menu từ tệp tài nguyên menu vào menu của Fragment
-//        inflater.inflate(R.menu.menu1, menu)
-//    }
-//    override fun onOptionsItemSelected(item: MenuItem):Boolean{
-//        when(item.itemId){
-//            R.id.home -> {
-//                val action = MenuListFragmentDirections.actionMenuListFragmentToAdminAccessFragment()
-//                findNavController().navigate(action)
-//                return true
-//
-//            }
-//        }
-//        return super.onContextItemSelected(item)
-//    }
 }

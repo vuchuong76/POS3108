@@ -1,6 +1,8 @@
 package com.example.pos1.table
 
+import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -16,9 +18,16 @@ class TableViewModel(private val tableDao: TableDao) : ViewModel() {
 // Nó sẽ cung cấp danh sách các bảng Table cho các thành phần giao diện người dùng theo thời gian thực.
     val allTables: LiveData<List<Table>> = tableDao.getTables().asLiveData()
 
+    private val _duplicateUserEvent = MutableLiveData<Unit>()
+    val duplicateUserEvent: LiveData<Unit> get() = _duplicateUserEvent
+
     private fun insertTable(table: Table) {
         viewModelScope.launch {
-            tableDao.insert(table)
+            try {
+                tableDao.insert(table)
+            } catch (e: SQLiteConstraintException) {
+                _duplicateUserEvent.value = Unit
+            }
         }
     }
 //    fun addTable(number: Int, capacity: Int) {
@@ -28,6 +37,12 @@ class TableViewModel(private val tableDao: TableDao) : ViewModel() {
 //            tableDao.insertTableAndOrder(table, orderDao)
 //        }
 //    }
+fun tableNumberExists(number: Int, onResult: (Boolean) -> Unit) {
+    viewModelScope.launch {
+        val count = tableDao.countTableWithNumber(number)
+        onResult(count > 0)
+    }
+}
     fun updateTable(tableNumber: String, capacity: String) {
         val updatedTable = getUpdatedTableEntry(tableNumber, capacity)
         updateTable(updatedTable)
@@ -72,7 +87,7 @@ class TableViewModel(private val tableDao: TableDao) : ViewModel() {
     }
 // kiểm tra xem thông tin đầu vào (số bàn và sức chứa) có hợp lệ không.
     fun isEntryValid(tableNumber: String,capacity:String): Boolean {
-        if( tableNumber.isBlank()|| capacity.isBlank())
+        if( tableNumber.isBlank()|| capacity.isBlank()||tableNumber== "0"||capacity=="0")
         {return false}
     return true
     }

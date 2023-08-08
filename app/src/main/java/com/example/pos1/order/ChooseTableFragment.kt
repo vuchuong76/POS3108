@@ -27,7 +27,8 @@ class ChooseTableFragment : Fragment() {
     }
     private val sharedViewModel: OrderViewModel by activityViewModels {
         OrderViewModelFactory(
-            (activity?.application as UserApplication).orderDatabase.orderDao()
+            (activity?.application as UserApplication).orderDatabase.orderDao(),
+            (activity?.application as UserApplication).orderDatabase.itemDao()
         )
     }
 
@@ -83,6 +84,8 @@ class ChooseTableFragment : Fragment() {
         val layoutManager = GridLayoutManager(context, 4)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+
+
 
         // Dữ liệu danh sách bàn được quan sát từ ViewModel thông qua viewModel.allTables.observe.
         // Khi danh sách bàn thay đổi, adapter.submitList

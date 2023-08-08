@@ -151,10 +151,6 @@ class AddStaffFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        //thông báo toast khi thêm trùng lặp
-//        viewModel.duplicateUserEvent.observe(this.viewLifecycleOwner) {
-//            Toast.makeText(context, "Item đã tồn tại trong database!", Toast.LENGTH_SHORT).show()
-//        }
         val id = args.staffId
         if (id > 0) {
             viewModel.retrieveItem(id).observe(this.viewLifecycleOwner) { selectedItem ->

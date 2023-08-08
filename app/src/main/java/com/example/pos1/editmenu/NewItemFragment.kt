@@ -58,7 +58,7 @@ class NewItemFragment : Fragment() {
 
 
         // Tạo mảng chứa các mục bạn muốn hiển thị trong Spinner
-        val items = arrayOf("food", "drink", "appetizer")
+        val items = arrayOf("Food", "Drink", "Appetizer")
 
 // Tìm Spinner trong layout
         val spinner = binding.type
@@ -138,11 +138,12 @@ class NewItemFragment : Fragment() {
 
     private fun isEntryValid(): Boolean {
         return viewModel.isEntryValid(
-            binding.name.text.toString(),
+            binding.name,
             binding.type.selectedItem.toString(),
-            binding.stock.text.toString(),
-            binding.price.text.toString(),
-            imageSelected
+            binding.stock,
+            binding.price,
+            imageSelected,
+            requireContext()
         )
     }
 

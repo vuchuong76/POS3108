@@ -28,7 +28,8 @@ class OrderListFragment : Fragment() {
     }
     private val sharedViewModel: OrderViewModel by activityViewModels {
         OrderViewModelFactory(
-            (activity?.application as UserApplication).orderDatabase.orderDao()
+            (activity?.application as UserApplication).orderDatabase.orderDao(),
+            (activity?.application as UserApplication).orderDatabase.itemDao()
         )
     }
     private lateinit var binding: FragmentOrderListBinding

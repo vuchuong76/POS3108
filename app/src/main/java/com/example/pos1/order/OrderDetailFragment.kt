@@ -36,7 +36,8 @@ class OrderDetailFragment : Fragment() {
     // Lấy view model chung sử dụng activityViewModels và OrderViewModelFactory
     private val sharedViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
-            (activity?.application as UserApplication).orderDatabase.orderDao()
+            (activity?.application as UserApplication).orderDatabase.orderDao()  ,
+            (activity?.application as UserApplication).orderDatabase.itemDao()
         )
     }
     private val tableViewModel: TableViewModel by activityViewModels() {

@@ -1,5 +1,8 @@
 package com.example.pos1.editmenu
 
+import android.content.Context
+import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,6 +10,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.ItemDao
 import com.example.pos1.entity.Item
+import com.example.pos1.entity.Order
 import kotlinx.coroutines.launch
 
 class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
@@ -21,16 +25,34 @@ class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
         }
     }
 
-    fun updateItem(id: Int, name: String, type: String, stock: String, price: String, image: String) {
+    fun sellItem(item: Item) {
+        if (item.stock > 0) {
+            // Decrease the quantity by 1
+            val newItem = item.copy(stock = item.stock - 1)
+            updateItem(newItem)
+        }
+    }
+
+    fun updateItem(
+        id: Int,
+        name: String,
+        type: String,
+        stock: String,
+        price: String,
+        image: String
+    ) {
         val updatedItem = getUpdatedItemEntry(id, name, type, stock, price, image)
         updateItem(updatedItem)
     }
+
     fun updateItem(item: Item) {
         viewModelScope.launch {
             itemDao.update(item)
         }
     }
-
+    fun isStockAvailable(item: Item): Boolean {
+        return (item.stock > 0)
+    }
     //được sử dụng để xóa một bảng Table từ cơ sở dữ liệu.
     fun deleteItem(item: Item) {
         viewModelScope.launch {
@@ -44,7 +66,13 @@ class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
         insertItem(newItem)
     }
 
-    private fun getNewItemEntry(name: String, type: String, stock: String, price: String, image: String): Item {
+    private fun getNewItemEntry(
+        name: String,
+        type: String,
+        stock: String,
+        price: String,
+        image: String
+    ): Item {
         return Item(
             name = name,
             type = type,
@@ -60,18 +88,45 @@ class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
     }
 
     // kiểm tra xem thông tin đầu vào (số bàn và sức chứa) có hợp lệ không.
-    fun isEntryValid(name: String,
-                     type: String,
-                     stock: String,
-                     price: String,
-                     image: String): Boolean {
-        if (name.isBlank() || type.isBlank() || stock.isBlank() || price.isBlank() || image.isBlank()) {
-            return false
+    fun isEntryValid(
+        name: EditText,
+        type: String,
+        stock: EditText,
+        price: EditText,
+        image: String,
+        context: Context
+    ): Boolean {
+        var isValid = true
+
+        if (name.text.isBlank() || name.text.length < 3) {
+            name.error = "Invalid Name"
+            isValid = false
         }
-        return true
+
+        if (stock.text.isBlank()) {
+            stock.error = "Invalid Stock"
+            isValid = false
+        }
+        if (price.text.isBlank()) {
+            price.error = "Invalid Price"
+            isValid = false
+        }
+        if (image.isBlank()) {
+            Toast.makeText(context, "Invalid Image URL", Toast.LENGTH_SHORT).show()
+            isValid = false
+        }
+
+        return isValid
     }
 
-    private fun getUpdatedItemEntry(id: Int, name: String, type: String, stock: String, price: String, image: String): Item {
+    private fun getUpdatedItemEntry(
+        id: Int,
+        name: String,
+        type: String,
+        stock: String,
+        price: String,
+        image: String
+    ): Item {
         return Item(id, name, type, stock.toInt(), price.toDouble(), image)
     }
 }

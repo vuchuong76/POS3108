@@ -147,22 +147,6 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
         return isValid
     }
 
-    //    fun isEntryValid(
-//        staffId: String,
-//        password: String,
-//        staffname: String,
-//        age: String,
-//        position: String,
-//        tel: String,
-//        address: String
-//    ): Boolean {
-//        if (staffId.isBlank() || password.isBlank() || staffname.isBlank() || age.isBlank() || position.isBlank()
-//            || tel.isBlank() || address.isBlank()|| password.length < 3|| staffId.length < 3|| staffname.length < 2
-//            || age.length < 2|| tel.length < 8|| address.length < 4) {
-//            return false
-//        }
-//        return true
-//    }
     private fun getUpdatedItemEntry(
         staffId: Int,
         password: String,

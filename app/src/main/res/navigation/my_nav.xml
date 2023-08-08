@@ -291,6 +291,9 @@
         <action
             android:id="@+id/action_kitchenFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_kitchenFragment_to_stockFragment"
+            app:destination="@id/stockFragment" />
     </fragment>
     <fragment
         android:id="@+id/addRosterFragment"
@@ -330,5 +333,13 @@
         <action
             android:id="@+id/action_dashboardFragment_to_adminAccessFragment"
             app:destination="@id/adminAccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stockFragment"
+        android:name="com.example.pos1.StockFragment"
+        android:label="StockFragment" >
+        <action
+            android:id="@+id/action_stockFragment_to_kitchenFragment"
+            app:destination="@id/kitchenFragment" />
     </fragment>
 </navigation>

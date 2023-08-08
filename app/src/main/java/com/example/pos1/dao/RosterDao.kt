@@ -12,7 +12,7 @@ import com.example.pos1.entity.Table
 import kotlinx.coroutines.flow.Flow
 @Dao
 interface RosterDao {
-    @Query("SELECT * FROM roster ORDER BY id ASC")
+    @Query("SELECT * FROM roster ORDER BY `Start Time` ASC")
     fun getAll(): Flow<List<Roster>>
 
     @Query("SELECT * FROM roster WHERE id = :id")
