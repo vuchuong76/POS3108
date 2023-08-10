@@ -1,6 +1,7 @@
 package com.example.pos1.editmenu
 
 import android.content.Context
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -11,27 +12,66 @@ import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.ItemDao
 import com.example.pos1.entity.Item
 import com.example.pos1.entity.Order
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.withContext
 
 class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
     //Thuộc tính allTables là một LiveData kiểu danh sách các Table,
 // được lấy từ phương thức getTables() của tableDao.
 // Nó sẽ cung cấp danh sách các bảng Table cho các thành phần giao diện người dùng theo thời gian thực.
     val allItems: LiveData<List<Item>> = itemDao.getItems().asLiveData()
-
+    private val updateMutex = Mutex()
     private fun insertItem(item: Item) {
         viewModelScope.launch {
             itemDao.insert(item)
         }
     }
 
-    fun sellItem(item: Item) {
-        if (item.stock > 0) {
-            // Decrease the quantity by 1
-            val newItem = item.copy(stock = item.stock - 1)
-            updateItem(newItem)
-        }
+    var sellItemCount = 0
+    var updateItemCount = 0
+//    suspend fun sellItem(item: Item) {
+//        viewModelScope.launch {
+//            sellItemCount++
+//            Log.d("YourTag", "1 sellItem has been called $sellItemCount times")
+//            if (item.stock > 0) {
+//                // Decrease the quantity by 1
+//                val newItem = item.copy(stock = item.stock - 1)
+//                Log.d("MyTag", "2 stock: ${item.stock}")
+//                withContext(Dispatchers.IO) {
+//                    updateItem(newItem)
+//                }
+//                Log.d("MyTag", "4 updated stock: ${item.stock}")
+//            }
+//        }
+//    }
+suspend fun sellItem(item: Item) {
+    sellItemCount++
+    Log.d("YourTag", "1 sellItem has been called $sellItemCount times")
+    if (item.stock > 0) {
+        // Decrease the quantity by 1
+        val newItem = item.copy(stock = item.stock - 1)
+        Log.d("MyTag", "2 stock: ${item.stock}")
+        updateItem(newItem)
+        Log.d("MyTag", "4 updated stock: ${newItem.stock}")
     }
+}
+
+
+    private suspend fun updateItem(item: Item) {
+        updateItemCount++
+        Log.d("YourTag", "3 updateItem has been called $updateItemCount times")
+        itemDao.update(item)
+        Log.d("MyTag", "4 updated stock: ${item.stock}")
+    }
+//    suspend fun updateItem(item: Item) {
+//        viewModelScope.launch {
+//            updateItemCount++
+//            Log.d("YourTag", "3 updateItem has been called $updateItemCount times")
+//            itemDao.update(item)
+//        }
+//    }
 
     fun updateItem(
         id: Int,
@@ -41,18 +81,17 @@ class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
         price: String,
         image: String
     ) {
-        val updatedItem = getUpdatedItemEntry(id, name, type, stock, price, image)
-        updateItem(updatedItem)
-    }
-
-    fun updateItem(item: Item) {
-        viewModelScope.launch {
-            itemDao.update(item)
+        viewModelScope.launch()
+        {
+            val updatedItem = getUpdatedItemEntry(id, name, type, stock, price, image)
+            updateItem(updatedItem)
         }
     }
+
     fun isStockAvailable(item: Item): Boolean {
         return (item.stock > 0)
     }
+
     //được sử dụng để xóa một bảng Table từ cơ sở dữ liệu.
     fun deleteItem(item: Item) {
         viewModelScope.launch {
@@ -85,6 +124,21 @@ class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
     //Phương thức retrieveTable(id: Int) lấy thông tin của một bảng Item dựa trên ID.
     fun retrieveItem(id: Int): LiveData<Item> {
         return itemDao.getItem(id).asLiveData()
+    }
+
+    //update Stock
+    fun addStock(item: Item, quantity: Int) {
+        viewModelScope.launch {
+            val newItem = item.copy(stock = item.stock + quantity)
+            itemDao.update(newItem)
+        }
+    }
+
+    fun minusStock(item: Item, quantity: Int) {
+        viewModelScope.launch {
+            val newItem = item.copy(stock = item.stock - quantity)
+            itemDao.update(newItem)
+        }
     }
 
     // kiểm tra xem thông tin đầu vào (số bàn và sức chứa) có hợp lệ không.

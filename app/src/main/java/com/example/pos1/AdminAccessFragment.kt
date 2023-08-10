@@ -108,6 +108,14 @@ class AdminAccessFragment : Fragment() {
                     // is handled and it shouldn't be propagated further
                     true
                 }
+                R.id.coupon -> {
+                        val action = AdminAccessFragmentDirections.actionAdminAccessFragmentToCouponFragment()
+                        findNavController().navigate(action)
+                       true
+                    // by returning 'true' we're saying that the event
+                    // is handled and it shouldn't be propagated further
+                    true
+                }
                 else -> false
             }
         }

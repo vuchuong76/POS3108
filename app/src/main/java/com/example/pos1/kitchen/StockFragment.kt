@@ -1,4 +1,4 @@
-package com.example.pos1
+package com.example.pos1.kitchen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,13 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.pos1.databinding.FragmentMenuListBinding
+import com.example.pos1.R
+import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentStockBinding
-import com.example.pos1.databinding.StockItemBinding
-import com.example.pos1.editmenu.ItemListAdapter
 import com.example.pos1.editmenu.ItemViewModel
 import com.example.pos1.editmenu.ItemViewModelFactory
-import com.example.pos1.editmenu.MenuListFragmentDirections
 import com.example.pos1.entity.Item
 
 
@@ -40,19 +38,37 @@ class StockFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.dialog_edittext, null)
-        val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
+        val editText = dialogLayout.findViewById<EditText>(R.id.editText)
 
         builder.setView(dialogLayout)
-        builder.setTitle("Nhập số lượng")
+        builder.setTitle("Insert Quantity")
         builder.setPositiveButton("OK") { _, _ ->
             val quantity = editText.text.toString().toIntOrNull()
             if (quantity != null) {
-                // Xử lý giá trị nhập vào, ví dụ cập nhật trong cơ sở dữ liệu hoặc gì đó khác.
+                viewModel.addStock(item, quantity)  // Gọi hàm updateStock
             }
         }
         builder.setNegativeButton("Cancel") { _, _ -> }
         builder.show()
     }
+    fun showQuantityDialog1(item: Item) {
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = layoutInflater
+        val dialogLayout = inflater.inflate(R.layout.dialog_edittext, null)
+        val editText = dialogLayout.findViewById<EditText>(R.id.editText)
+
+        builder.setView(dialogLayout)
+        builder.setTitle("Insert Quantity")
+        builder.setPositiveButton("OK") { _, _ ->
+            val quantity = editText.text.toString().toIntOrNull()
+            if (quantity != null) {
+                viewModel.minusStock(item, quantity)  // Gọi hàm updateStock
+            }
+        }
+        builder.setNegativeButton("Cancel") { _, _ -> }
+        builder.show()
+    }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,7 +81,7 @@ class StockFragment : Fragment() {
             }
 
             override fun onMinusButtonClick(item: Item) {
-                // Xử lý khi nút Minus được nhấn
+                showQuantityDialog1(item)
             }
 
             override fun onItemClicked(item: Item) {

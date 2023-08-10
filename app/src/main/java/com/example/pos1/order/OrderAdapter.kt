@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pos1.databinding.OrderItemBinding
 import com.example.pos1.entity.Order
 
-class OrderAdapter(private val onItemClicked: (Order) -> Unit) :
-    ListAdapter<Order, OrderAdapter.ItemViewHolder>(DiffCallback) {
+class OrderAdapter(
+    private val onItemClicked: (Order) -> Unit,
+    private val onButtonClicked: (Order) -> Unit  // Thêm callback cho button, onOrderClick: kotlin.Any){}
+) : ListAdapter<Order, OrderAdapter.ItemViewHolder>(DiffCallback) {
 
-    // Tạo ViewHolder cho mỗi mục đơn hàng
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        // Sử dụng OrderItemBinding để liên kết layout cho mục đơn hàng
         return ItemViewHolder(
             OrderItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -23,21 +23,23 @@ class OrderAdapter(private val onItemClicked: (Order) -> Unit) :
         )
     }
 
-    // Liên kết dữ liệu của mục đơn hàng với ViewHolder
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current)
         holder.itemView.setOnClickListener {
-            // Gọi callback khi mục đơn hàng được nhấp vào
             onItemClicked(current)
+        }
+
+        // Gán sự kiện click cho button
+        holder.binding.delete.setOnClickListener {  // Thay 'yourButtonId' bằng ID thực tế của button
+            onButtonClicked(current)
         }
     }
 
     // ViewHolder cho mục đơn hàng
-    class ItemViewHolder(private val binding: OrderItemBinding) :
+    class ItemViewHolder(val binding: OrderItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        // Gắn dữ liệu của mục đơn hàng vào thành phần giao diện tương ứng
         fun bind(order: Order) {
             binding.status.text = order.order_status.toString()
             binding.nameView.text = order.name
@@ -48,15 +50,12 @@ class OrderAdapter(private val onItemClicked: (Order) -> Unit) :
     }
 
     companion object {
-        // Đối tượng DiffUtil.ItemCallback để xác định tính tương đồng giữa các mục đơn hàng
         private val DiffCallback = object : DiffUtil.ItemCallback<Order>() {
             override fun areItemsTheSame(oldItem: Order, newItem: Order): Boolean {
-                // Kiểm tra xem hai mục đơn hàng có cùng ID hay không
                 return oldItem.itemId == newItem.itemId
             }
 
             override fun areContentsTheSame(oldItem: Order, newItem: Order): Boolean {
-                // Kiểm tra xem hai mục đơn hàng có cùng nội dung hay không
                 return oldItem == newItem
             }
         }

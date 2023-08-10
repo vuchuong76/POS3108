@@ -2,22 +2,15 @@ package com.example.pos1.order
 
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,17 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentCheckOutBinding
-import com.example.pos1.entity.Orderlist
 import com.example.pos1.orlist.OrderListViewModelFactory
 import com.example.pos1.orlist.OrderlistViewModel
-import com.example.pos1.utils.Constants.logger
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.Date
-import java.util.concurrent.TimeUnit
 
 
 class CheckOutFragment : Fragment() {
@@ -44,7 +31,8 @@ class CheckOutFragment : Fragment() {
     private val orderViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderDao(),
-            (activity?.application as UserApplication).orderDatabase.itemDao()
+            (activity?.application as UserApplication).orderDatabase.itemDao(),
+            (activity?.application as UserApplication).orderDatabase.tableDao()
         )
     }
     private val orderlistViewModel: OrderlistViewModel by activityViewModels() {
@@ -118,9 +106,8 @@ class CheckOutFragment : Fragment() {
 
 
         // Khởi tạo OrderAdapter và đặt làm adapter cho RecyclerView
-        val adapter = OrderAdapter { order ->
+        val adapter = CheckoutAdapter {
 //                // Hiển thị hộp thoại xác nhận khi người dùng nhấp vào một món hàng
-            orderViewModel.deleteOrderAndUpdateTotals(order)
 
         }
 

@@ -47,7 +47,7 @@
             android:id="@+id/name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:background="#E0E4E8"
             android:text="Name" />
 
@@ -55,7 +55,7 @@
             android:id="@+id/time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:background="#E0E4E8"
             android:text="Time" />
 
@@ -63,7 +63,7 @@
             android:id="@+id/quantity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:background="#E0E4E8"
             android:text="Quantity" />
 
@@ -71,14 +71,14 @@
             android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:background="#E0E4E8"
             android:text="price" />
         <TextView
             android:id="@+id/order_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:background="#E0E4E8"
             android:text="Status" />
     </LinearLayout>
@@ -94,25 +94,42 @@
         android:layout_marginStart="10dp"/>
 
     <TextView
+        android:id="@+id/count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0 item"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
+    <TextView
         android:id="@+id/amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Item count and amount"
+        android:text="Amount 0"
         android:gravity="center"
         android:paddingTop="8dp"
         android:paddingBottom="8dp" />
 
-    <Button
-        android:id="@+id/buttonCheck"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Check" />
-    <Button
-        android:id="@+id/delete_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Delete all" />
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <Button
+            android:id="@+id/buttonCheck"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Check"
+            android:layout_marginEnd="16dp" />
+
+        <Button
+            android:id="@+id/delete_all"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Delete all" />
+
+    </LinearLayout>
 
 </LinearLayout>

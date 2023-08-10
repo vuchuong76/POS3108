@@ -23,7 +23,7 @@ data class Order(
     @ColumnInfo(name = "date")
     var date: String = "",
     @ColumnInfo(name = "quantity")
-    val quantity: Int = 0,
+    var quantity: Int = 0,
     @ColumnInfo(name = "price")
     val price: Int = 0,
     @ColumnInfo(name = "order_status")

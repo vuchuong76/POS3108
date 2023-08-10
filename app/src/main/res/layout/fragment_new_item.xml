@@ -73,7 +73,7 @@
             android:layout_weight="2"
             android:ems="10"
             android:maxLength="9"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             android:hint="Enter price" />
     </LinearLayout>
 

@@ -28,7 +28,8 @@ class ChooseTableFragment : Fragment() {
     private val sharedViewModel: OrderViewModel by activityViewModels {
         OrderViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderDao(),
-            (activity?.application as UserApplication).orderDatabase.itemDao()
+            (activity?.application as UserApplication).orderDatabase.itemDao(),
+            (activity?.application as UserApplication).orderDatabase.tableDao()
         )
     }
 
@@ -50,14 +51,18 @@ class ChooseTableFragment : Fragment() {
         val staffId = sharedViewModel.id
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                // these ids should match the item ids from my_fragment_menu.xml file
                 com.example.pos1.R.id.logout -> {
                     val action =
                         ChooseTableFragmentDirections.actionChooseTableFragmentToLoginFragment2()
                     findNavController().navigate(action)
 
-                    // by returning 'true' we're saying that the event
-                    // is handled and it shouldn't be propagated further
+                    true
+                }
+                com.example.pos1.R.id.history -> {
+                    val action =
+                        ChooseTableFragmentDirections.actionChooseTableFragmentToOrderListFragment()
+                    findNavController().navigate(action)
+
                     true
                 }
                 else -> false
@@ -77,10 +82,6 @@ class ChooseTableFragment : Fragment() {
 
         }
 
-        binding.orderList.setOnClickListener {
-            val action =
-                ChooseTableFragmentDirections.actionChooseTableFragmentToOrderListFragment()
-            findNavController().navigate(action) }
         val layoutManager = GridLayoutManager(context, 4)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter

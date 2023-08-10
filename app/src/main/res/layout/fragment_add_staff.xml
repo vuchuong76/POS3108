@@ -199,15 +199,13 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:text="Choose Position:" />
-            <TextView
+
+
+            <Spinner
                 android:id="@+id/position"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_weight="2"
-                android:ems="10"
-                android:maxLength="50"
-                android:paddingStart="10dp"
-                android:text="Select Position" />
+                android:layout_weight="2" />
         </LinearLayout>
 
         <Button

@@ -53,6 +53,17 @@ interface OrderDao {
     @Query("SELECT * FROM order_entity WHERE tableNumber = :tableNumber AND `payment_status` = 'waiting' AND order_status!='served'")
     fun getOrderforback(tableNumber: Int): Flow<List<Order>>
 
+
+    //tìm hàm trùng tên
+    @Query("SELECT * FROM order_entity WHERE itemId = :itemId AND tableNumber = :tableNumber AND name = :name AND price = :price AND order_status = :order_status AND payment_status = :pay_sta LIMIT 1")
+    suspend fun findExistingOrder(
+        itemId: Int,
+        tableNumber: Int,
+        name: String,
+        price: Int,
+        order_status: String,
+        pay_sta: String
+    ): Order?
     @Update
     suspend fun update(order: Order)
 

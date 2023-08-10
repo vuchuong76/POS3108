@@ -2,6 +2,7 @@ package com.example.pos1.order
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,9 +11,11 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.ItemDao
 import com.example.pos1.dao.OrderDao
+import com.example.pos1.dao.TableDao
 import com.example.pos1.entity.Item
 import com.example.pos1.entity.Order
 import com.example.pos1.entity.Orderlist
+import com.example.pos1.entity.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +28,8 @@ import kotlinx.coroutines.launch
 
 class OrderViewModel(
     private val orderDao: OrderDao,
-    private val itemDao: ItemDao
+    private val itemDao: ItemDao,
+    private val tableDao: TableDao
 ) : ViewModel() {
     //    lấy 3 order nhiều doanh thu nhất
 //    val mostValuableOrder: LiveData<List<Order>> = orderDao.getMostValuableOrder().asLiveData()
@@ -71,16 +75,19 @@ class OrderViewModel(
         orderDao.getOrderforback(tableNumber).asLiveData()
     }
 
+fun updateTableStatus(tableNumber: Int, status: Int) {
+    viewModelScope.launch {
+        tableDao.updateTableStatus(tableNumber, status)
+    }
+}
     //danh sách order đi vào bếp
     fun getOrderForKitchen(): LiveData<List<Order>> {
         val flow: Flow<List<Order>> = orderDao.getOrderForKitchen()
         return flow.asLiveData()
     }
-
     fun setAmountAllItems(value: Int) {
         _amount1.value = value
     }
-
 
     //chuyển trạng thái phục vụ order từ checking thành waiting
     fun updateStatusFromCheckingToWaiting() {
@@ -165,19 +172,30 @@ class OrderViewModel(
 
         }
     }
-
+    fun delete(order: Order) {
+        viewModelScope.launch {
+            orderDao.delete(order)
+        }
+    }
+    fun insert(order: Order) {
+        viewModelScope.launch {
+            orderDao.insert(order)
+        }
+    }
     /**
      * Xóa một đơn hàng khỏi cơ sở dữ liệu và cập nhật tổng số lượng và tổng giá trị.
      */
     fun deleteOrderAndUpdateTotals(order: Order) {
         viewModelScope.launch {
             val itemId: Int = order.itemId
+            Log.d("MyTag1", "order1: $order")
             val item =
                 itemDao.getItemById(itemId)  // giả sử bạn có một phương thức như vậy trong itemDao
             if (item != null) {
                 backItem(item, order)
             }
             orderDao.delete(order)
+            Log.d("MyTag2", "order2: $order")
         }
     }
 
@@ -190,7 +208,7 @@ class OrderViewModel(
                 val stockChanges = mutableMapOf<Int, Int>()
 
                 for (order in orders) {
-                    Log.d("MyTag", "order: $order")
+
                     val itemId = order.itemId
                     val change = stockChanges.getOrDefault(itemId, 0) + order.quantity
                     stockChanges[itemId] = change
@@ -211,11 +229,42 @@ class OrderViewModel(
     }
 
 
-
     /**
      * Thêm một đơn hàng mới vào cơ sở dữ liệu hoặc cập nhật số lượng nếu đơn hàng đã tồn tại.
      */
-    fun addNewOrder(
+//    suspend fun addNewOrder(
+//        itemId: Int,
+//        table: Int,
+//        name: String,
+//        time: String,
+//        quantity: Int,
+//        price: Int,
+//        order_status: String,
+//        pay_sta: String
+//    ) {
+//
+//        viewModelScope.launch {
+//            addNewOrderCount++
+//            Log.d("YourTag", "5 addNewOrder has been called $addNewOrderCount times")
+//            // Lấy giá trị của tableNumber hoặc 0 nếu chưa được đặt
+//            val tableNumber = selectedTableNumber.value ?: 0
+//
+//            // Tạo đơn hàng mới với tableNumber đã được đặt
+//            val newOrder = getNewOrderEntry(
+//                itemId,
+//                tableNumber,
+//                name,
+//                time,
+//                quantity,
+//                price,
+//                order_status,
+//                pay_sta
+//            )
+//            orderDao.insert(newOrder)
+//
+//        }
+//    }
+    suspend fun addNewOrder(
         itemId: Int,
         table: Int,
         name: String,
@@ -225,12 +274,17 @@ class OrderViewModel(
         order_status: String,
         pay_sta: String
     ) {
+        val tableNumber = selectedTableNumber.value ?: 0
 
-        viewModelScope.launch {
-            // Lấy giá trị của tableNumber hoặc 0 nếu chưa được đặt
-            val tableNumber = selectedTableNumber.value ?: 0
+        // Tìm kiếm order đã tồn tại dựa trên các thông tin cung cấp (itemId, tableNumber, etc.)
+        val existingOrder = orderDao.findExistingOrder(itemId, tableNumber, name, price, order_status, pay_sta)
 
-            // Tạo đơn hàng mới với tableNumber đã được đặt
+        if (existingOrder != null) {
+            // Cập nhật quantity cho order đã tồn tại
+            existingOrder.quantity += quantity
+            orderDao.update(existingOrder)
+        } else {
+            // Thêm một order mới nếu không tìm thấy order đã tồn tại
             val newOrder = getNewOrderEntry(
                 itemId,
                 tableNumber,
@@ -242,9 +296,9 @@ class OrderViewModel(
                 pay_sta
             )
             orderDao.insert(newOrder)
-
         }
     }
+
 
     // Hàm tạo đơn hàng mới
     private fun getNewOrderEntry(
@@ -279,12 +333,12 @@ class OrderViewModel(
 /**
  * Lớp Factory để khởi tạo đối tượng [OrderViewModel].
  */
-class OrderViewModelFactory(private val orderDao: OrderDao, private val itemDao: ItemDao) :
+class OrderViewModelFactory(private val orderDao: OrderDao, private val itemDao: ItemDao, private val tableDao: TableDao) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(OrderViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return OrderViewModel(orderDao, itemDao) as T
+            return OrderViewModel(orderDao, itemDao,tableDao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

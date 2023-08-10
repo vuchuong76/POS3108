@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentDrinkBinding
 import com.example.pos1.editmenu.ItemViewModel
 import com.example.pos1.editmenu.ItemViewModelFactory
 import com.example.pos1.entity.Order
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.random.Random
@@ -36,7 +38,8 @@ class DrinkFragment : Fragment() {
     private val sharedViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderDao(),
-            (activity?.application as UserApplication).orderDatabase.itemDao()
+            (activity?.application as UserApplication).orderDatabase.itemDao(),
+            (activity?.application as UserApplication).orderDatabase.tableDao()
         )
     }
     lateinit var order: Order
@@ -61,20 +64,20 @@ class DrinkFragment : Fragment() {
                 Toast.makeText(context, "\n" +
                         "Out of stock", Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.sellItem(item)
-                //khi click vào item trong menu thì tự add item đó vào order
-                sharedViewModel.addNewOrder(
-                    itemId = item.id.toInt(),
-                    table = sharedViewModel.selectedTableNumber.value ?: 0,
-                    name = item.name,
-                    time = currentTime,
-                    quantity = 1,
-                    price = item.price.toInt(),
-                    order_status = "checking",
-                    pay_sta = "waiting"
-                )
+                lifecycleScope.launch {
+                    viewModel.sellItem(item)
+                    sharedViewModel.addNewOrder(
+                        itemId = item.id.toInt(),
+                        table = sharedViewModel.selectedTableNumber.value ?: 0,
+                        name = item.name,
+                        time = currentTime,
+                        quantity = 1,
+                        price = item.price.toInt(),
+                        order_status = "checking",
+                        pay_sta = "waiting"
+                    )
+                }
             }
-//            sharedViewModel.getOrdersByNumber()
         }, "Drink")
 
         binding.recyclerView2.layoutManager = LinearLayoutManager(this.context)

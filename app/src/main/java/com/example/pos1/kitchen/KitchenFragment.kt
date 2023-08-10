@@ -1,4 +1,4 @@
-package com.example.pos1
+package com.example.pos1.kitchen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,19 +8,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pos1.R
+import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentKitchenBinding
-import com.example.pos1.entity.Order
 import com.example.pos1.order.OrderAdapter
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class KitchenFragment : Fragment() {
     // Lấy view model chung sử dụng activityViewModels và OrderViewModelFactory
     private val sharedViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderDao(),
-            (activity?.application as UserApplication).orderDatabase.itemDao()
+            (activity?.application as UserApplication).orderDatabase.itemDao(),
+            (activity?.application as UserApplication).orderDatabase.tableDao()
         )
     }
     private lateinit var binding: FragmentKitchenBinding
@@ -60,9 +61,17 @@ class KitchenFragment : Fragment() {
 
 
         // Khởi tạo OrderAdapter và đặt làm adapter cho RecyclerView
-        val adapter = OrderAdapter { order ->
-            sharedViewModel.serve(order)
-        }
+        val adapter = OrderAdapter(
+            onItemClicked = { order ->
+
+            },
+            onButtonClicked = { order ->
+                sharedViewModel.serve(order)
+                // Xử lý sự kiện khi button được nhấn
+                // Ví dụ:
+                // sharedViewModel.someFunction(order)
+            }
+        )
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = adapter
 

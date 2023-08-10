@@ -15,6 +15,7 @@ import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentDetailBinding
 import com.example.pos1.databinding.FragmentOrderDetailBinding
 import com.example.pos1.entity.Order
+import com.example.pos1.order.CheckoutAdapter
 import com.example.pos1.order.OrderAdapter
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
@@ -28,6 +29,7 @@ class DetailFragment : Fragment() {
         OrderViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderDao(),
             (activity?.application as UserApplication).orderDatabase.itemDao(),
+            (activity?.application as UserApplication).orderDatabase.tableDao(),
         )
     }
     private lateinit var binding: FragmentDetailBinding
@@ -51,16 +53,9 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        // Khởi tạo và liên kết các thành phần giao diện từ layout
-//        val id = sharedViewModel.id
-//        val tablenum = sharedViewModel.selectedTableNumber.value?:0
-//        binding.idTextView.text = "ID: $id"
-//        binding.tableTextView.text = "Table:$tablenum"
-
-
 
         // Khởi tạo OrderAdapter và đặt làm adapter cho RecyclerView
-        val adapter = OrderAdapter {
+        val adapter = CheckoutAdapter {
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = adapter
@@ -92,7 +87,8 @@ class DetailFragment : Fragment() {
                 }
                 binding.idTextView.text="Order ID: $orid"
                 binding.tableTextView.text="Table: $table"
-                binding.amount.text = "$totalItemCount items Amount: $totalAmount $"
+                binding.amount.text = "Total Amount: $totalAmount $"
+                binding.count.text = "$totalItemCount items"
                 binding.date.text= "$date"
                 adapter.submitList(it)
             }

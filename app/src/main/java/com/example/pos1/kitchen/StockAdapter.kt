@@ -1,4 +1,4 @@
-package com.example.pos1
+package com.example.pos1.kitchen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import com.example.pos1.databinding.StockItemBinding
 import com.example.pos1.entity.Item
 
 class StockAdapter(private val listener: StockItemActionListener) :
-    ListAdapter<Item, StockAdapter.ItemViewHolder>(StockAdapter.ITEMS_COMPARATOR) {
+    ListAdapter<Item, StockAdapter.ItemViewHolder>(ITEMS_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -27,15 +27,15 @@ class StockAdapter(private val listener: StockItemActionListener) :
 
     class ItemViewHolder(private var binding: StockItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item, listener: StockItemActionListener) {
-            binding.nameTextView.text = "Name:${item.name}"
+            binding.nameTextView.text = "Name : ${item.name}"
             item.image?.let {
                 Glide.with(itemView.context)
                     .load(item.image)
                     .into(binding.imageImageView)
             }
-            binding.priceTextView.text = "Price:${item.price}$"
-            binding.stockTextView.text = "Stock:${item.stock}"
-            binding.type.text = "Type:${item.type}"
+            binding.priceTextView.text = "Price : ${item.price}$"
+            binding.stockTextView.text = "Stock : ${item.stock}"
+            binding.type.text = "Type : ${item.type}"
 
             // Setting click listeners
             binding.addButton.setOnClickListener {

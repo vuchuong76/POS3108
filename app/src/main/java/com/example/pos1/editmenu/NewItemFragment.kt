@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentNewItemBinding
 import com.example.pos1.entity.Item
-
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 
 class NewItemFragment : Fragment() {
@@ -74,11 +74,13 @@ class NewItemFragment : Fragment() {
 
 // Đặt listener để xử lý sự kiện khi một mục được chọn
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                // Lấy mục được chọn
-                val selectedItem = parent.getItemAtPosition(position).toString()
-                // Cập nhật dữ liệu tương ứng
-                // TODO: Xử lý tương ứng với việc chọn mục này
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                view?.let {
+                    // Lấy mục được chọn
+                    val selectedItem = parent.getItemAtPosition(position).toString()
+                    // Cập nhật dữ liệu tương ứng
+                    // TODO: Xử lý tương ứng với việc chọn mục này
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
