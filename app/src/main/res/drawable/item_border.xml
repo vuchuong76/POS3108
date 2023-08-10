@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/white"/> <!-- Màu nền của item, bạn có thể thay đổi nếu muốn -->
+    <stroke
+        android:width="3dp"
+        android:color="#0326E8"/> <!-- Màu viền của item -->
+    <corners android:radius="4dp"/> <!-- Bạn có thể tăng giảm giá trị này để thay đổi độ cong của góc, nếu muốn viền thẳng, bạn có thể bỏ dòng này -->
+</shape>
