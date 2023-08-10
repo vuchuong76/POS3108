@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentDetailBinding
-import com.example.pos1.databinding.FragmentOrderDetailBinding
 import com.example.pos1.entity.Order
 import com.example.pos1.order.CheckoutAdapter
 import com.example.pos1.order.OrderAdapter

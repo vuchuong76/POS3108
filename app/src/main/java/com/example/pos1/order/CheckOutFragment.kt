@@ -119,7 +119,7 @@ class CheckOutFragment : Fragment() {
             when (it.itemId) {
                 R.id.home -> {
 //                    orderViewModel.cancel()
-                    val action = CheckOutFragmentDirections.actionCheckOutFragmentToTabletFragment()
+                    val action = CheckOutFragmentDirections.actionCheckOutFragmentToMenuTabletFragment()
                     findNavController().navigate(action)
                     true
                 }
@@ -137,7 +137,7 @@ class CheckOutFragment : Fragment() {
         binding.cancelButton.setOnClickListener {
 //            orderViewModel.cancel()
             //sau khi nhấp tính tiền dẫn đến màn hình Check out
-            val action = CheckOutFragmentDirections.actionCheckOutFragmentToTabletFragment()
+            val action = CheckOutFragmentDirections.actionCheckOutFragmentToMenuTabletFragment()
             findNavController().navigate(action)
         }
 

@@ -73,7 +73,7 @@ class ChooseTableFragment : Fragment() {
         // Lambda function này sẽ được gọi khi một mục trong danh sách bàn được nhấp vào.
         val adapter = ChooseTableAdapter { table->
             val action =
-                ChooseTableFragmentDirections.actionChooseTableFragmentToTabletFragment()
+                ChooseTableFragmentDirections.actionChooseTableFragmentToMenuTabletFragment()
             this.findNavController().navigate(action)
             sharedViewModel.setSelectedTableNumber(table.number)
 //            sharedViewModel.getOrdersByNumber()

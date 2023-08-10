@@ -178,8 +178,8 @@
             android:id="@+id/action_chooseTableFragment_to_loginFragment2"
             app:destination="@id/loginFragment" />
         <action
-            android:id="@+id/action_chooseTableFragment_to_tabletFragment"
-            app:destination="@id/tabletFragment" />
+            android:id="@+id/action_chooseTableFragment_to_menuTabletFragment"
+            app:destination="@id/menuTabletFragment" />
     </fragment>
     <fragment
         android:id="@+id/menuListFragment"
@@ -251,11 +251,11 @@
             android:id="@+id/action_checkOutFragment_to_orderListFragment"
             app:destination="@id/orderListFragment" />
         <action
-            android:id="@+id/action_checkOutFragment_to_tabletFragment"
-            app:destination="@id/tabletFragment" />
-        <action
             android:id="@+id/action_checkOutFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_checkOutFragment_to_menuTabletFragment"
+            app:destination="@id/menuTabletFragment" />
     </fragment>
     <fragment
         android:id="@+id/rosterFragment"
@@ -267,17 +267,6 @@
         <action
             android:id="@+id/action_rosterFragment_to_scheduleFragment"
             app:destination="@id/scheduleFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/tabletFragment"
-        android:name="com.example.pos1.order.TabletFragment"
-        android:label="TabletFragment" >
-        <action
-            android:id="@+id/action_tabletFragment_to_checkOutFragment"
-            app:destination="@id/checkOutFragment" />
-        <action
-            android:id="@+id/action_tabletFragment_to_chooseTableFragment"
-            app:destination="@id/chooseTableFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -363,5 +352,16 @@
         <action
             android:id="@+id/action_addCouponFragment_to_couponFragment"
             app:destination="@id/couponFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuTabletFragment"
+        android:name="com.example.pos1.order.MenuTabletFragment"
+        android:label="MenuTabletFragment" >
+        <action
+            android:id="@+id/action_menuTabletFragment_to_chooseTableFragment"
+            app:destination="@id/chooseTableFragment" />
+        <action
+            android:id="@+id/action_menuTabletFragment_to_checkOutFragment"
+            app:destination="@id/checkOutFragment" />
     </fragment>
 </navigation>
