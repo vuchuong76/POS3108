@@ -1,7 +1,6 @@
 package com.example.pos1.order
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,7 @@ import com.example.pos1.databinding.FragmentAppetizerBinding
 import com.example.pos1.editmenu.ItemViewModel
 import com.example.pos1.editmenu.ItemViewModelFactory
 import com.example.pos1.entity.Order
+import com.example.pos1.order.adapter.FoodDrinkAppetizerAdapter
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -66,7 +66,7 @@ class AppetizerFragment : Fragment() {
                         name = item.name,
                         time = currentTime,
                         quantity = 1,
-                        price = item.price.toInt(),
+                        price = item.price.toDouble(),
                         order_status = "checking",
                         pay_sta = "waiting"
                     )

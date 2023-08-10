@@ -1,7 +1,6 @@
 package com.example.pos1
 
 import android.app.Application
-import com.example.pos1.order.OrderRoomDatabase
 
 class UserApplication : Application() {
     // Using by lazy so the database is only created when needed

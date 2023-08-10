@@ -6,11 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos1.databinding.ItemScheduleBinding
-import com.example.pos1.databinding.OrderItemBinding
-import com.example.pos1.databinding.RosterItemBinding
-import com.example.pos1.entity.Order
 import com.example.pos1.entity.Schedule
-import com.example.pos1.order.OrderAdapter
 
 class ScheduleAdapter(private val onItemClicked: (Schedule) -> Unit) :
     ListAdapter<Schedule, ScheduleAdapter.ScheduleViewHolder>(DiffCallback) {

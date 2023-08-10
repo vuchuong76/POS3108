@@ -1,21 +1,20 @@
-package com.example.pos1.order
+package com.example.pos1.order.adapter
 
+import com.example.pos1.databinding.CheckOutItemBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pos1.databinding.OrderItemBinding
 import com.example.pos1.entity.Order
 
-class OrderAdapter(
-    private val onItemClicked: (Order) -> Unit,
-    private val onButtonClicked: (Order) -> Unit  // Thêm callback cho button, onOrderClick: kotlin.Any){}
-) : ListAdapter<Order, OrderAdapter.ItemViewHolder>(DiffCallback) {
+class CheckoutAdapter(
+    private val onItemClicked: (Order) -> Unit
+) : ListAdapter<Order, CheckoutAdapter.ItemViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
-            OrderItemBinding.inflate(
+            CheckOutItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -31,13 +30,10 @@ class OrderAdapter(
         }
 
         // Gán sự kiện click cho button
-        holder.binding.delete.setOnClickListener {  // Thay 'yourButtonId' bằng ID thực tế của button
-            onButtonClicked(current)
-        }
     }
 
     // ViewHolder cho mục đơn hàng
-    class ItemViewHolder(val binding: OrderItemBinding) :
+    class ItemViewHolder(val binding: CheckOutItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(order: Order) {

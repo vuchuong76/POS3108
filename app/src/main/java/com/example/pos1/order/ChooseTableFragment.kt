@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentChooseTableBinding
-import com.example.pos1.table.TableListAdapter
+import com.example.pos1.order.adapter.ChooseTableAdapter
 import com.example.pos1.table.TableViewModel
 import com.example.pos1.table.TableViewModelFactory
 

@@ -1,4 +1,4 @@
-package com.example.pos1.order
+package com.example.pos1.order.adapter
 import android.net.Uri
 import android.os.SystemClock
 import android.view.LayoutInflater

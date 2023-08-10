@@ -17,12 +17,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pos1.R
 import com.example.pos1.UserApplication
+import com.example.pos1.coupon.CouponViewModel
+import com.example.pos1.coupon.CouponViewModelFactory
 import com.example.pos1.databinding.FragmentCheckOutBinding
+import com.example.pos1.entity.Coupon
+import com.example.pos1.order.adapter.CheckoutAdapter
 import com.example.pos1.orlist.OrderListViewModelFactory
 import com.example.pos1.orlist.OrderlistViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Date
+import kotlin.math.roundToInt
 
 
 class CheckOutFragment : Fragment() {
@@ -39,6 +45,11 @@ class CheckOutFragment : Fragment() {
         OrderListViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderlistDao(),
             (activity?.application as UserApplication).orderDatabase.orderDao()
+        )
+    }
+    private val couponViewModel: CouponViewModel by activityViewModels() {
+        CouponViewModelFactory(
+            (activity?.application as UserApplication).orderDatabase.couponDao()
         )
     }
 
@@ -87,8 +98,8 @@ class CheckOutFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
 
-                val recieveAmount = s.toString().toIntOrNull() ?: 0
-                val lastAmount = orderViewModel.amount1.value ?: 0
+                val recieveAmount = s.toString().toDoubleOrNull() ?: 0.0
+                val lastAmount = orderViewModel.amount1.value ?: 0.0
 
                 val changeAmount = recieveAmount - lastAmount
                 binding.change.text = "Change: $changeAmount $"
@@ -134,6 +145,9 @@ class CheckOutFragment : Fragment() {
         val dateString = currentDate.toString()
         //xuất hóa đơn và thêm vào orderlist
 
+
+
+
         binding.cancelButton.setOnClickListener {
 //            orderViewModel.cancel()
             //sau khi nhấp tính tiền dẫn đến màn hình Check out
@@ -145,7 +159,7 @@ class CheckOutFragment : Fragment() {
         // Theo dõi LiveData allItems từ OrderViewModel để tự động cập nhật giao diện
         orderViewModel.orderForPay.observe(this.viewLifecycleOwner) { items ->
             items.let {
-                var totalAmount = 0
+                var totalAmount = 0.0
                 var totalItemCount = 0
 
                 for (order in it) {
@@ -154,6 +168,26 @@ class CheckOutFragment : Fragment() {
                 }
                 orderViewModel.setAmountAllItems(totalAmount)
                 binding.amount.text = "$totalItemCount items Amount: $totalAmount $"
+                totalAmount = (totalAmount * 11).roundToInt() / 10.0
+                binding.taxAmount.text = "Amount: ${totalAmount} $(tax)"
+                //tính coupon
+                binding.apply.setOnClickListener {
+                    // 1. Lấy dữ liệu từ EditText
+                    val enteredCode = binding.code.text.toString()
+
+                    // 2. Truy vấn dữ liệu từ cơ sở dữ liệu
+                    couponViewModel.fetchCouponByCode(enteredCode)
+                    lifecycleScope.launch {
+                        couponViewModel.couponFlow.collectLatest { coupon ->
+                            // 3. Cập nhật giao diện
+                            if (coupon != null) {
+                                binding.coupon.text = "${coupon.discount}%"
+                            } else {
+                                Toast.makeText(context, "Invalid coupon code!", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
 
                 binding.change.text = "Change: ${getChangeMoney(totalAmount)} $"
                 adapter.submitList(it)
@@ -170,7 +204,7 @@ class CheckOutFragment : Fragment() {
 
                         if (getChangeMoney(totalAmount) >= 0) {
                             val staffIdValue = orderViewModel.id.toInt()
-                            val amountValue = orderViewModel.amount1.value ?: 0
+                            val amountValue = orderViewModel.amount1.value ?: 0.0
                             val a = Date().time.toString()
                             // Sử dụng CoroutineScope để gọi addNewOrderlist và nhận giá trị orId
                             lifecycleScope.launch {
@@ -198,9 +232,9 @@ class CheckOutFragment : Fragment() {
         orderViewModel.cancel()
     }
 
-    fun getChangeMoney(total: Int): Int {
+    fun getChangeMoney(total: Double): Double {
         val rev = binding.recieve.text.toString().trim().toIntOrNull() ?: 0
-        return if (rev == 0) 0 else rev - total
+        return if (rev == 0) 0.0 else rev - total
     }
 
 

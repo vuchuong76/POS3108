@@ -13,14 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentDetailBinding
-import com.example.pos1.entity.Order
-import com.example.pos1.order.CheckoutAdapter
-import com.example.pos1.order.OrderAdapter
+import com.example.pos1.order.adapter.CheckoutAdapter
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.text.SimpleDateFormat
-import java.util.Calendar
 
 class DetailFragment : Fragment() {
     // Lấy view model chung sử dụng activityViewModels và OrderViewModelFactory
@@ -72,7 +67,7 @@ class DetailFragment : Fragment() {
         // Theo dõi LiveData allItems từ OrderViewModel để tự động cập nhật giao diện
         sharedViewModel.orderById.observe(this.viewLifecycleOwner) { items ->
             items.let {
-                var totalAmount = 0
+                var totalAmount = 0.0
                 var totalItemCount = 0
                 var orid =sharedViewModel.selectedId.value
                 var table=0

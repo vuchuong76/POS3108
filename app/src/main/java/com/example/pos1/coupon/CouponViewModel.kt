@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.CouponDao
 import com.example.pos1.dao.RosterDao
 import com.example.pos1.entity.Coupon
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
@@ -17,7 +19,14 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
 // được lấy từ phương thức getTables() của tableDao.
 // Nó sẽ cung cấp danh sách các bảng Table cho các thành phần giao diện người dùng theo thời gian thực.
     val allCoupons: LiveData<List<Coupon>> = couponDao.getAll().asLiveData()
+    private val _couponFlow = MutableStateFlow<Coupon?>(null)
+    val couponFlow: StateFlow<Coupon?> get() = _couponFlow
 
+    fun fetchCouponByCode(code: String) = viewModelScope.launch {
+        couponDao.getCouponByCode(code).collect { coupon ->
+            _couponFlow.value = coupon
+        }
+    }
     private fun insertCoupon(coupon: Coupon) {
         viewModelScope.launch {
             couponDao.insert(coupon)

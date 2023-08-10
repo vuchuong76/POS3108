@@ -15,7 +15,7 @@ data class Orderlist(
     @ColumnInfo(name = "Date")
     val date: String = "",
     @ColumnInfo(name = "Amount")
-    val amount: Int = 0,
+    val amount: Double = 0.0,
     @ColumnInfo(name = "Status")
     val status: String = "",
     @ColumnInfo(name = "Payment method")

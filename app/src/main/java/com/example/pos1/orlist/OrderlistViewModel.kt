@@ -25,7 +25,7 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private  val or
         tbnum: Int,
         staffId: Int,
         date: String,
-        amount: Int,
+        amount: Double,
         status: String,
         payment: String
     ) {
@@ -67,7 +67,7 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private  val or
     private fun getNewOrderListEntry(orId:String, tbnum: Int,
                                  staffId: Int,
                                  date: String,
-                                 amount: Int,
+                                 amount: Double,
                                  status: String,
                                  payment: String): Orderlist {
         return Orderlist(

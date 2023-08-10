@@ -1,13 +1,10 @@
 package com.example.pos1.order
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -16,10 +13,11 @@ import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentMenuTabletBinding
 import com.example.pos1.entity.Order
+import com.example.pos1.order.adapter.MenuAdapter
+import com.example.pos1.order.adapter.OrderAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
-import java.text.SimpleDateFormat
-import java.util.Calendar
+import kotlin.math.roundToInt
 
 class MenuTabletFragment : Fragment() {
     private lateinit var binding: FragmentMenuTabletBinding
@@ -124,13 +122,14 @@ class MenuTabletFragment : Fragment() {
             } else {
                 sharedViewModel.updateTableStatus(sharedViewModel.selectedTableNumber.value ?: 0, 1)
             }
-            var totalAmount = 0
+            var totalAmount = 0.0
             var totalItemCount = 0
             if (items != null && items.isNotEmpty()) {
                 for (order in items) {
                     totalAmount += order.quantity * order.price
                     totalItemCount += order.quantity
                 }
+                totalAmount = (totalAmount * 10).roundToInt() / 10.0
                 binding.amount.text = "Total Amount: $totalAmount $"
                 binding.count.text = "$totalItemCount items"
             } else {

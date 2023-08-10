@@ -23,6 +23,7 @@ import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentNewItemBinding
 import com.example.pos1.entity.Item
 import kotlinx.coroutines.NonDisposableHandle.parent
+import java.lang.Math.round
 
 
 class NewItemFragment : Fragment() {
@@ -74,7 +75,12 @@ class NewItemFragment : Fragment() {
 
 // Đặt listener để xử lý sự kiện khi một mục được chọn
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 view?.let {
                     // Lấy mục được chọn
                     val selectedItem = parent.getItemAtPosition(position).toString()
@@ -89,7 +95,7 @@ class NewItemFragment : Fragment() {
         }
 
         binding.back.setOnClickListener {
-            val action= NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+            val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
             findNavController().navigate(action)
         }
         val id = args.itemId
@@ -116,19 +122,20 @@ class NewItemFragment : Fragment() {
         }
     }
 
-    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            // There are no request codes
-            result.data?.let { content ->
-                imageSelected = content.data.toString()
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // There are no request codes
+                result.data?.let { content ->
+                    imageSelected = content.data.toString()
 
-                //load anh da chon len imageview
-                Glide.with(this)
-                    .load(imageSelected)
-                    .into(binding.ivImage)
+                    //load anh da chon len imageview
+                    Glide.with(this)
+                        .load(imageSelected)
+                        .into(binding.ivImage)
+                }
             }
         }
-    }
 
     private fun pickImage() {
         val intent = Intent()
@@ -165,18 +172,18 @@ class NewItemFragment : Fragment() {
 // thêm bàn mới và sau đó điều hướng đến màn hình danh sách bàn.
     private fun addNewItem() {
         if (isEntryValid()) {
+            val roundedPrice = roundToOneDecimalPlace(binding.price.text.toString().toFloat() )
             viewModel.addNewItem(
                 binding.name.text.toString(),
                 binding.type.selectedItem.toString(),
                 binding.stock.text.toString(),
-                binding.price.text.toString(),
+                roundedPrice.toString(),
                 imageSelected
             )
             val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
             findNavController().navigate(action)
-        }
-        else{
-            Toast.makeText(context,"Invalid",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Invalid", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -185,22 +192,28 @@ class NewItemFragment : Fragment() {
 // thông tin bàn và sau đó điều hướng trở lại màn hình danh sách bàn
     private fun updateItem() {
         if (isEntryValid()) {
+            val roundedPrice = roundToOneDecimalPlace(binding.price.text.toString().toFloat() )
             viewModel.updateItem(
                 this.args.itemId,
                 this.binding.name.text.toString(),
                 binding.type.selectedItem.toString(),
                 this.binding.stock.text.toString(),
-                this.binding.price.text.toString(),
+                roundedPrice.toString(),
                 imageSelected
             )
             val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
             findNavController().navigate(action)
-        }
-        else{
-            Toast.makeText(context,"Invalid",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Invalid", Toast.LENGTH_SHORT).show()
         }
 
     }
+    //hàm chuyển sang float có 1 chữ số sau dấu phẩy
+    fun roundToOneDecimalPlace(value: Float): Float {
+        return (value * 10).toInt().toFloat() / 10
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -1,6 +1,5 @@
-package com.example.pos1.order
+package com.example.pos1.order.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,9 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos1.R
 import com.example.pos1.databinding.TableItemBinding
-import com.example.pos1.entity.Order
 import com.example.pos1.entity.Table
-import com.example.pos1.table.TableListAdapter
 
 //Constructor: Adapter nhận vào một tham số là lambda function onItemClicked có kiểu dữ liệu là
 // (Table) -> Unit. Lambda function này được gọi khi một mục trong danh sách được nhấn.

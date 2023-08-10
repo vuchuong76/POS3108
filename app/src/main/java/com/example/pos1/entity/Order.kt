@@ -25,7 +25,7 @@ data class Order(
     @ColumnInfo(name = "quantity")
     var quantity: Int = 0,
     @ColumnInfo(name = "price")
-    val price: Int = 0,
+    val price: Double = 0.0,
     @ColumnInfo(name = "order_status")
     val order_status: String="",
     @ColumnInfo(name = "payment_status")

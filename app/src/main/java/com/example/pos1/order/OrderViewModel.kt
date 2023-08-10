@@ -44,8 +44,8 @@ class OrderViewModel(
     private val _countItem1: MutableLiveData<Int> = MutableLiveData(0)
     val countItem1: LiveData<Int> = _countItem1
 
-    private val _amount1: MutableLiveData<Int> = MutableLiveData(0)
-    val amount1: LiveData<Int> = _amount1
+    private val _amount1: MutableLiveData<Double> = MutableLiveData(0.0)
+    val amount1: LiveData<Double> = _amount1
 
     var id: String = ""
 
@@ -85,7 +85,7 @@ fun updateTableStatus(tableNumber: Int, status: Int) {
         val flow: Flow<List<Order>> = orderDao.getOrderForKitchen()
         return flow.asLiveData()
     }
-    fun setAmountAllItems(value: Int) {
+    fun setAmountAllItems(value: Double) {
         _amount1.value = value
     }
 
@@ -188,14 +188,12 @@ fun updateTableStatus(tableNumber: Int, status: Int) {
     fun deleteOrderAndUpdateTotals(order: Order) {
         viewModelScope.launch {
             val itemId: Int = order.itemId
-            Log.d("MyTag1", "order1: $order")
             val item =
                 itemDao.getItemById(itemId)  // giả sử bạn có một phương thức như vậy trong itemDao
             if (item != null) {
                 backItem(item, order)
             }
             orderDao.delete(order)
-            Log.d("MyTag2", "order2: $order")
         }
     }
 
@@ -270,7 +268,7 @@ fun updateTableStatus(tableNumber: Int, status: Int) {
         name: String,
         time: String,
         quantity: Int,
-        price: Int,
+        price: Double,
         order_status: String,
         pay_sta: String
     ) {
@@ -307,7 +305,7 @@ fun updateTableStatus(tableNumber: Int, status: Int) {
         name: String,
         time: String,
         quantity: Int,
-        price: Int,
+        price: Double,
         order_status: String,
         pay_sta: String
     ): Order {

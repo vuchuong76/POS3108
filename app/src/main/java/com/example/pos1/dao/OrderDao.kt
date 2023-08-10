@@ -60,7 +60,7 @@ interface OrderDao {
         itemId: Int,
         tableNumber: Int,
         name: String,
-        price: Int,
+        price: Double,
         order_status: String,
         pay_sta: String
     ): Order?

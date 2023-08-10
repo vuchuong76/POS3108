@@ -97,7 +97,7 @@ class DashboardFragment : Fragment() {
                 // Tính tổng số tiền theo từng ngày.
                 var key = 0
                 for (date in sortedDates) {
-                    var amount = 0.0F
+                    var amount = 0.0
                     for (item in it) {
                         if (item.date == date) {
                             amount += item.amount
@@ -169,5 +169,5 @@ class MyAxits(private val dates: ArrayList<String>) : ValueFormatter() {
 data class ThongKeNgay(
     val key: Int?,
     val date: String?,
-    val amount: Float?
+    val amount: Double?
 )

@@ -5,11 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pos1.databinding.OrderItemBinding
 import com.example.pos1.databinding.RosterItemBinding
-import com.example.pos1.entity.Order
 import com.example.pos1.entity.Roster
-import com.example.pos1.order.OrderAdapter
 
 class RosterAdapter(private val onItemClicked: (Roster) -> Unit) :
     ListAdapter<Roster, RosterAdapter.RosterViewHolder>(DiffCallback) {

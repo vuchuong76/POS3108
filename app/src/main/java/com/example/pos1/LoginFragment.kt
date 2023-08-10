@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.pos1.order.OrderRoomDatabase
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
 import kotlinx.coroutines.*

@@ -16,6 +16,8 @@ interface CouponDao {
 
     @Query("SELECT * FROM coupon WHERE id = :id")
     fun getCoupon(id: Int): Flow<Coupon>
+    @Query("SELECT * FROM coupon WHERE code = :code")
+    fun getCouponByCode(code: String): Flow<Coupon>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(coupon: Coupon)

@@ -14,6 +14,7 @@ import com.example.pos1.databinding.FragmentFoodBinding
 import com.example.pos1.editmenu.ItemViewModel
 import com.example.pos1.editmenu.ItemViewModelFactory
 import com.example.pos1.entity.Order
+import com.example.pos1.order.adapter.FoodDrinkAppetizerAdapter
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -65,7 +66,7 @@ class FoodFragment : Fragment() {
                         name = item.name,
                         time = currentTime,
                         quantity = 1,
-                        price = item.price.toInt(),
+                        price = item.price.toDouble(),
                         order_status = "checking",
                         pay_sta = "waiting"
                     )

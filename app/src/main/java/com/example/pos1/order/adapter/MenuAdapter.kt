@@ -1,4 +1,4 @@
-package com.example.pos1.order
+package com.example.pos1.order.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
