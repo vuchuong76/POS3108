@@ -1,4 +1,4 @@
-package com.example.pos1.Models
+package com.example.pos1.weather
 
 data class CurrentWeather(
     val current: Current,

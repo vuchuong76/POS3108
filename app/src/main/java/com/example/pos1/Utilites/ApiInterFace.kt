@@ -1,6 +1,6 @@
 package com.example.test.Utilites
 
-import com.example.pos1.Models.CurrentWeather
+import com.example.pos1.weather.CurrentWeather
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

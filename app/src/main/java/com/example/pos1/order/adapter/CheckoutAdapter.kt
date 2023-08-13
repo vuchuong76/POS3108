@@ -37,7 +37,6 @@ class CheckoutAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(order: Order) {
-            binding.status.text = order.order_status.toString()
             binding.nameView.text = order.name
             binding.timeView.text = order.time.toString()
             binding.quantityView.text = order.quantity.toString()

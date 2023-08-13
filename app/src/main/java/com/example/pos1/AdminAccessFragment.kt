@@ -1,9 +1,6 @@
 package com.example.pos1
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.location.Location
-import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,15 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.pos1.Models.CurrentWeather
+import com.example.pos1.weather.CurrentWeather
 import com.example.pos1.databinding.FragmentAdminAccessBinding
 import com.example.test.Utilites.ApiUtilites
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,19 +34,6 @@ class AdminAccessFragment : Fragment() {
     ): View? {
         binding = FragmentAdminAccessBinding.inflate(inflater, container, false)
 
-        binding.staffList.setOnClickListener {
-            findNavController().navigate(R.id.action_adminAccessFragment_to_staffListFragment)
-        }
-        binding.table.setOnClickListener {
-            findNavController().navigate(R.id.action_adminAccessFragment_to_tableFragment)
-        }
-        binding.menuEdit.setOnClickListener {
-            findNavController().navigate(R.id.action_adminAccessFragment_to_menuListFragment)
-        }
-        binding.schedule.setOnClickListener {
-            findNavController().navigate(R.id.action_adminAccessFragment_to_scheduleFragment)
-        }
-
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -64,6 +45,34 @@ class AdminAccessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
+
+            when (item.itemId) {
+                R.id.home -> {
+                    // Xử lý sự kiện khi nhấn vào "Home"
+                    // Ví dụ: quay trở lại trang chính hoặc làm gì đó bạn muốn
+                    true
+                }
+                R.id.staffList -> {
+                    findNavController().navigate(R.id.action_adminAccessFragment_to_staffListFragment)
+                    true
+                }
+                R.id.table -> {
+                    findNavController().navigate(R.id.action_adminAccessFragment_to_tableFragment)
+                    true
+                }
+                R.id.menuEdit -> {
+                    findNavController().navigate(R.id.action_adminAccessFragment_to_menuListFragment)
+                    true
+                }
+                R.id.schedule -> {
+                    findNavController().navigate(R.id.action_adminAccessFragment_to_scheduleFragment)
+                    true
+                }
+                else -> false
+            }
+        }
         // rest api weather current device
         ApiUtilites.getApiInterface()?.getCurrentFuture(
             key

@@ -91,7 +91,7 @@ class CheckOutFragment : Fragment() {
                 }
             }
         )
-        binding.recieve.addTextChangedListener(object : TextWatcher {
+        binding.receive.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -194,7 +194,7 @@ class CheckOutFragment : Fragment() {
 
                 binding.receipt.setOnClickListener {
                     if (totalAmount > 0) {
-                        val receivedMoney = binding.recieve.text.toString().trim().toIntOrNull()
+                        val receivedMoney = binding.receive.text.toString().trim().toIntOrNull()
 
                         // Nếu receivedMoney null hoặc nhỏ hơn totalAmount thì báo toast
                         if (receivedMoney == null || receivedMoney < totalAmount) {
@@ -233,7 +233,7 @@ class CheckOutFragment : Fragment() {
     }
 
     fun getChangeMoney(total: Double): Double {
-        val rev = binding.recieve.text.toString().trim().toIntOrNull() ?: 0
+        val rev = binding.receive.text.toString().trim().toIntOrNull() ?: 0
         return if (rev == 0) 0.0 else rev - total
     }
 
