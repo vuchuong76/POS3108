@@ -62,7 +62,7 @@ class OrderListFragment : Fragment() {
 //quay trở về màn hine Choose Table
         val back: Button = binding.buttonHome1
         back.setOnClickListener {
-            val action = OrderListFragmentDirections.actionOrderListFragmentToChooseTableFragment2()
+            val action = OrderListFragmentDirections.actionOrderListFragmentToChooseTableFragment2("")
             findNavController().navigate(action)
         }
 
@@ -70,7 +70,7 @@ class OrderListFragment : Fragment() {
             when (it.itemId) {
                 R.id.home -> {
                     val action =
-                        OrderListFragmentDirections.actionOrderListFragmentToChooseTableFragment2()
+                        OrderListFragmentDirections.actionOrderListFragmentToChooseTableFragment2("")
                     findNavController().navigate(action)
                     true
                 }

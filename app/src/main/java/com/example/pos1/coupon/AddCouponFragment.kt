@@ -62,7 +62,7 @@ class AddCouponFragment : Fragment() {
         if (isEntryValid()) {
             viewModel.addNewCoupon(
                 binding.code.text.toString(),
-                binding.coupon.text.toString()
+                binding.coupon.text.toString().toDouble()
             )
             val action = AddCouponFragmentDirections.actionAddCouponFragmentToCouponFragment()
             findNavController().navigate(action)

@@ -93,13 +93,6 @@
             android:background="#E0E4E8"
             android:text="price" />
 
-        <TextView
-            android:id="@+id/order_status"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#E0E4E8"
-            android:text="Status" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -118,7 +111,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="8dp"
-        android:paddingBottom="40dp"
         android:text="Item count" />
     <TextView
         android:id="@+id/amount"
@@ -126,7 +118,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="8dp"
-        android:paddingBottom="40dp"
+        android:paddingBottom="20dp"
         android:text="amount" />
 
 </LinearLayout>

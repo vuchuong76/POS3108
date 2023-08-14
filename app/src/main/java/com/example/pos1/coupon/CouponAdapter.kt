@@ -44,7 +44,7 @@ class CouponAdapter(private val onItemClicked: (Coupon) -> Unit) :
         // Gắn dữ liệu của mục đơn hàng vào thành phần giao diện tương ứng
         fun bind(coupon: Coupon) {
             binding.codeView.text = coupon.code
-            binding.couponView.text = coupon.discount.toString()
+            binding.couponView.text = "${coupon.discount.toString()}%"
         }
     }
 

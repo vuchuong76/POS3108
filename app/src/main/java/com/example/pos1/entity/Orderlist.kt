@@ -11,7 +11,7 @@ data class Orderlist(
     @ColumnInfo(name = "tbnum")
     val tbnum: Int = 0,
     @ColumnInfo(name = "staffId")
-    val staffId: Int = 0,
+    val staffId: String = "",
     @ColumnInfo(name = "Date")
     val date: String = "",
     @ColumnInfo(name = "Amount")

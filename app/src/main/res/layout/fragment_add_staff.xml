@@ -34,16 +34,16 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:text="Staff Id:" />
+                android:text="User Name:" />
 
             <EditText
                 android:id="@+id/staff_id"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="2"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_@"
                 android:ems="10"
-                android:hint="Enter Staff Id"
-                android:inputType="number"
+                android:hint="Enter User name"
                 android:maxLength="9"
                 android:paddingStart="10dp" />
         </LinearLayout>
@@ -68,13 +68,13 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="2"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                 android:ems="10"
                 android:hint="Enter Password"
                 android:inputType="text"
                 android:maxLength="15"
                 android:paddingStart="10dp"
-                android:password="true"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-,'"/>
+                android:password="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -97,12 +97,12 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="2"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                 android:ems="10"
                 android:hint="Enter Name"
                 android:inputType="text"
                 android:maxLength="30"
-                android:paddingStart="10dp"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"/>
+                android:paddingStart="10dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -179,12 +179,12 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="2"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789- ,"
                 android:ems="10"
                 android:hint="Enter Address"
                 android:inputType="text"
                 android:maxLength="50"
-                android:paddingStart="10dp"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789- ,"/>
+                android:paddingStart="10dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -194,6 +194,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="48dp"

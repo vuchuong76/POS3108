@@ -21,6 +21,9 @@ import com.example.pos1.User.UserAdapter
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentRosterBinding
 import com.example.pos1.databinding.FragmentScheduleBinding
+import com.example.pos1.entity.Roster
+import com.example.pos1.entity.Schedule
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Calendar
 
 class ScheduleFragment : Fragment() {
@@ -69,7 +72,7 @@ class ScheduleFragment : Fragment() {
             this.findNavController().navigate(action)
         }
         val adapter = ScheduleAdapter { schedule ->
-            viewModel.deleteSchedule(schedule)
+            showConfirmationDialog(schedule)
         }
         viewModel.schedules.observe(this.viewLifecycleOwner) { items ->
             items.let {
@@ -121,7 +124,17 @@ class ScheduleFragment : Fragment() {
 //        datePickerDialog.datePicker.minDate = System.currentTimeMillis()
         datePickerDialog.show()
     }
-
+    private fun showConfirmationDialog(schedule: Schedule) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage(getString(R.string.delete_question))
+            .setCancelable(false)
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                viewModel.deleteSchedule(schedule)
+            }
+            .show()
+    }
     private fun formatDate(year: Int, month: Int, dayOfMonth: Int): String {
         return String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
     }

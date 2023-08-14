@@ -8,5 +8,5 @@ data class Coupon(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val code: String = "",
-    val discount: Int=0,
+    val discount: Double=0.0,
 )

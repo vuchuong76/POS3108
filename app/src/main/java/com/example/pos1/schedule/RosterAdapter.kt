@@ -39,7 +39,6 @@ class RosterAdapter(private val onItemClicked: (Roster) -> Unit) :
 
         // Gắn dữ liệu của mục đơn hàng vào thành phần giao diện tương ứng
         fun bind(roster: Roster) {
-            binding.numberView.text=roster.id.toString()
             binding.startView.text = roster.start_time.toString()+":00"
             binding.finishView.text = roster.finish_time.toString()+":00"
         }

@@ -55,6 +55,12 @@ class OrderViewModel(
     val selectedTableNumber: LiveData<Int> = _selectedTableNumber
     private val _selectedId = MutableLiveData<String>()
     val selectedId: LiveData<String> = _selectedId
+    private val _total = MutableLiveData<Double>()
+    val total: LiveData<Double> get() = _total
+
+    fun updateData(newData: Double) {
+        _total.value = newData
+    }
 
     //mỗi khi _selectedTableNumber thay đổi, foodsForTable sẽ tự động cập nhật và
     // chứa danh sách đơn hàng cho bàn có số tableNumber và trạng thái thanh toán pay_sta.
@@ -75,7 +81,17 @@ class OrderViewModel(
         orderDao.getOrderforback(tableNumber).asLiveData()
     }
 
-fun updateTableStatus(tableNumber: Int, status: Int) {
+    // Define discountPercentage as MutableLiveData with a default value of 0.0
+    val discountPercentage = MutableLiveData<Double>().apply { value = 0.0 }
+
+    // ... [Other methods of your ViewModel]
+
+    fun applyDiscount(percentage: Double) {
+        discountPercentage.value = percentage
+    }
+
+
+    fun updateTableStatus(tableNumber: Int, status: Int) {
     viewModelScope.launch {
         tableDao.updateTableStatus(tableNumber, status)
     }

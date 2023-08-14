@@ -70,10 +70,9 @@ class StaffListFragment : Fragment() {
         }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         binding.floatingActionButton.setOnClickListener {
             val action = StaffListFragmentDirections.actionStaffListFragmentToAddStaffFragment(
-                getString(R.string.add_staff)
+                getString(R.string.add_staff),""
             )
             findNavController().navigate(action)
         }

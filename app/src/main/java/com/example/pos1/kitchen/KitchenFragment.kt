@@ -51,17 +51,19 @@ class KitchenFragment : Fragment() {
                     findNavController().navigate(action)
                     true
                 }
+                R.id.stock -> {
+                    val action = KitchenFragmentDirections.actionKitchenFragmentToStockFragment()
+                    findNavController().navigate(action)
+                    true
+                }
                 else -> false
             }
         }
-        binding.stock.setOnClickListener {
-            val action = KitchenFragmentDirections.actionKitchenFragmentToStockFragment()
-            findNavController().navigate(action)
-        }
+
 
 
         // Khởi tạo OrderAdapter và đặt làm adapter cho RecyclerView
-        val adapter = OrderAdapter(
+        val adapter = KitchenAdapter(
             onItemClicked = { order ->
 
             },

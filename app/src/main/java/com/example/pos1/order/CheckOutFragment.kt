@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,8 +33,6 @@ import kotlin.math.roundToInt
 
 
 class CheckOutFragment : Fragment() {
-
-    // Lấy view model chung sử dụng activityViewModels và OrderViewModelFactory
     private val orderViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderDao(),
@@ -52,7 +51,6 @@ class CheckOutFragment : Fragment() {
             (activity?.application as UserApplication).orderDatabase.couponDao()
         )
     }
-
     private lateinit var binding: FragmentCheckOutBinding
 
     override fun onCreateView(
@@ -60,37 +58,18 @@ class CheckOutFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Gắn layout cho fragment này bằng cách sử dụng binding class được tạo ra
         binding = FragmentCheckOutBinding.inflate(inflater, container, false)
-
-        // Báo cho hệ thống rằng Fragment này có menu
         setHasOptionsMenu(true)
         return binding.root
     }
-//    private fun showConfirmationDialog() {
-//        MaterialAlertDialogBuilder(requireContext())
-//            .setTitle(getString(android.R.string.dialog_alert_title))
-//            .setMessage("Do you want to delete this table?")
-//            .setCancelable(false)
-//            .setNegativeButton("No") { _, _ -> }
-//            .setPositiveButton("Yes") { _, _ ->
-//                deleteTable()
-//            }
-//            .show()
-//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //vô hiệu hoá nút back
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    // Ở đây, không gọi super.handleOnBackPressed() để vô hiệu hoá nút "Back"
-                }
-            }
-        )
+        disableBackButton()
+
+
         binding.receive.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -99,38 +78,30 @@ class CheckOutFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
 
                 val recieveAmount = s.toString().toDoubleOrNull() ?: 0.0
-                val lastAmount = orderViewModel.amount1.value ?: 0.0
+                val lastAmount = orderViewModel.total.value ?: 0.0
 
                 val changeAmount = recieveAmount - lastAmount
-                binding.change.text = "Change: $changeAmount $"
+                binding.change.text = "$changeAmount $"
 
 
             }
         })
 
-        // Khởi tạo và liên kết các thành phần giao diện từ layout
 
         val id = orderViewModel.id
         val tablenum = orderViewModel.selectedTableNumber.value ?: 0
-        binding.idTextView.text = "STAFF ID: $id"
+        binding.idTextView.text = "User name: $id"
         binding.tableTextView.text = "Table:$tablenum"
-
-
-        // Khởi tạo OrderAdapter và đặt làm adapter cho RecyclerView
         val adapter = CheckoutAdapter {
-//                // Hiển thị hộp thoại xác nhận khi người dùng nhấp vào một món hàng
-
         }
-
-
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = adapter
-
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.home -> {
-//                    orderViewModel.cancel()
-                    val action = CheckOutFragmentDirections.actionCheckOutFragmentToMenuTabletFragment()
+                    orderViewModel.cancel()
+                    val action =
+                        CheckOutFragmentDirections.actionCheckOutFragmentToMenuTabletFragment()
                     findNavController().navigate(action)
                     true
                 }
@@ -139,18 +110,13 @@ class CheckOutFragment : Fragment() {
             }
         }
 
-
         //lấy ngày tháng
         val currentDate = LocalDate.now()
         val dateString = currentDate.toString()
-        //xuất hóa đơn và thêm vào orderlist
-
-
 
 
         binding.cancelButton.setOnClickListener {
-//            orderViewModel.cancel()
-            //sau khi nhấp tính tiền dẫn đến màn hình Check out
+            orderViewModel.cancel()
             val action = CheckOutFragmentDirections.actionCheckOutFragmentToMenuTabletFragment()
             findNavController().navigate(action)
         }
@@ -166,45 +132,85 @@ class CheckOutFragment : Fragment() {
                     totalAmount += order.quantity * order.price
                     totalItemCount += order.quantity
                 }
-                orderViewModel.setAmountAllItems(totalAmount)
-                binding.amount.text = "$totalItemCount items Amount: $totalAmount $"
+                binding.count.text="Total : $totalItemCount items"
+                binding.amount.text = " $totalAmount $"
                 totalAmount = (totalAmount * 11).roundToInt() / 10.0
-                binding.taxAmount.text = "Amount: ${totalAmount} $(tax)"
-                //tính coupon
-                binding.apply.setOnClickListener {
-                    // 1. Lấy dữ liệu từ EditText
-                    val enteredCode = binding.code.text.toString()
+                orderViewModel.setAmountAllItems(totalAmount)
+                binding.taxAmount.text = "${totalAmount} $"
 
-                    // 2. Truy vấn dữ liệu từ cơ sở dữ liệu
+
+
+
+                // Đặt mặc định discount là 0
+                var discount = 0.0
+                var total = (totalAmount * 1.1 * 10).roundToInt() / 10.0
+
+
+                //tính coupon
+                // Xử lý logic mã giảm giá khi nút 'apply' được nhấn.
+                binding.apply.setOnClickListener {
+                    val enteredCode = binding.code.text.toString().trim()
+
+                    if (enteredCode.isEmpty()) {
+                        Toast.makeText(context, "Please insert Code!", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
                     couponViewModel.fetchCouponByCode(enteredCode)
+
                     lifecycleScope.launch {
-                        couponViewModel.couponFlow.collectLatest { coupon ->
-                            // 3. Cập nhật giao diện
-                            if (coupon != null) {
-                                binding.coupon.text = "${coupon.discount}%"
-                            } else {
-                                Toast.makeText(context, "Invalid coupon code!", Toast.LENGTH_SHORT).show()
+                        couponViewModel.couponFlow.collect { state ->
+                            when(state) {
+                                is CouponViewModel.CouponState.Success -> {
+                                    val coupon = state.coupon
+                                    discount = coupon.discount // Đảm bảo trường này là Double
+                                    binding.coupon.text = "${discount}%"
+
+                                    total = (totalAmount * (1 - discount / 100) * 10).roundToInt() / 10.0
+                                    orderViewModel.updateData(total)
+                                }
+                                CouponViewModel.CouponState.Invalid -> {
+                                    Toast.makeText(context, "Code is not correct!", Toast.LENGTH_SHORT).show()
+                                }
+                                else -> {} // Xử lý cho trạng thái Loading nếu bạn muốn.
                             }
                         }
                     }
                 }
 
-                binding.change.text = "Change: ${getChangeMoney(totalAmount)} $"
+
+
+
+
+
+                binding.clear.setOnClickListener {
+                    discount = 0.0
+                    orderViewModel.updateData(totalAmount)
+                    binding.coupon.text = "0%"
+                    binding.code.setText("")
+                }
+
+
+
+
+                orderViewModel.updateData(totalAmount)
+
+                binding.change.text = "${getChangeMoney(total)}$"
                 adapter.submitList(it)
 
                 binding.receipt.setOnClickListener {
-                    if (totalAmount > 0) {
-                        val receivedMoney = binding.receive.text.toString().trim().toIntOrNull()
+                    if (total > 0) {
+                        val receivedMoney = binding.receive.text.toString().trim().toDoubleOrNull()
 
                         // Nếu receivedMoney null hoặc nhỏ hơn totalAmount thì báo toast
-                        if (receivedMoney == null || receivedMoney < totalAmount) {
-                            Toast.makeText(context, "Not Enough Money", Toast.LENGTH_SHORT).show()
+                        if (receivedMoney == null || receivedMoney < total) {
+                            Toast.makeText(context, "Not enough money", Toast.LENGTH_SHORT).show()
                             return@setOnClickListener
                         }
 
-                        if (getChangeMoney(totalAmount) >= 0) {
-                            val staffIdValue = orderViewModel.id.toInt()
-                            val amountValue = orderViewModel.amount1.value ?: 0.0
+                        if (getChangeMoney(total) >= 0) {
+                            val staffIdValue = orderViewModel.id
+                            val amountValue = total
                             val a = Date().time.toString()
                             // Sử dụng CoroutineScope để gọi addNewOrderlist và nhận giá trị orId
                             lifecycleScope.launch {
@@ -218,7 +224,8 @@ class CheckOutFragment : Fragment() {
                                     payment = "money"
                                 )
                                 orderViewModel.setSelectedId(a)
-                                val action = CheckOutFragmentDirections.actionCheckOutFragmentToDetailFragment()
+                                val action =
+                                    CheckOutFragmentDirections.actionCheckOutFragmentToDetailFragment()
                                 findNavController().navigate(action)
                             }
                         }
@@ -226,16 +233,28 @@ class CheckOutFragment : Fragment() {
                 }
             }
         }
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        orderViewModel.cancel()
+        orderViewModel.total.observe(viewLifecycleOwner) { newTotal ->
+            binding.total.text = String.format("%.1f$", newTotal)
+            binding.change.text = String.format("%.1f$", getChangeMoney(newTotal))
+
+
+        }
+
     }
 
-    fun getChangeMoney(total: Double): Double {
-        val rev = binding.receive.text.toString().trim().toIntOrNull() ?: 0
-        return if (rev == 0) 0.0 else rev - total
+    private fun disableBackButton() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {}
+            }
+        )
     }
+    fun getChangeMoney(newTotal: Double?): Double {
+        val rev = binding.receive.text.toString().trim().toDoubleOrNull() ?: 0.0
+        return if (rev == 0.0 || newTotal == null) 0.0 else ((rev - newTotal) * 10).roundToInt() / 10.0
+    }
+
 
 
 }

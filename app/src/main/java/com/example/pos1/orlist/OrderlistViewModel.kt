@@ -15,34 +15,35 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-class OrderlistViewModel(private val orderlistDao: OrderlistDao, private  val orderDao: OrderDao) : ViewModel() {
+class OrderlistViewModel(private val orderlistDao: OrderlistDao, private val orderDao: OrderDao) :
+    ViewModel() {
 
     val allItems1: LiveData<List<Orderlist>> = orderlistDao.getAll().asLiveData()
 
 
-     suspend fun addNewOrderlist(
-         orId:String,
+    suspend fun addNewOrderlist(
+        orId: String,
         tbnum: Int,
-        staffId: Int,
+        staffId: String,
         date: String,
         amount: Double,
         status: String,
         payment: String
     ) {
-        val newOrderlist = getNewOrderListEntry(orId,tbnum, staffId, date, amount, status, payment)
+        val newOrderlist = getNewOrderListEntry(orId, tbnum, staffId, date, amount, status, payment)
         insertOrderList(newOrderlist)
 
-         val list :List<Order> =orderDao.getOrderForPay(tbnum).firstOrNull() ?: emptyList()
-         for (item in list) {
-             var oder:Order = item
-             oder.date=date
-             oder.orderId = orId
-             oder.pay_sta="payed"
-             orderDao.update(item)
-         }
+        val list: List<Order> = orderDao.getOrderForPay(tbnum).firstOrNull() ?: emptyList()
+        for (item in list) {
+            var oder: Order = item
+            oder.date = date
+            oder.orderId = orId
+            oder.pay_sta = "payed"
+            orderDao.update(item)
+        }
     }
 
-//    fun payed() {
+    //    fun payed() {
 //        viewModelScope.launch(Dispatchers.IO) {
 //            val tableNumber = tb.value
 //            if (tableNumber != null) {
@@ -64,38 +65,47 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private  val or
     }
 
 
-    private fun getNewOrderListEntry(orId:String, tbnum: Int,
-                                 staffId: Int,
-                                 date: String,
-                                 amount: Double,
-                                 status: String,
-                                 payment: String): Orderlist {
+    private fun getNewOrderListEntry(
+        orId: String,
+        tbnum: Int,
+        staffId: String,
+        date: String,
+        amount: Double,
+        status: String,
+        payment: String
+    ): Orderlist {
         return Orderlist(
-            orId=orId,
-            tbnum=tbnum,
-            staffId=staffId,
-            date=date,
-            amount=amount,
-            status=status,
-            payment=payment
+            orId = orId,
+            tbnum = tbnum,
+            staffId = staffId,
+            date = date,
+            amount = amount,
+            status = status,
+            payment = payment
         )
     }
+
     fun updateOrderlist(orderlist: Orderlist) {
         viewModelScope.launch {
             orderlistDao.update(orderlist)
         }
     }
-    fun deleteOrderlist(orderlist: Orderlist){
+
+    fun deleteOrderlist(orderlist: Orderlist) {
         viewModelScope.launch {
             orderlistDao.delete(orderlist)
         }
     }
 }
-class OrderListViewModelFactory(private val orderlistDao: OrderlistDao, private  val orderDao: OrderDao) : ViewModelProvider.Factory {
+
+class OrderListViewModelFactory(
+    private val orderlistDao: OrderlistDao,
+    private val orderDao: OrderDao
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(OrderlistViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return OrderlistViewModel(orderlistDao,orderDao) as T
+            return OrderlistViewModel(orderlistDao, orderDao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

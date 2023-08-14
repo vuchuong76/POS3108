@@ -1,4 +1,5 @@
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -90,9 +91,26 @@ class ScheduleViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
         return scheduleDao.getAllByName(name).asLiveData()
     }
 
-    fun isEntryValid(date: String, shift: String): Boolean {
-        return !date.isBlank() && !shift.isBlank()
+    val errorMessage = MutableLiveData<String?>()
+
+    fun isEntryValid(date: String, shift: String, employee: String): Boolean {
+        if (date.isBlank()) {
+            errorMessage.value = "The date cannot be empty!"
+            return false
+        }
+        if (shift.isBlank()) {
+            errorMessage.value = "The shift cannot be empty!"
+            return false
+        }
+        if (employee.isBlank()) {
+            errorMessage.value = "Staff name cannot be empty!"
+            return false
+        }
+        errorMessage.value = null // Nếu tất cả các trường đều hợp lệ, đặt errorMessage về null
+        return true
     }
+
+
 }
 
 class ScheduleViewModelFactory(private val scheduleDao: ScheduleDao) : ViewModelProvider.Factory {

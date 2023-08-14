@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="header_bg">#FF3366CC</color>
+    <color name="out_stock">#C2C9D6</color>
 </resources>

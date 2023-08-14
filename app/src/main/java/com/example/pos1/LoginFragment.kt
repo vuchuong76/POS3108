@@ -98,7 +98,7 @@ class LoginFragment : Fragment() {
         coroutineScope.launch {
             // Thực hiện đăng nhập theo ID bằng UserDao
             val user =
-                withContext(Dispatchers.IO) { userDao.loginById(id.toInt()) }
+                withContext(Dispatchers.IO) { userDao.loginById(id) }
 
             // Kiểm tra kết quả của quá trình đăng nhập, giải mã user.password và so sánh chúng
             if (user != null && BCrypt.checkpw(password, user.password)) {

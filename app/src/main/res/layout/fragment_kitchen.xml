@@ -13,7 +13,7 @@
         app:title="Waiting List"
         app:titleTextColor="@color/white"
         android:background="#3F51B5"
-        app:menu="@menu/menu"/>
+        app:menu="@menu/stock"/>
 
 
     <LinearLayout
@@ -38,7 +38,13 @@
             android:layout_weight="1"
             android:background="#E0E4E8"
             android:text="Time" />
-
+        <TextView
+            android:id="@+id/table"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E0E4E8"
+            android:text="Table Num" />
         <TextView
             android:id="@+id/quantity"
             android:layout_width="0dp"
@@ -53,14 +59,23 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#E0E4E8"
-            android:text="price" />
+            android:text="Price" />
         <TextView
-            android:id="@+id/order_status"
+            android:id="@+id/status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#E0E4E8"
             android:text="Status" />
+        <TextView
+            android:id="@+id/delete"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_margin="5dp"
+            android:layout_height="25dp"
+            android:layout_width="25dp"
+            android:textSize="12sp"
+            />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -72,11 +87,5 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:layout_marginStart="10dp"/>
-
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Stock"
-    android:id="@+id/stock"></Button>
 
 </LinearLayout>

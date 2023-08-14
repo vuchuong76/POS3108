@@ -16,8 +16,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -136,6 +138,12 @@ class AddScheduleFragment : Fragment() {
                 else -> false
             }
         }
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
+            message?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     private fun showDatePicker() {
@@ -179,14 +187,15 @@ class AddScheduleFragment : Fragment() {
     }
 
 
+
     private fun isEntryValid(): Boolean {
-        return selectedShift?.let {
-            viewModel.isEntryValid(
-                binding.etDate.text.toString(),
-                it
-            )
-        } == true
+        return viewModel.isEntryValid(
+            binding.etDate.text.toString(),
+            selectedShift ?: "",
+            selectedEmployee ?: ""
+        )
     }
+
 
 
     override fun onDestroyView() {

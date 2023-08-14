@@ -80,7 +80,7 @@ class AddStaffFragment : Fragment() {
 
     private fun addNewUser() {
         if (isEntryValid()) {
-            val staffIdInput = binding.staffId.text.toString().toInt()
+            val staffIdInput = binding.staffId.text.toString()
 
             viewModel.staffIdExists(staffIdInput) { exists ->
                 if (exists) {
@@ -127,7 +127,7 @@ class AddStaffFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val id = args.staffId
-        if (id > 0) {
+        if (id.length > 0) {
             viewModel.retrieveItem(id).observe(this.viewLifecycleOwner) { selectedItem ->
                 user = selectedItem
                 bind(user)

@@ -18,6 +18,9 @@ import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentRosterBinding
 import com.example.pos1.databinding.FragmentScheduleBinding
 import com.example.pos1.editmenu.MenuListFragmentDirections
+import com.example.pos1.entity.Order
+import com.example.pos1.entity.Roster
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -50,7 +53,7 @@ class RosterFragment : Fragment() {
             this.findNavController().navigate(action)
         }
         val adapter = RosterAdapter { roster ->
-            viewModel.deleteRoster(roster)
+            showConfirmationDialog(roster)
         }
         viewModel.allRosters.observe(this.viewLifecycleOwner) { items ->
             items.let {
@@ -76,5 +79,16 @@ class RosterFragment : Fragment() {
                 else -> false
             }
         }
+    }
+    private fun showConfirmationDialog(roster: Roster) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage(getString(R.string.delete_question))
+            .setCancelable(false)
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                viewModel.deleteRoster(roster)
+            }
+            .show()
     }
 }

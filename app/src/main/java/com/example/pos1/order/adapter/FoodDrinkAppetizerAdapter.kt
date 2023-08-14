@@ -2,6 +2,7 @@ package com.example.pos1.order.adapter
 import android.net.Uri
 import android.os.SystemClock
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -85,13 +86,15 @@ class FoodDrinkAppetizerAdapter(
                     .into(binding.imageImageView)
             }
             binding.priceTextView.text = "${item.price}\$"
-            binding.stockTextView.text="Stock : ${item.stock}"
+            binding.stockTextView.text = "Stock : ${item.stock}"
+
             if(item.stock < 1) {
+                binding.outOfStockTextView.visibility = View.VISIBLE  // Hiển thị TextView "Out of stock"
                 binding.root.setBackgroundColor(
-                    ContextCompat.getColor(itemView.context, R.color.black)
+                    ContextCompat.getColor(itemView.context, R.color.out_stock)
                 )
             } else {
-                // Đặt lại màu nền mặc định nếu bạn muốn
+                binding.outOfStockTextView.visibility = View.GONE  // Ẩn TextView "Out of stock"
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(itemView.context, android.R.color.transparent)
                 )

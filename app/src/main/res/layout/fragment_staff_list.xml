@@ -24,8 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:id="@+id/staff_id"
@@ -36,7 +36,7 @@
             android:background="#E0E4E8"
             android:gravity="center"
             android:layout_marginStart="2dp"
-            android:text="ID" />
+            android:text="User Name" />
 
         <TextView
             android:id="@+id/position"
@@ -60,14 +60,14 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-       android:layout_marginEnd="20dp"
+       android:layout_marginEnd="10dp"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@+id/staff_id"
-        android:layout_marginStart="20dp"/>
+        android:layout_marginStart="10dp"/>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

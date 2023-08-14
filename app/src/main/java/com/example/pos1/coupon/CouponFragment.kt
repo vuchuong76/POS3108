@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentCouponBinding
+import com.example.pos1.entity.Coupon
+import com.example.pos1.entity.Schedule
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class CouponFragment : Fragment() {
     private lateinit var binding: FragmentCouponBinding
@@ -40,7 +43,7 @@ class CouponFragment : Fragment() {
             this.findNavController().navigate(action)
         }
         val adapter = CouponAdapter { coupon ->
-            viewModel.deleteCoupon(coupon)
+            showConfirmationDialog(coupon)
         }
         viewModel.allCoupons.observe(this.viewLifecycleOwner) { items ->
             items.let {
@@ -66,5 +69,16 @@ class CouponFragment : Fragment() {
                 else -> false
             }
         }
+    }
+    private fun showConfirmationDialog(coupon: Coupon) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage(getString(R.string.delete_question))
+            .setCancelable(false)
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                viewModel.deleteCoupon(coupon)
+            }
+            .show()
     }
 }

@@ -9,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.CouponDao
 import com.example.pos1.dao.RosterDao
 import com.example.pos1.entity.Coupon
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -19,14 +21,21 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
 // được lấy từ phương thức getTables() của tableDao.
 // Nó sẽ cung cấp danh sách các bảng Table cho các thành phần giao diện người dùng theo thời gian thực.
     val allCoupons: LiveData<List<Coupon>> = couponDao.getAll().asLiveData()
-    private val _couponFlow = MutableStateFlow<Coupon?>(null)
-    val couponFlow: StateFlow<Coupon?> get() = _couponFlow
+    sealed class CouponState {
+        object Loading : CouponState()
+        data class Success(val coupon: Coupon) : CouponState()
+        object Invalid : CouponState()
+    }
+
+    private val _couponFlow = MutableSharedFlow<CouponState>()
+    val couponFlow: SharedFlow<CouponState> get() = _couponFlow
 
     fun fetchCouponByCode(code: String) = viewModelScope.launch {
         couponDao.getCouponByCode(code).collect { coupon ->
-            _couponFlow.value = coupon
+            _couponFlow.emit(if (coupon != null) CouponState.Success(coupon) else CouponState.Invalid)
         }
     }
+
     private fun insertCoupon(coupon: Coupon) {
         viewModelScope.launch {
             couponDao.insert(coupon)
@@ -52,15 +61,15 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
     }
 
     //được sử dụng để thêm một bảng Table mới vào cơ sở dữ liệu.
-    fun addNewCoupon(startTime: String, finishTime: String) {
-        val newCoupon = getNewCouponEntry(startTime, finishTime)
+    fun addNewCoupon(code: String, discount: Double) {
+        val newCoupon = getNewCouponEntry(code, discount)
         insertCoupon(newCoupon)
     }
 
-    private fun getNewCouponEntry(code: String, discount: String): Coupon {
+    private fun getNewCouponEntry(code: String, discount: Double): Coupon {
         return Coupon(
             code = code,
-            discount = discount.toInt()
+            discount = discount
         )
     }
 

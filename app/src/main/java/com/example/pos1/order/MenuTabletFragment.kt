@@ -60,7 +60,7 @@ class MenuTabletFragment : Fragment() {
       //ok
             val id = sharedViewModel.id
             val tablenum = sharedViewModel.selectedTableNumber.value ?: 0
-            binding.idTextView.text = "STAFF ID: $id"
+            binding.idTextView.text = "User name: $id"
             binding.tableTextView.text = "Table:$tablenum"
 
             binding.buttonCheck.setOnClickListener {
@@ -83,7 +83,7 @@ class MenuTabletFragment : Fragment() {
             binding.toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.home -> {
-                        val action = MenuTabletFragmentDirections.actionMenuTabletFragmentToChooseTableFragment()
+                        val action = MenuTabletFragmentDirections.actionMenuTabletFragmentToChooseTableFragment("")
                         findNavController().navigate(action)
                         true
                     }

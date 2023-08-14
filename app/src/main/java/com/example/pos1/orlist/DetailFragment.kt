@@ -56,7 +56,7 @@ class DetailFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.home -> {
-                    val action = DetailFragmentDirections.actionDetailFragmentToChooseTableFragment()
+                    val action = DetailFragmentDirections.actionDetailFragmentToChooseTableFragment("")
                     findNavController().navigate(action)
                     true
                 }
@@ -75,7 +75,6 @@ class DetailFragment : Fragment() {
                 for (order in it) {
                     totalAmount += order.quantity * order.price
                     totalItemCount += order.quantity
-//                    orid   = order.orderId
                     table   = order.tableNumber
                     date=order.date
                 }

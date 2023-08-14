@@ -18,7 +18,7 @@
         app:destination="@id/chooseTableFragment" >
         <argument
             android:name="staff_id"
-            app:argType="integer" />
+            app:argType="string" />
         </action>
         <action
             android:id="@+id/action_loginFragment_to_kitchenFragment"
@@ -96,8 +96,7 @@
             app:argType="string" />
         <argument
             android:name="staff_id"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            app:argType="string" />
         <action
             android:id="@+id/action_addStaffFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -115,7 +114,7 @@
         tools:layout="@layout/fragment_user_detail" >
         <argument
             android:name="staff_id"
-            app:argType="integer" />
+            app:argType="string" />
         <action
             android:id="@+id/action_userDetailFragment_to_staffListFragment"
             app:destination="@id/staffListFragment"
@@ -168,8 +167,7 @@
             app:destination="@id/orderListFragment" />
         <argument
             android:name="staff_id"
-            android:defaultValue="0"
-            app:argType="integer" />
+            app:argType="string" />
         <argument
             android:name="number"
             app:argType="integer"

@@ -36,7 +36,7 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
         }
     }
 
-    fun staffIdExists(staffId: Int, onResult: (Boolean) -> Unit) {
+    fun staffIdExists(staffId: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val count = userDao.countStaffWithId(staffId)
             onResult(count > 0)
@@ -56,7 +56,7 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
         }
     }
     fun addNewUser(
-        staffId: Int,
+        staffId: String,
         password: String,
         staffname: String,
         age: Int,
@@ -68,7 +68,7 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
         insertUser(newUser)
     }
     private fun getNewUserEntry(
-        staffId: Int,
+        staffId: String,
         password: String,
         staffname: String,
         age: Int,
@@ -77,7 +77,7 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
         address: String
     ): User {
         return User(
-            staffId = staffId.toInt(),
+            staffId = staffId,
             password = password,
             staffname = staffname,
             age = age.toInt(),
@@ -87,7 +87,7 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
         )
     }
     fun updateUser(
-        staffId: Int,
+        staffId: String,
         password: String,
         staffname: String,
         age: String,
@@ -99,7 +99,7 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
         updateUser(updatedItem)
     }
     //nhận dạng giá trị trả về trong userdetail
-    fun retrieveItem(id: Int): LiveData<User> {
+    fun retrieveItem(id: String): LiveData<User> {
         return userDao.getByStaffId(id).asLiveData()
     }
 
@@ -148,7 +148,7 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
     }
 
     private fun getUpdatedItemEntry(
-        staffId: Int,
+        staffId: String,
         password: String,
         staffname: String,
         age: String,

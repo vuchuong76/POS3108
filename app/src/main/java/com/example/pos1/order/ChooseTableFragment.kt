@@ -68,7 +68,7 @@ class ChooseTableFragment : Fragment() {
                 else -> false
             }
         }
-        binding.idLabelTextView.text = "ID: $staffId"
+        binding.idLabelTextView.text = "User name: $staffId"
         // Tạo adapter: Tạo một TableListAdapter và chuyển một lambda function vào constructor của adapter.
         // Lambda function này sẽ được gọi khi một mục trong danh sách bàn được nhấp vào.
         val adapter = ChooseTableAdapter { table->

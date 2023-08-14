@@ -24,8 +24,9 @@
         android:layout_gravity="center"
         android:ems="10"
         android:maxLength="9"
-        android:hint="ID"
-        android:inputType="number" />
+        android:hint="User Name"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        />
 
     <EditText
         android:id="@+id/pw"
