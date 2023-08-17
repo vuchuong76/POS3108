@@ -38,7 +38,6 @@ class MenuTabletFragment : Fragment() {
         setHasOptionsMenu(true)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,14 +52,9 @@ class MenuTabletFragment : Fragment() {
                 2 -> tab.text = "Appetizer"
             }
         }.attach()
-
-
-
-
-      //ok
-            val id = sharedViewModel.id
+            val staffId = sharedViewModel.staffId
             val tablenum = sharedViewModel.selectedTableNumber.value ?: 0
-            binding.idTextView.text = "User name: $id"
+            binding.idTextView.text = "User name: $staffId"
             binding.tableTextView.text = "Table:$tablenum"
 
             binding.buttonCheck.setOnClickListener {

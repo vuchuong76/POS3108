@@ -13,16 +13,11 @@ import com.example.pos1.entity.User
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val userDao: UserDao): ViewModel() {
-
+    var id: String = ""
     val allItems: LiveData<List<User>> = userDao.getAll().asLiveData()
     fun getAllUserNames(): LiveData<List<String>> {
         return userDao.getAllUserNames()
     }
-//    private fun insertUser(user: User) {
-//        viewModelScope.launch {
-//            userDao.insert(user)
-//        }
-//    }
 private val _duplicateUserEvent = MutableLiveData<Unit>()
     val duplicateUserEvent: LiveData<Unit> get() = _duplicateUserEvent
 
@@ -35,7 +30,6 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
             }
         }
     }
-
     fun staffIdExists(staffId: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val count = userDao.countStaffWithId(staffId)

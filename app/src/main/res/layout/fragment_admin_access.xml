@@ -30,8 +30,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="#FFFFFF">
         <TextView
             android:id="@+id/tvTemperature"
             android:layout_width="wrap_content"
@@ -47,6 +49,105 @@
             android:id="@+id/imageWeather"
             android:layout_width="100dp"
             android:layout_height="100dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:background="#FFFFFF">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/item_border"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Top 3 best-selling products"
+                android:textSize="24dp"
+                ></TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/background1"
+                android:padding="16dp">
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Product Name"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Total Selling Quantity"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+            <TextView
+                android:id="@+id/dish1TextView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+                <TextView
+                android:id="@+id/dish1quantity"
+                android:layout_width="0dp"
+                    android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+            <TextView
+                android:id="@+id/dish2TextView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+                <TextView
+                android:id="@+id/dish2quantity"
+                android:layout_width="0dp"
+                    android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+            </LinearLayout><LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+            <TextView
+                android:id="@+id/dish3TextView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+                <TextView
+                android:id="@+id/dish3quantity"
+                android:layout_width="0dp"
+                    android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

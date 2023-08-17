@@ -1,6 +1,7 @@
 package com.example.pos1.orlist
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -20,17 +21,18 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private val ord
 
     val allItems1: LiveData<List<Orderlist>> = orderlistDao.getAll().asLiveData()
 
-
+    private val _selectedOrId = MutableLiveData<String>()
+    val selectedOrId: LiveData<String> = _selectedOrId
     suspend fun addNewOrderlist(
         orId: String,
         tbnum: Int,
         staffId: String,
         date: String,
         amount: Double,
-        status: String,
-        payment: String
+        receive: Double,
+        change: Double
     ) {
-        val newOrderlist = getNewOrderListEntry(orId, tbnum, staffId, date, amount, status, payment)
+        val newOrderlist = getNewOrderListEntry(orId, tbnum, staffId, date, amount, receive, change)
         insertOrderList(newOrderlist)
 
         val list: List<Order> = orderDao.getOrderForPay(tbnum).firstOrNull() ?: emptyList()
@@ -42,28 +44,11 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private val ord
             orderDao.update(item)
         }
     }
-
-    //    fun payed() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val tableNumber = tb.value
-//            if (tableNumber != null) {
-//                val orders = orderDao.getOrderForPay(tableNumber).firstOrNull() ?: emptyList()
-//                for (order in orders) {
-//                    if (order.pay_sta == "paying") {
-//                        // Tạo một bản sao của đơn hàng và cập nhật trạng thái
-//                        val updatedOrder = order.copy(pay_sta = "payed")
-//                        orderDao.update(updatedOrder)
-//                    }
-//                }
-//            }
-//        }
-//    }
     private fun insertOrderList(orderlist: Orderlist) {
         viewModelScope.launch {
             orderlistDao.insert(orderlist)
         }
     }
-
 
     private fun getNewOrderListEntry(
         orId: String,
@@ -71,8 +56,8 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private val ord
         staffId: String,
         date: String,
         amount: Double,
-        status: String,
-        payment: String
+        receive: Double,
+        change: Double
     ): Orderlist {
         return Orderlist(
             orId = orId,
@@ -80,21 +65,9 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private val ord
             staffId = staffId,
             date = date,
             amount = amount,
-            status = status,
-            payment = payment
+            receive = receive,
+            change = change
         )
-    }
-
-    fun updateOrderlist(orderlist: Orderlist) {
-        viewModelScope.launch {
-            orderlistDao.update(orderlist)
-        }
-    }
-
-    fun deleteOrderlist(orderlist: Orderlist) {
-        viewModelScope.launch {
-            orderlistDao.delete(orderlist)
-        }
     }
 }
 

@@ -31,3 +31,8 @@ data class Order(
     @ColumnInfo(name = "payment_status")
     var pay_sta: String="",
 )
+
+data class DishQuantity(
+    val name: String,
+    val total_quantity: Int
+)

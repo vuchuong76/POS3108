@@ -16,9 +16,9 @@ data class Orderlist(
     val date: String = "",
     @ColumnInfo(name = "Amount")
     val amount: Double = 0.0,
-    @ColumnInfo(name = "Status")
-    val status: String = "",
-    @ColumnInfo(name = "Payment method")
-    val payment: String = ""
+    @ColumnInfo(name = "Receive")
+    val receive: Double = 0.0,
+    @ColumnInfo(name = "Change")
+    val change: Double = 0.0
 )
 

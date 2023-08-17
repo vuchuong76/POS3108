@@ -14,6 +14,9 @@ interface CouponDao {
     @Query("SELECT * FROM coupon ORDER BY id ASC")
     fun getAll(): Flow<List<Coupon>>
 
+    @Query("SELECT COUNT(*) FROM coupon WHERE code=:code")
+    suspend fun countCouponByCode(code: String):Int
+
     @Query("SELECT * FROM coupon WHERE id = :id")
     fun getCoupon(id: Int): Flow<Coupon>
     @Query("SELECT * FROM coupon WHERE code = :code")

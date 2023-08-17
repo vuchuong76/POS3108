@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -36,21 +38,21 @@ class UserDetailFragment : Fragment() {
         return binding?.root
     }
 
-
-
     private fun bindUserDetails(user: User) {
         binding?.apply {
-            staffId.text = user.staffId.toString()
-//            passWord.text = user.password
+            staffId.text = user.staffId
             staffName.text = user.staffname
             staffAge.text = user.age.toString()
             position.text = user.position
             tel.text = user.tel.toString()
             address.text = user.address
-            deleteItem.setOnClickListener { showConfirmationDialog() }
+
             editItem.setOnClickListener { editUser() }
+            deleteItem.setOnClickListener { deleteUser() }
+        //            deleteItem.setOnClickListener { showConfirmationDialog() }
         }
     }
+/**
     private fun showConfirmationDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(android.R.string.dialog_alert_title))
@@ -62,10 +64,53 @@ class UserDetailFragment : Fragment() {
             }
             .show()
     }
-
     private fun deleteUser() {
-        viewModel.deleteUser(user)
-        findNavController().navigateUp()
+        if(user.staffId==viewModel.id){
+            Toast.makeText(context,"This account is currently in use",Toast.LENGTH_SHORT).show()
+        }
+
+       else {
+            viewModel.deleteUser(user)
+            findNavController().navigateUp()
+        }
+    }
+ */
+
+
+
+    private fun showConfirmationDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("Do you want to delete this user?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.deleteUser(user)
+                findNavController().navigateUp()
+            }
+            .show()
+    }
+    private fun deleteUsingUserConfirm() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("This account is currently in use,Do you want to delete and log out?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.deleteUser(user)
+                val action= UserDetailFragmentDirections.actionUserDetailFragmentToLoginFragment()
+                findNavController().navigate(action)
+            }
+            .show()
+    }
+    private fun deleteUser() {
+        if(user.staffId==viewModel.id){
+           deleteUsingUserConfirm()
+        }
+       else {
+            showConfirmationDialog()
+
+        }
     }
 
     private fun editUser() {
@@ -91,7 +136,6 @@ class UserDetailFragment : Fragment() {
         }
         binding?.toolbar?.setOnMenuItemClickListener {
             when (it.itemId) {
-
                 R.id.back -> {
                     val action = UserDetailFragmentDirections.actionUserDetailFragmentToStaffListFragment()
                     findNavController().navigate(action)

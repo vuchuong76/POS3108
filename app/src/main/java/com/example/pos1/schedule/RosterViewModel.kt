@@ -33,6 +33,13 @@ class RosterViewModel(private val rosterDao: RosterDao) : ViewModel() {
             rosterDao.update(roster)
         }
     }
+
+    fun rosterExist(startTime: String,finishTime: String,onResult:(Boolean)->Unit){
+        viewModelScope.launch {
+            val count=rosterDao.rosterByTime(startTime,finishTime)
+            onResult(count>0)
+        }
+    }
     //được sử dụng để xóa một bảng Table từ cơ sở dữ liệu.
     fun deleteRoster(roster: Roster) {
         viewModelScope.launch {

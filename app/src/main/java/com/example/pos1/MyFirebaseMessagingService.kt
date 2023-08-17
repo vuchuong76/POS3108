@@ -19,7 +19,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // handle a notification payload.
         if (remoteMessage.notification != null) {
-
+Log.d("Notification", remoteMessage.data.toString())
             sendNotification(remoteMessage.notification!!.body)
         }
     }
@@ -42,6 +42,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
         val channelId = "POST"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel.
+            val name = channelId
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val mChannel = NotificationChannel(channelId, name, importance)
+            // Register the channel with the system. You can't change the importance
+            // or other notification behaviors after this.
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
+        }
+
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(this, channelId)
@@ -58,7 +70,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
                 .setDefaults(Notification.DEFAULT_ALL)
-                .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                .setPriority(NotificationManager.IMPORTANCE_MAX)
 
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 

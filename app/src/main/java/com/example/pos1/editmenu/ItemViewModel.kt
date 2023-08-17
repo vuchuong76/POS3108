@@ -31,21 +31,7 @@ class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
 
     var sellItemCount = 0
     var updateItemCount = 0
-//    suspend fun sellItem(item: Item) {
-//        viewModelScope.launch {
-//            sellItemCount++
-//            Log.d("YourTag", "1 sellItem has been called $sellItemCount times")
-//            if (item.stock > 0) {
-//                // Decrease the quantity by 1
-//                val newItem = item.copy(stock = item.stock - 1)
-//                Log.d("MyTag", "2 stock: ${item.stock}")
-//                withContext(Dispatchers.IO) {
-//                    updateItem(newItem)
-//                }
-//                Log.d("MyTag", "4 updated stock: ${item.stock}")
-//            }
-//        }
-//    }
+
 suspend fun sellItem(item: Item) {
     sellItemCount++
     Log.d("YourTag", "1 sellItem has been called $sellItemCount times")
@@ -65,14 +51,6 @@ suspend fun sellItem(item: Item) {
         itemDao.update(item)
         Log.d("MyTag", "4 updated stock: ${item.stock}")
     }
-//    suspend fun updateItem(item: Item) {
-//        viewModelScope.launch {
-//            updateItemCount++
-//            Log.d("YourTag", "3 updateItem has been called $updateItemCount times")
-//            itemDao.update(item)
-//        }
-//    }
-
     fun updateItem(
         id: Int,
         name: String,
@@ -120,7 +98,6 @@ suspend fun sellItem(item: Item) {
             image = image
         )
     }
-
     //Phương thức retrieveTable(id: Int) lấy thông tin của một bảng Item dựa trên ID.
     fun retrieveItem(id: Int): LiveData<Item> {
         return itemDao.getItem(id).asLiveData()
@@ -133,7 +110,6 @@ suspend fun sellItem(item: Item) {
             itemDao.update(newItem)
         }
     }
-
     fun minusStock(item: Item, quantity: Int) {
         viewModelScope.launch {
             val newItem = item.copy(stock = item.stock - quantity)
@@ -153,26 +129,32 @@ suspend fun sellItem(item: Item) {
         var isValid = true
 
         if (name.text.isBlank() || name.text.length < 3) {
-            name.error = "Invalid Name"
+            name.error = "Item name must be longer than 2 characters."
             isValid = false
         }
 
         if (stock.text.isBlank()) {
-            stock.error = "Invalid Stock"
+            stock.error = "Stock can not be Empty"
             isValid = false
         }
         if (price.text.isBlank()) {
-            price.error = "Invalid Price"
+            price.error = "Price can not be Empty"
             isValid = false
         }
         if (image.isBlank()) {
-            Toast.makeText(context, "Invalid Image URL", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "The image cannot be Empty", Toast.LENGTH_SHORT).show()
             isValid = false
         }
 
         return isValid
     }
 
+    fun itemNameExist(name: String, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val count = itemDao.countItemWithName(name)
+            onResult(count > 0)
+        }
+    }
     private fun getUpdatedItemEntry(
         id: Int,
         name: String,
@@ -184,7 +166,6 @@ suspend fun sellItem(item: Item) {
         return Item(id, name, type, stock.toInt(), price.toDouble(), image)
     }
 }
-
 class ItemViewModelFactory(private val itemDao: ItemDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ItemViewModel::class.java)) {

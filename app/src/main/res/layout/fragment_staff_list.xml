@@ -32,11 +32,11 @@
             android:textSize="20dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:background="#E0E4E8"
             android:gravity="center"
             android:layout_marginStart="2dp"
-            android:text="User Name" />
+            android:text="User" />
 
         <TextView
             android:id="@+id/position"
@@ -44,7 +44,7 @@
             android:background="#E0E4E8"
             android:textSize="20dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="Position" />
 
@@ -54,7 +54,7 @@
             android:textSize="20dp"
             android:background="#E0E4E8"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
+            android:layout_weight="2"
             android:gravity="center"
             android:text="Name" />
     </LinearLayout>

@@ -124,6 +124,9 @@
             app:destination="@id/addStaffFragment"
             app:popUpTo="@id/staffListFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_userDetailFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTableFragment"

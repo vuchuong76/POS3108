@@ -10,6 +10,11 @@
         android:checked="false"
         android:icon="@drawable/ic_staff_list"
         android:title="Staff List" />
+    <item
+        android:id="@+id/schedule"
+        android:checked="false"
+        android:icon="@drawable/schedule"
+        android:title="Schedule" />
 
     <item
         android:id="@+id/table"
@@ -23,10 +28,6 @@
         android:icon="@drawable/ic_menu_edit"
         android:title="Menu Edit" />
 
-    <item
-        android:id="@+id/schedule"
-        android:checked="false"
-        android:icon="@drawable/schedule"
-        android:title="Schedule" />
+
 
 </menu>

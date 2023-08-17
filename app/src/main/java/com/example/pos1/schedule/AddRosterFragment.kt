@@ -46,6 +46,7 @@ class AddRosterFragment : Fragment() {
         setHasOptionsMenu(true)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.addBt1.setOnClickListener {
@@ -57,48 +58,62 @@ class AddRosterFragment : Fragment() {
             when (it.itemId) {
 
                 R.id.back -> {
-                    val action = AddRosterFragmentDirections.actionAddRosterFragmentToRosterFragment()
+                    val action =
+                        AddRosterFragmentDirections.actionAddRosterFragmentToRosterFragment()
                     findNavController().navigate(action)
                     true
                     // by returning 'true' we're saying that the event
                     // is handled and it shouldn't be propagated further
                 }
+
                 else -> false
             }
         }
     }
 
-        private fun addNewRoster() {
-            if (isEntryValid()) {
-                viewModel.addNewRoster(
-                    binding.start.text.toString(),
-                    binding.finish.text.toString()
-                )
-            val action = AddRosterFragmentDirections.actionAddRosterFragmentToRosterFragment()
-            findNavController().navigate(action)
+    private fun addNewRoster() {
+        if (isEntryValid()) {
+            val start = binding.start.text.toString()
+            val finish = binding.finish.text.toString()
+            viewModel.rosterExist(start, finish)
+            { exist ->
+                if (!exist) {
+                    viewModel.addNewRoster(
+                        start,
+                        finish
+                    )
+                    val action =
+                        AddRosterFragmentDirections.actionAddRosterFragmentToRosterFragment()
+                    findNavController().navigate(action)
+                } else {
+                    Toast.makeText(context, "This roster is already exist", Toast.LENGTH_SHORT)
+                        .show()
+
+                }
             }
-            else{
-                Toast.makeText(context,"Not correct time",Toast.LENGTH_SHORT).show()
-            }
+        } else {
+            Toast.makeText(context, "Not correct time", Toast.LENGTH_SHORT).show()
         }
+    }
 
     private fun isEntryValid(): Boolean {
         return viewModel.isEntryValid(
             binding.start.text.toString(),
             binding.finish.text.toString()
-            )
+        )
     }
-        override fun onDestroyView() {
-            super.onDestroyView()
-            // Hide keyboard.
-            val inputMethodManager =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as
-                        InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                requireActivity().currentFocus?.windowToken,
-                0
-            )
-            _binding = null
-        }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Hide keyboard.
+        val inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as
+                    InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(
+            requireActivity().currentFocus?.windowToken,
+            0
+        )
+        _binding = null
     }
+
+}

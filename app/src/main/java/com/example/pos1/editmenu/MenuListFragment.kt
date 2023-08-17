@@ -39,7 +39,7 @@ class MenuListFragment : Fragment() {
             this.findNavController().navigate(action)
         }
         //  Thiết lập RecyclerView: Đặt LayoutManager của RecyclerView là LinearLayoutManager và thiết lập adapter cho RecyclerView.
-        val layoutManager = GridLayoutManager(context, 2)
+        val layoutManager = GridLayoutManager(context, 1)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 

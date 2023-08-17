@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#3F51B5"
-        app:title="Add Shift"
+        app:title="ADD SHIFT"
         app:titleTextColor="@color/white"
         app:menu="@menu/backmenu"
          />
@@ -75,7 +75,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="48dp"
-            android:text="Choose Staff name"
+            android:text="Choose Staff"
             android:textSize="20dp" />
         <Spinner
             android:id="@+id/spinnerEmployee"
@@ -91,6 +91,16 @@
         android:layout_marginTop="40dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:text="Save" />
+        android:backgroundTint="@color/header_bg"
+        android:text="SAVE" />
+<!--
+    <Button
+        android:id="@+id/showSnackbarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:backgroundTint="@color/header_bg"
+        android:text="SHOW SNACKBAR"
+        android:textColor="@android:color/white" />-->
 
 </LinearLayout>

@@ -52,7 +52,7 @@ class ChooseTableAdapter(private val onItemClicked: (Table) -> Unit) :
 
         fun bind(table: Table) {
             binding.tbnumber.text = table.number.toString()
-            binding.capacity.text = table.capacity.toString() +" "+ "peoples"
+            binding.capacity.text = table.capacity.toString() +" "+ "people"
         }
     }
     // Lớp này cung cấp cách so sánh hai mục danh sách để xác định xem chúng có giống nhau không.

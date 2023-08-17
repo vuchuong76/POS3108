@@ -35,6 +35,7 @@ import com.example.pos1.editmenu.NewItemFragmentArgs
 import com.example.pos1.editmenu.NewItemFragmentDirections
 import com.example.pos1.entity.Item
 import com.example.pos1.entity.Roster
+import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
 
 class AddScheduleFragment : Fragment() {
@@ -176,13 +177,25 @@ class AddScheduleFragment : Fragment() {
 
     private fun addNewSchedule() {
         if (isEntryValid()) {
-            viewModel.addNewSchedule(
-                binding.etDate.text.toString(),
-                selectedShift ?: "",
-                selectedEmployee ?: ""
-            )
-            val action = AddScheduleFragmentDirections.actionAddScheduleFragmentToScheduleFragment()
-            findNavController().navigate(action)
+            val pickedDate=binding.etDate.text.toString()
+            val selectedShift=selectedShift ?: ""
+            val selectedEmployee=selectedEmployee?: ""
+            viewModel.scheduleExist(selectedEmployee,pickedDate,selectedShift) { exist ->
+                if (!exist) {
+                    viewModel.addNewSchedule(
+                        pickedDate,
+                        selectedShift,
+                        selectedEmployee
+                    )
+                    val action =
+                        AddScheduleFragmentDirections.actionAddScheduleFragmentToScheduleFragment()
+                    findNavController().navigate(action)
+                } else {
+                    Toast.makeText(context,"Schedule is already exist",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        else{
         }
     }
 

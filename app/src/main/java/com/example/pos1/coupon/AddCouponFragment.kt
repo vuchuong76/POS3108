@@ -36,6 +36,7 @@ class AddCouponFragment : Fragment() {
         setHasOptionsMenu(true)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.addBt1.setOnClickListener {
@@ -47,12 +48,14 @@ class AddCouponFragment : Fragment() {
             when (it.itemId) {
 
                 R.id.back -> {
-                    val action = AddCouponFragmentDirections.actionAddCouponFragmentToCouponFragment()
+                    val action =
+                        AddCouponFragmentDirections.actionAddCouponFragmentToCouponFragment()
                     findNavController().navigate(action)
                     true
                     // by returning 'true' we're saying that the event
                     // is handled and it shouldn't be propagated further
                 }
+
                 else -> false
             }
         }
@@ -60,17 +63,27 @@ class AddCouponFragment : Fragment() {
 
     private fun addNewCoupon() {
         if (isEntryValid()) {
-            viewModel.addNewCoupon(
-                binding.code.text.toString(),
-                binding.coupon.text.toString().toDouble()
-            )
-            val action = AddCouponFragmentDirections.actionAddCouponFragmentToCouponFragment()
-            findNavController().navigate(action)
+            val codeInput = binding.code.text.toString()
+            viewModel.codeExist(codeInput) { exist ->
+                if (!exist) {
+                    viewModel.addNewCoupon(
+                        codeInput,
+                        binding.coupon.text.toString().toDouble()
+                    )
+                    val action =
+                        AddCouponFragmentDirections.actionAddCouponFragmentToCouponFragment()
+                    findNavController().navigate(action)
+                }
+                else{
+                    Toast.makeText(context, "Coupon Code is already exist", Toast.LENGTH_SHORT).show()
+                }
+
+            }
         }
-        else{
-            Toast.makeText(context,"Invalid Coupon", Toast.LENGTH_SHORT).show()
+            else{
+                Toast.makeText(context, "Invalid Coupon", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     private fun isEntryValid(): Boolean {
         return viewModel.isEntryValid(
@@ -78,6 +91,7 @@ class AddCouponFragment : Fragment() {
             binding.coupon
         )
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         // Hide keyboard.

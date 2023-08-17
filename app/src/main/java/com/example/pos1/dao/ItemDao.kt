@@ -18,6 +18,8 @@ interface ItemDao {
     fun getItem(id: Int): Flow<Item>
     @Query("SELECT * FROM items WHERE id = :id")
     suspend fun getItemById(id: Int): Item?
+    @Query("SELECT COUNT(*) FROM items WHERE name= :name")
+    suspend fun countItemWithName(name: String):Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: Item)

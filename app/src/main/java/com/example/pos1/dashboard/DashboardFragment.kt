@@ -153,18 +153,26 @@ class DashboardFragment : Fragment() {
 }
 // Lớp dùng để format giá trị trên trục x của biểu đồ.
 class MyAxits(private val dates: ArrayList<String>) : ValueFormatter() {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val outputFormatter = DateTimeFormatter.ofPattern("dd-MM")
+
     override fun getFormattedValue(value: Float): String {
         return value.toString()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getAxisLabel(value: Float, axis: AxisBase): String {
         return if (value.toInt() in 0 until dates.size) {
-            dates[value.toInt()]
+            val localDate = LocalDate.parse(dates[value.toInt()], inputFormatter)
+            outputFormatter.format(localDate)
         } else {
             ""
         }
     }
 }
+
 // Lớp dùng để biểu diễn dữ liệu cho mỗi ngày.
 data class ThongKeNgay(
     val key: Int?,

@@ -156,6 +156,7 @@
             android:paddingBottom="8dp">
 
             <Button
+                android:backgroundTint="@color/header_bg"
                 android:id="@+id/buttonCheck"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
@@ -163,6 +164,7 @@
                 android:text="Order" />
 
             <Button
+                android:backgroundTint="@color/header_bg"
                 android:id="@+id/delete_all"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"

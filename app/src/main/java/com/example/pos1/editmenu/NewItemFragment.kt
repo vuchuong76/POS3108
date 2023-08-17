@@ -27,7 +27,7 @@ import java.lang.Math.round
 
 
 class NewItemFragment : Fragment() {
-    private val PICK_IMAGE: String = "PICK_IMAGE"
+//    private val PICK_IMAGE: String = "PICK_IMAGE"
     private val viewModel: ItemViewModel by activityViewModels {
         ItemViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.itemDao()
@@ -49,30 +49,20 @@ class NewItemFragment : Fragment() {
         return binding.root
     }
 
-
-    //Trong phương thức này, bạn lắng nghe sự thay đổi của LiveData để cập nhật thông
-// tin bàn và gọi phương thức bind(table) để cập nhật giao diện người dùng với thông tin mới.
-// Nếu id > 0, nghĩa là đang thực hiện cập nhật thông tin bàn, phương thức retrieveTable(id)
-// sẽ được gọi để lấy thông tin bàn cần cập nhật.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         // Tạo mảng chứa các mục bạn muốn hiển thị trong Spinner
         val items = arrayOf("Food", "Drink", "Appetizer")
-
 // Tìm Spinner trong layout
         val spinner = binding.type
-
 // Tạo ArrayAdapter sử dụng layout mặc định và dữ liệu cho Spinner
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, items)
-
 // Đặt layout cho danh sách lựa chọn (dropdown list)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
 // Đặt ArrayAdapter cho Spinner
         spinner.adapter = adapter
-
 // Đặt listener để xử lý sự kiện khi một mục được chọn
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -88,7 +78,6 @@ class NewItemFragment : Fragment() {
                     // TODO: Xử lý tương ứng với việc chọn mục này
                 }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // TODO: Xử lý trường hợp không có mục nào được chọn, nếu cần
             }
@@ -121,11 +110,16 @@ class NewItemFragment : Fragment() {
             }
         }
     }
+    private fun pickImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        resultLauncher.launch(Intent.createChooser(intent, "Select Picture"))
+    }
 
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
                 result.data?.let { content ->
                     imageSelected = content.data.toString()
 
@@ -137,12 +131,7 @@ class NewItemFragment : Fragment() {
             }
         }
 
-    private fun pickImage() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        resultLauncher.launch(Intent.createChooser(intent, "Select Picture"))
-    }
+
 
 
     private fun isEntryValid(): Boolean {
@@ -172,24 +161,28 @@ class NewItemFragment : Fragment() {
 // thêm bàn mới và sau đó điều hướng đến màn hình danh sách bàn.
     private fun addNewItem() {
         if (isEntryValid()) {
-            val roundedPrice = roundToOneDecimalPlace(binding.price.text.toString().toFloat() )
-            viewModel.addNewItem(
-                binding.name.text.toString(),
-                binding.type.selectedItem.toString(),
-                binding.stock.text.toString(),
-                roundedPrice.toString(),
-                imageSelected
-            )
-            val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
-            findNavController().navigate(action)
-        } else {
-            Toast.makeText(context, "Invalid", Toast.LENGTH_SHORT).show()
+            val nameInput = binding.name.text.toString()
+            val roundedPrice = roundToOneDecimalPlace(binding.price.text.toString().toFloat())
+            viewModel.itemNameExist(nameInput) { exist ->
+                if (!exist){
+                    viewModel.addNewItem(
+                        nameInput,
+                        binding.type.selectedItem.toString(),
+                        binding.stock.text.toString(),
+                        roundedPrice.toString(),
+                        imageSelected
+                    )
+                val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+                findNavController().navigate(action)
+            } else {
+                Toast.makeText(context, "Item Name is already exist", Toast.LENGTH_SHORT).show()
+            }
         }
     }
-
-    //Phương thức này được gọi khi người dùng nhấn nút cập nhật thông tin bàn.
-// Nếu dữ liệu nhập vào hợp lệ, phương thức này gọi ViewModel để cập nhật
-// thông tin bàn và sau đó điều hướng trở lại màn hình danh sách bàn
+        else {
+            Toast.makeText(context, "Invalid input", Toast.LENGTH_SHORT).show()
+        }
+    }
     private fun updateItem() {
         if (isEntryValid()) {
             val roundedPrice = roundToOneDecimalPlace(binding.price.text.toString().toFloat() )
@@ -217,7 +210,6 @@ class NewItemFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Hide keyboard.
         val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as
                 InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)

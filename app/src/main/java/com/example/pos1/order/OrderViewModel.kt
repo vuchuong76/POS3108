@@ -1,8 +1,6 @@
 package com.example.pos1.order
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,18 +10,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.ItemDao
 import com.example.pos1.dao.OrderDao
 import com.example.pos1.dao.TableDao
+import com.example.pos1.entity.DishQuantity
 import com.example.pos1.entity.Item
 import com.example.pos1.entity.Order
-import com.example.pos1.entity.Orderlist
-import com.example.pos1.entity.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class OrderViewModel(
@@ -32,10 +25,11 @@ class OrderViewModel(
     private val tableDao: TableDao
 ) : ViewModel() {
     //    lấy 3 order nhiều doanh thu nhất
-//    val mostValuableOrder: LiveData<List<Order>> = orderDao.getMostValuableOrder().asLiveData()
+    val topDishes: LiveData<List<DishQuantity>> = orderDao.getTopDishes().asLiveData()
 
-    private val _countItem: MutableLiveData<Int> = MutableLiveData(0)
-    val countItem: LiveData<Int> = _countItem
+//
+//    private val _countItem: MutableLiveData<Int> = MutableLiveData(0)
+//    val countItem: LiveData<Int> = _countItem
 
     private val _amount: MutableLiveData<Int> = MutableLiveData(0)
     val amount: LiveData<Int> = _amount
@@ -47,7 +41,7 @@ class OrderViewModel(
     private val _amount1: MutableLiveData<Double> = MutableLiveData(0.0)
     val amount1: LiveData<Double> = _amount1
 
-    var id: String = ""
+    var staffId: String = ""
 
 
     // LiveData foodsForTable sẽ tự động cập nhật khi giá trị của _tableNumber thay đổi
@@ -55,11 +49,16 @@ class OrderViewModel(
     val selectedTableNumber: LiveData<Int> = _selectedTableNumber
     private val _selectedId = MutableLiveData<String>()
     val selectedId: LiveData<String> = _selectedId
-    private val _total = MutableLiveData<Double>()
-    val total: LiveData<Double> get() = _total
+
+    private val _lastAmount = MutableLiveData<Double>()
+    val lastAmount: LiveData<Double> get() = _lastAmount
+
+ private val _lastAmount1 = MutableLiveData<Double>()
+    val lastAmount1: LiveData<Double> = _lastAmount1
+
 
     fun updateData(newData: Double) {
-        _total.value = newData
+        _lastAmount.value = newData
     }
 
     //mỗi khi _selectedTableNumber thay đổi, foodsForTable sẽ tự động cập nhật và
@@ -67,6 +66,9 @@ class OrderViewModel(
     val orderForTable: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
         orderDao.getOrderForTableAndStatus(tableNumber).asLiveData()
     }
+
+
+
 
     //    danh sách order đang ở trạng thái tính tiền paying
     val orderForPay: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
@@ -179,6 +181,26 @@ class OrderViewModel(
     fun setSelectedId(orderId: String) {
         _selectedId.value = orderId
     }
+
+    private val _receive = MutableLiveData<Double>()
+    val receive: LiveData<Double> = _receive
+
+    private val _change = MutableLiveData<Double>()
+    val change: LiveData<Double> = _change
+
+    // Các hàm cài đặt giá trị
+    fun setLastAmount(value: Double) {
+        _lastAmount1.value = value
+    }
+
+    fun setReceive(value: Double) {
+        _receive.value = value
+    }
+
+    fun setChange(value: Double) {
+        _change.value = value
+    }
+
 
     fun backItem(item: Item, order: Order) {
         viewModelScope.launch {

@@ -48,7 +48,7 @@ class ChooseTableFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val staffId = sharedViewModel.id
+        val staffId = sharedViewModel.staffId
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 com.example.pos1.R.id.logout -> {

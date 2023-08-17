@@ -28,7 +28,6 @@ class ScheduleViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
         _selectedDate.value = date
     }
 
-
     val schedules: LiveData<List<Schedule>> = _selectedDate.switchMap { date ->
         if (date == null) {
             // Nếu không có ngày nào được chọn, trả về tất cả các lịch trình
@@ -38,19 +37,13 @@ class ScheduleViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
             getScheduleByDate(date)
         }
     }
-//    val orderForTable: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
-//        orderDao.getOrderForTableAndStatus(tableNumber).asLiveData()
-//    }
-//    val schedules: LiveData<List<Schedule>> = Transformations.switchMap(selectedDate) { date ->
-//        if (date == null) {
-//            // Nếu không có ngày nào được chọn, trả về tất cả các lịch trình
-//            allSchedules
-//        } else {
-//            // Nếu có ngày được chọn, trả về các lịch trình cho ngày đó
-//            getScheduleByDate(date)
-//        }
-//    }
 
+    fun scheduleExist(employee: String,date: String,shift: String, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val count = scheduleDao.countSchedule(employee,date,shift)
+            onResult(count > 0)
+        }
+    }
 
     fun insertSchedule(schedule: Schedule) {
         viewModelScope.launch {
@@ -90,6 +83,8 @@ class ScheduleViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
     fun getScheduleByName(name: String): LiveData<List<Schedule>> {
         return scheduleDao.getAllByName(name).asLiveData()
     }
+
+
 
     val errorMessage = MutableLiveData<String?>()
 

@@ -76,6 +76,7 @@
         android:gravity="center"
         android:orientation="horizontal">
     <Button
+        android:backgroundTint="@color/header_bg"
         android:id="@+id/delete_item"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
@@ -83,6 +84,7 @@
         />
 
     <Button
+        android:backgroundTint="@color/header_bg"
         android:id="@+id/button_edit"
         android:layout_width="140dp"
         android:layout_height="wrap_content"

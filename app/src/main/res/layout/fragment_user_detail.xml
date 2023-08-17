@@ -31,7 +31,7 @@
             android:textSize="20dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Staff ID:" />
+            android:text="User Name:" />
 
         <TextView
             android:id="@+id/staff_id"
@@ -181,6 +181,7 @@
             android:layout_weight="1" />
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -191,18 +192,21 @@
         android:orientation="horizontal">
 
         <Button
+            android:backgroundTint="@color/header_bg"
             android:id="@+id/delete_item"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="100dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginRight="20dp"
             android:text="Delete" />
 
         <Button
+            android:backgroundTint="@color/header_bg"
             android:id="@+id/edit_item"
-            android:layout_width="100dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Edit" />
+
     </LinearLayout>
 </LinearLayout>

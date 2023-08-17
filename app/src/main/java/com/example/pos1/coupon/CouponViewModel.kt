@@ -36,20 +36,11 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
         }
     }
 
+
+
     private fun insertCoupon(coupon: Coupon) {
         viewModelScope.launch {
             couponDao.insert(coupon)
-        }
-    }
-
-//    fun updateCoupon(code: String, coupon: Int) {
-//        val updatedCoupon = getUpdatedCouponEntry(code, coupon)
-//        updateCoupon(updatedCoupon)
-//    }
-
-    private fun updateCoupon(coupon: Coupon) {
-        viewModelScope.launch {
-            couponDao.update(coupon)
         }
     }
 
@@ -78,36 +69,26 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
         return couponDao.getCoupon(id).asLiveData()
     }
 
-    // kiểm tra xem thông tin đầu vào (số bàn và sức chứa) có hợp lệ không.
-//    fun isEntryValid(code: String, coupon: String): Boolean {
-//        if (code.isBlank() || coupon.isBlank() || code.length < 4 ||code.length > 8 || coupon.toInt() == 0) {
-//            return false
-//        }
-//        return true
-//    }
+
     fun isEntryValid(code: EditText, coupon: EditText): Boolean {
         var isValid = true
         if (code.text.isBlank() || code.text.length < 4 || code.text.length > 8) {
-            code.error = "Invalid Code"
+            code.error = "The length of the code must be between 4 and 8 characters."
             isValid = false
         }
-        if (coupon.text.isBlank() || coupon.text.toString().toInt()== 0) {
-            coupon.error = "Invalid Coupon"
+        if (coupon.text.isBlank() || coupon.text.toString().toInt()<= 0||coupon.text.toString().toInt()>=100) {
+            coupon.error = "The value of the coupon must be between 0 and 100."
             isValid = false
         }
         return isValid
     }
+    fun codeExist(code: String,onResult:(Boolean)->Unit){
+        viewModelScope.launch {
+            val count= couponDao.countCouponByCode(code)
+            onResult(count>0)
+        }
+    }
 
-//        if (staffIdEditText.text.isBlank() || staffIdEditText.text.length < 3) {
-//            staffIdEditText.error = "Invalid Staff ID"
-//            isValid = false
-//        }
-//        return isValid
-//    }
-//
-//    private fun getUpdatedCouponEntry(code: String, coupon: Int): Coupon {
-//        return Coupon(code, coupon.toInt())
-//    }
 }
 
 class CouponViewModelFactory(private val couponDao: CouponDao) : ViewModelProvider.Factory {

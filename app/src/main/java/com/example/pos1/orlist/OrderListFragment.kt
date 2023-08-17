@@ -54,18 +54,15 @@ class OrderListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter = OrderlistAdapter { order ->
             sharedViewModel.setSelectedId(order.orId)
+            sharedViewModel.setLastAmount(order.amount)
+            sharedViewModel.setReceive(order.receive)
+            sharedViewModel.setChange(order.change)
             val action = OrderListFragmentDirections.actionOrderListFragmentToDetailFragment()
             findNavController().navigate(action)
         }
         binding.recyclerView1.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView1.adapter = adapter
 //quay trở về màn hine Choose Table
-        val back: Button = binding.buttonHome1
-        back.setOnClickListener {
-            val action = OrderListFragmentDirections.actionOrderListFragmentToChooseTableFragment2("")
-            findNavController().navigate(action)
-        }
-
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.home -> {

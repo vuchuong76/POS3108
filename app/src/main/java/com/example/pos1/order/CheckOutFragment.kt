@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,11 +20,9 @@ import com.example.pos1.UserApplication
 import com.example.pos1.coupon.CouponViewModel
 import com.example.pos1.coupon.CouponViewModelFactory
 import com.example.pos1.databinding.FragmentCheckOutBinding
-import com.example.pos1.entity.Coupon
 import com.example.pos1.order.adapter.CheckoutAdapter
 import com.example.pos1.orlist.OrderListViewModelFactory
 import com.example.pos1.orlist.OrderlistViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Date
@@ -78,19 +75,19 @@ class CheckOutFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
 
                 val recieveAmount = s.toString().toDoubleOrNull() ?: 0.0
-                val lastAmount = orderViewModel.total.value ?: 0.0
+                val lastAmount = orderViewModel.lastAmount.value ?: 0.0
 
                 val changeAmount = recieveAmount - lastAmount
-                binding.change.text = "$changeAmount $"
+                binding.change.text = "${String.format("%.1f", changeAmount)}$"
 
 
             }
         })
 
 
-        val id = orderViewModel.id
+        val staffId = orderViewModel.staffId
         val tablenum = orderViewModel.selectedTableNumber.value ?: 0
-        binding.idTextView.text = "User name: $id"
+        binding.idTextView.text = "User name: $staffId"
         binding.tableTextView.text = "Table:$tablenum"
         val adapter = CheckoutAdapter {
         }
@@ -121,58 +118,70 @@ class CheckOutFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        orderViewModel.lastAmount.observe(viewLifecycleOwner) { lastAmount ->
+            binding.lastAmount.text = String.format("%.1f$", lastAmount)
+            binding.change.text = String.format("%.1f$", getChangeMoney(lastAmount))
 
-        // Theo dõi LiveData allItems từ OrderViewModel để tự động cập nhật giao diện
+        }
+        // Theo dõi dữ liệu 'orderForPay' từ 'orderViewModel'.
         orderViewModel.orderForPay.observe(this.viewLifecycleOwner) { items ->
+            // Sử dụng 'let' để xử lý danh sách 'items'
             items.let {
-                var totalAmount = 0.0
-                var totalItemCount = 0
+                var amount = 0.0 // Biến lưu tổng số tiền của tất cả các items
+                var totalItemCount = 0 // Biến lưu tổng số lượng item
 
+                // Duyệt qua từng item trong danh sách
                 for (order in it) {
-                    totalAmount += order.quantity * order.price
-                    totalItemCount += order.quantity
+                    amount += order.quantity * order.price // Tính tổng số tiền của từng item và cộng dồn
+                    totalItemCount += order.quantity // Tính tổng số lượng
                 }
-                binding.count.text="Total : $totalItemCount items"
-                binding.amount.text = " $totalAmount $"
-                totalAmount = (totalAmount * 11).roundToInt() / 10.0
-                orderViewModel.setAmountAllItems(totalAmount)
-                binding.taxAmount.text = "${totalAmount} $"
 
+                // Cập nhật UI với tổng số lượng item
+                binding.count.text = "Total : $totalItemCount items"
+                // Cập nhật UI với tổng số tiền
+                binding.amount.text = "${String.format("%.1f", amount)} $"
 
+                // Thêm thuế (ở đây giả định thuế là 10%, vì vậy ta nhân với 11 và làm tròn)
+                val taxAmount = (amount * 11).roundToInt() / 10.0
+                orderViewModel.setAmountAllItems(taxAmount) // Cập nhật ViewModel với tổng số tiền sau thuế
+                binding.taxAmount.text = "${taxAmount} $" // Cập nhật UI với tổng số tiền sau thuế
 
-
-                // Đặt mặc định discount là 0
+                // Khởi tạo giá trị giảm giá ban đầu là 0
                 var discount = 0.0
-                var total = (totalAmount * 1.1 * 10).roundToInt() / 10.0
+                var lastAmount = (amount * 11).roundToInt() / 10.0 // Làm tròn tổng số tiền
 
-
-                //tính coupon
-                // Xử lý logic mã giảm giá khi nút 'apply' được nhấn.
+                // Khi nút 'apply' (áp dụng mã giảm giá) được nhấn
                 binding.apply.setOnClickListener {
-                    val enteredCode = binding.code.text.toString().trim()
+                    val enteredCode = binding.code.text.toString().trim() // Lấy mã giảm giá đã nhập
 
+                    // Kiểm tra mã giảm giá có được nhập hay không
                     if (enteredCode.isEmpty()) {
                         Toast.makeText(context, "Please insert Code!", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
 
+                    // Lấy thông tin giảm giá dựa trên mã giảm giá từ 'couponViewModel'
                     couponViewModel.fetchCouponByCode(enteredCode)
 
+                    // Theo dõi dữ liệu từ 'couponViewModel'
                     lifecycleScope.launch {
                         couponViewModel.couponFlow.collect { state ->
-                            when(state) {
+                            when (state) {
+                                // Trong trường hợp mã giảm giá hợp lệ
                                 is CouponViewModel.CouponState.Success -> {
                                     val coupon = state.coupon
-                                    discount = coupon.discount // Đảm bảo trường này là Double
-                                    binding.coupon.text = "${discount}%"
+                                    discount = coupon.discount // Lấy giá trị giảm giá từ coupon
+                                    binding.coupon.text = "${discount}%" // Cập nhật UI với giá trị giảm giá
 
-                                    total = (totalAmount * (1 - discount / 100) * 10).roundToInt() / 10.0
-                                    orderViewModel.updateData(total)
+                                    // Tính toán và cập nhật tổng số tiền sau khi đã áp dụng giảm giá
+                                    lastAmount = (taxAmount * (1 - discount / 100) * 10).roundToInt() / 10.0
+                                    orderViewModel.updateData(lastAmount)
                                 }
+                                // Trong trường hợp mã giảm giá không hợp lệ
                                 CouponViewModel.CouponState.Invalid -> {
                                     Toast.makeText(context, "Code is not correct!", Toast.LENGTH_SHORT).show()
                                 }
-                                else -> {} // Xử lý cho trạng thái Loading nếu bạn muốn.
+                                else -> {} // Xử lý cho các trạng thái khác (ví dụ: Loading)
                             }
                         }
                     }
@@ -185,45 +194,49 @@ class CheckOutFragment : Fragment() {
 
                 binding.clear.setOnClickListener {
                     discount = 0.0
-                    orderViewModel.updateData(totalAmount)
+                    orderViewModel.updateData(taxAmount)
                     binding.coupon.text = "0%"
                     binding.code.setText("")
+                    lastAmount = taxAmount
                 }
 
 
 
 
-                orderViewModel.updateData(totalAmount)
+                orderViewModel.updateData(taxAmount)
 
-                binding.change.text = "${getChangeMoney(total)}$"
+                binding.change.text = "${String.format("%.1f", getChangeMoney(lastAmount))}$"
                 adapter.submitList(it)
 
                 binding.receipt.setOnClickListener {
-                    if (total > 0) {
+                    if (lastAmount > 0) {
                         val receivedMoney = binding.receive.text.toString().trim().toDoubleOrNull()
-
+                        val amountValue = lastAmount
                         // Nếu receivedMoney null hoặc nhỏ hơn totalAmount thì báo toast
-                        if (receivedMoney == null || receivedMoney < total) {
+                        if (receivedMoney == null || receivedMoney < lastAmount) {
                             Toast.makeText(context, "Not enough money", Toast.LENGTH_SHORT).show()
                             return@setOnClickListener
                         }
 
-                        if (getChangeMoney(total) >= 0) {
-                            val staffIdValue = orderViewModel.id
-                            val amountValue = total
-                            val a = Date().time.toString()
+                        if (getChangeMoney(lastAmount) >= 0) {
+                            val staffIdValue = orderViewModel.staffId
+                            val orId = Date().time.toString()
                             // Sử dụng CoroutineScope để gọi addNewOrderlist và nhận giá trị orId
                             lifecycleScope.launch {
                                 orderlistViewModel.addNewOrderlist(
-                                    orId = a,
+                                    orId = orId,
                                     tbnum = tablenum,
                                     staffId = staffIdValue,
                                     date = dateString,
                                     amount = amountValue,
-                                    status = "payed",
-                                    payment = "money"
+                                    receive = receivedMoney,
+                                    change = getChangeMoney(lastAmount)
                                 )
-                                orderViewModel.setSelectedId(a)
+                                orderViewModel.setSelectedId(orId)
+                                orderViewModel.setLastAmount(amountValue)
+                                orderViewModel.setReceive(receivedMoney)
+                                orderViewModel.setChange(getChangeMoney(lastAmount))
+
                                 val action =
                                     CheckOutFragmentDirections.actionCheckOutFragmentToDetailFragment()
                                 findNavController().navigate(action)
@@ -233,12 +246,7 @@ class CheckOutFragment : Fragment() {
                 }
             }
         }
-        orderViewModel.total.observe(viewLifecycleOwner) { newTotal ->
-            binding.total.text = String.format("%.1f$", newTotal)
-            binding.change.text = String.format("%.1f$", getChangeMoney(newTotal))
 
-
-        }
 
     }
 

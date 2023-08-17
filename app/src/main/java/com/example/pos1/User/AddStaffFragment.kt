@@ -84,7 +84,7 @@ class AddStaffFragment : Fragment() {
 
             viewModel.staffIdExists(staffIdInput) { exists ->
                 if (exists) {
-                    Toast.makeText(context, "Staff ID already exists!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "UserName is already exists!", Toast.LENGTH_SHORT).show()
                 } else {
                     val hashedPassword = BCrypt.hashpw(binding.passWord.text.toString(), BCrypt.gensalt())
                     viewModel.addNewUser(

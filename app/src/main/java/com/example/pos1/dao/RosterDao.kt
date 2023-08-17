@@ -18,6 +18,9 @@ interface RosterDao {
     @Query("SELECT * FROM roster WHERE id = :id")
     fun getRosterById(id: Int): Flow<Roster>
 
+    @Query("SELECT COUNT(*) FROM roster WHERE `Start Time`=:start_time AND `Finish Time`=:finish_time")
+    suspend fun rosterByTime(start_time:String,finish_time:String):Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(roster: Roster)
 

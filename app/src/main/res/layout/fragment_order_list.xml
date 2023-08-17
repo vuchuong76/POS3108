@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Order List"
+        app:title="Payment History"
         app:titleTextColor="@color/white"
         android:background="#3F51B5"
         app:menu="@menu/menu1"/>
@@ -64,18 +64,6 @@
             android:text="Amount"
             android:background="#E0E4E8"
             android:gravity="center"/>
-<!--        <TextView-->
-<!--            android:id="@+id/status"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="Status" />-->
-<!--        <TextView-->
-<!--            android:id="@+id/payment"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="Pay method" />-->
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -86,13 +74,4 @@
         android:scrollbars="vertical"
         android:paddingTop="8dp"
         android:paddingBottom="8dp" />
-
-
-    <Button
-        android:id="@+id/buttonHome1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Home" />
-
 </LinearLayout>

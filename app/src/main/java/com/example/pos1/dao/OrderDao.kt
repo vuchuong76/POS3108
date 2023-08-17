@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.pos1.entity.DishQuantity
 import com.example.pos1.entity.Order
 import kotlinx.coroutines.flow.Flow
 
@@ -25,12 +26,14 @@ interface OrderDao {
     @Insert
     suspend fun insert(order: Order)
 
-//    @Query(
-//        """SELECT *, quantity * price AS total_price FROM order_entity
-//    ORDER BY total_price DESC LIMIT 3
-//    """
-//    )
-//    fun getMostValuableOrder(): Flow<List<Order>>
+    @Query(
+        """SELECT name, SUM(quantity) AS total_quantity FROM order_entity WHERE `payment_status` = 'payed'
+        GROUP BY name 
+        ORDER BY total_quantity DESC 
+        LIMIT 3"""
+    )
+    fun getTopDishes(): Flow<List<DishQuantity>>
+
 
     @Query("SELECT * FROM order_entity WHERE tableNumber = :tableNumber AND `payment_status` = 'waiting'")
     fun getOrderForTableAndStatus(tableNumber: Int): Flow<List<Order>>

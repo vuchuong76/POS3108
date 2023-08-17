@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.pos1.User.UserViewModel
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
 import kotlinx.coroutines.*
@@ -27,6 +29,11 @@ class LoginFragment : Fragment() {
             (activity?.application as UserApplication).orderDatabase.orderDao(),
             (activity?.application as UserApplication).orderDatabase.itemDao(),
             (activity?.application as UserApplication).orderDatabase.tableDao()
+        )
+    }
+    private val userViewModel: UserViewModel by activityViewModels() {
+        UserViewModel.UserViewModelFactory(
+            (activity?.application as UserApplication).orderDatabase.userDao()
         )
     }
 
@@ -49,7 +56,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        disableBackButton()
         // Đặt lắng nghe sự kiện nhấp vào nút đăng nhập
         loginButton.setOnClickListener {
             // Lấy ID và mật khẩu đã nhập
@@ -64,7 +71,7 @@ class LoginFragment : Fragment() {
     // Hàm xử lý quá trình đăng nhập
     private fun loginUser(id: String, password: String) {
         // Đặt ID vào ViewModel được chia sẻ
-        sharedViewModel.id = id
+
 
         // Kiểm tra nếu ID hoặc mật khẩu rỗng
         if (id.isEmpty() || password.isEmpty()) {
@@ -102,32 +109,36 @@ class LoginFragment : Fragment() {
 
             // Kiểm tra kết quả của quá trình đăng nhập, giải mã user.password và so sánh chúng
             if (user != null && BCrypt.checkpw(password, user.password)) {
-                // Đăng nhập thành công
                 if (user.position == "Admin") {
+                    userViewModel.id = id
                     findNavController().navigate(R.id.action_loginFragment_to_adminAccessFragment)
                 } else if (user.position == "Staff") {
-                    // Nếu người dùng là nhân viên, điều hướng đến Fragment ChooseTableFragment với tham số staffId
+                    sharedViewModel.staffId = id
                     val action =
                         LoginFragmentDirections.actionLoginFragmentToChooseTableFragment(staffId = user.staffId)
                     findNavController().navigate(action)
                 }
                 else if (user.position == "Kitchen") {
-                    // Nếu người dùng là nhân viên, điều hướng đến Fragment ChooseTableFragment với tham số staffId
                     val action =
                         LoginFragmentDirections.actionLoginFragmentToKitchenFragment()
                     findNavController().navigate(action)
                 }
             } else {
                 // Đăng nhập thất bại
-                Toast.makeText(
-                    requireContext(),
-                    "Your ID or Password is not correct",
-                    Toast.LENGTH_SHORT
+                Toast.makeText(requireContext(), "Your ID or Password is not correct", Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
 
+    private fun disableBackButton() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {}
+            }
+        )
+    }
     override fun onDestroy() {
         super.onDestroy()
         // Hủy CoroutineScope để tránh rò rỉ tài nguyên khi Fragment bị hủy

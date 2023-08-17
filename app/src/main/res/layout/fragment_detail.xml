@@ -104,7 +104,6 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:scrollbars="vertical" />
-
     <TextView
         android:id="@+id/count"
         android:layout_width="match_parent"
@@ -113,12 +112,33 @@
         android:paddingTop="8dp"
         android:text="Item count" />
     <TextView
-        android:id="@+id/amount"
+    android:id="@+id/amount"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingTop="8dp"
+    android:text="Amount" />
+    <TextView
+    android:id="@+id/last_amount"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingTop="8dp"
+    android:text="Last Amount" />
+    <TextView
+        android:id="@+id/receive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:text="Receive" />
+    <TextView
+        android:id="@+id/change"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="8dp"
         android:paddingBottom="20dp"
-        android:text="amount" />
+        android:text="Change" />
 
 </LinearLayout>
