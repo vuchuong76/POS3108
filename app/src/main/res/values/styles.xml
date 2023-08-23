@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BeautifulButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:backgroundTint">#6200EE</item>
+        <item name="android:elevation">4dp</item>
+        <!-- Thêm dòng này để thiết lập màu nền cho nút -->
+        <item name="android:background">#6200EE</item>
+    </style>
+
+</resources>
