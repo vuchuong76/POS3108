@@ -27,21 +27,14 @@ class OrderViewModel(
     //    lấy 3 order nhiều doanh thu nhất
     val topDishes: LiveData<List<DishQuantity>> = orderDao.getTopDishes().asLiveData()
 
-//
-//    private val _countItem: MutableLiveData<Int> = MutableLiveData(0)
-//    val countItem: LiveData<Int> = _countItem
+
 
     private val _amount: MutableLiveData<Int> = MutableLiveData(0)
     val amount: LiveData<Int> = _amount
 
-    //tính tiền order có trạng thái  paying
-    private val _countItem1: MutableLiveData<Int> = MutableLiveData(0)
-    val countItem1: LiveData<Int> = _countItem1
-
     private val _amount1: MutableLiveData<Double> = MutableLiveData(0.0)
-    val amount1: LiveData<Double> = _amount1
 
-    var staffId: String = ""
+    var userName: String = ""
 
 
     // LiveData foodsForTable sẽ tự động cập nhật khi giá trị của _tableNumber thay đổi
@@ -61,35 +54,23 @@ class OrderViewModel(
         _lastAmount.value = newData
     }
 
-    //mỗi khi _selectedTableNumber thay đổi, foodsForTable sẽ tự động cập nhật và
-    // chứa danh sách đơn hàng cho bàn có số tableNumber và trạng thái thanh toán pay_sta.
+    // chứa danh sách đơn hàng cho tableNumber và trạng thái thanh toán pay_sta= waiting.
     val orderForTable: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
         orderDao.getOrderForTableAndStatus(tableNumber).asLiveData()
     }
-
-
+    //danh sách order trong bàn
+    val orderForTable1: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
+        orderDao.getOrderForSelectedTable(tableNumber).asLiveData()
+    }
 
 
     //    danh sách order đang ở trạng thái tính tiền paying
     val orderForPay: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
         orderDao.getOrderForPay(tableNumber).asLiveData()
     }
+
     val orderById: LiveData<List<Order>> = _selectedId.switchMap { orderId ->
         orderDao.getOrderByOrId(orderId).asLiveData()
-    }
-
-    //    danh sách để xoá All
-    val orderToDeleteAll: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
-        orderDao.getOrderforback(tableNumber).asLiveData()
-    }
-
-    // Define discountPercentage as MutableLiveData with a default value of 0.0
-    val discountPercentage = MutableLiveData<Double>().apply { value = 0.0 }
-
-    // ... [Other methods of your ViewModel]
-
-    fun applyDiscount(percentage: Double) {
-        discountPercentage.value = percentage
     }
 
 
@@ -184,6 +165,8 @@ class OrderViewModel(
 
     private val _receive = MutableLiveData<Double>()
     val receive: LiveData<Double> = _receive
+  private val _discount = MutableLiveData<Double>()
+    val discount: LiveData<Double> = _discount
 
     private val _change = MutableLiveData<Double>()
     val change: LiveData<Double> = _change
@@ -191,6 +174,9 @@ class OrderViewModel(
     // Các hàm cài đặt giá trị
     fun setLastAmount(value: Double) {
         _lastAmount1.value = value
+    }
+    fun setDiscount(value: Double) {
+        _discount.value = value
     }
 
     fun setReceive(value: Double) {
@@ -268,38 +254,7 @@ class OrderViewModel(
     /**
      * Thêm một đơn hàng mới vào cơ sở dữ liệu hoặc cập nhật số lượng nếu đơn hàng đã tồn tại.
      */
-//    suspend fun addNewOrder(
-//        itemId: Int,
-//        table: Int,
-//        name: String,
-//        time: String,
-//        quantity: Int,
-//        price: Int,
-//        order_status: String,
-//        pay_sta: String
-//    ) {
-//
-//        viewModelScope.launch {
-//            addNewOrderCount++
-//            Log.d("YourTag", "5 addNewOrder has been called $addNewOrderCount times")
-//            // Lấy giá trị của tableNumber hoặc 0 nếu chưa được đặt
-//            val tableNumber = selectedTableNumber.value ?: 0
-//
-//            // Tạo đơn hàng mới với tableNumber đã được đặt
-//            val newOrder = getNewOrderEntry(
-//                itemId,
-//                tableNumber,
-//                name,
-//                time,
-//                quantity,
-//                price,
-//                order_status,
-//                pay_sta
-//            )
-//            orderDao.insert(newOrder)
-//
-//        }
-//    }
+
     suspend fun addNewOrder(
         itemId: Int,
         table: Int,
@@ -362,8 +317,6 @@ class OrderViewModel(
             pay_sta = pay_sta
         )
     }
-
-
 }
 
 /**

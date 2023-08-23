@@ -2,6 +2,7 @@ package com.example.pos1.coupon
 
 import android.content.Context
 import android.os.Bundle
+import android.text.InputFilter
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +11,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.pos1.DecimalDigitsInputFilter
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddCouponBinding
-import com.example.pos1.databinding.FragmentAddRosterBinding
-import com.example.pos1.schedule.AddRosterFragmentDirections
-import com.example.pos1.schedule.RosterViewModel
-import com.example.pos1.schedule.RosterViewModelFactory
 
+@Suppress("DEPRECATION")
 class AddCouponFragment : Fragment() {
     private val viewModel: CouponViewModel by activityViewModels {
         CouponViewModelFactory(
@@ -43,6 +42,8 @@ class AddCouponFragment : Fragment() {
             addNewCoupon()
 
         }
+        binding.coupon.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(0))
+
 
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {

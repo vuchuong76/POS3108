@@ -1,9 +1,11 @@
 package com.example.pos1
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -24,7 +26,7 @@ class LoginFragment : Fragment() {
     private lateinit var loginButton: Button
 
     // Khởi tạo ViewModel được chia sẻ giữa các Fragment
-    private val sharedViewModel: OrderViewModel by activityViewModels() {
+    private val orderViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderDao(),
             (activity?.application as UserApplication).orderDatabase.itemDao(),
@@ -56,6 +58,10 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Tắt bàn phím ảo ngay khi fragment được tạo
+        hideKeyboard()
+
         disableBackButton()
         // Đặt lắng nghe sự kiện nhấp vào nút đăng nhập
         loginButton.setOnClickListener {
@@ -68,11 +74,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    // Hàm xử lý quá trình đăng nhập
     private fun loginUser(id: String, password: String) {
-        // Đặt ID vào ViewModel được chia sẻ
-
-
         // Kiểm tra nếu ID hoặc mật khẩu rỗng
         if (id.isEmpty() || password.isEmpty()) {
             Toast.makeText(requireContext(), "Your ID or Password is empty", Toast.LENGTH_SHORT)
@@ -110,12 +112,12 @@ class LoginFragment : Fragment() {
             // Kiểm tra kết quả của quá trình đăng nhập, giải mã user.password và so sánh chúng
             if (user != null && BCrypt.checkpw(password, user.password)) {
                 if (user.position == "Admin") {
-                    userViewModel.id = id
+                    userViewModel.userName = id
                     findNavController().navigate(R.id.action_loginFragment_to_adminAccessFragment)
                 } else if (user.position == "Staff") {
-                    sharedViewModel.staffId = id
+                    orderViewModel.userName = id
                     val action =
-                        LoginFragmentDirections.actionLoginFragmentToChooseTableFragment(staffId = user.staffId)
+                        LoginFragmentDirections.actionLoginFragmentToChooseTableFragment(userName = user.userName)
                     findNavController().navigate(action)
                 }
                 else if (user.position == "Kitchen") {
@@ -144,5 +146,12 @@ class LoginFragment : Fragment() {
         // Hủy CoroutineScope để tránh rò rỉ tài nguyên khi Fragment bị hủy
         coroutineScope.cancel()
     }
+    fun hideKeyboard() {
+        val view = requireActivity().currentFocus ?: View(requireContext())
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+
 }
 

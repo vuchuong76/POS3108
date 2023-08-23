@@ -1,5 +1,6 @@
 package com.example.pos1.order
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.math.roundToInt
 
+@Suppress("DEPRECATION")
 class MenuTabletFragment : Fragment() {
     private lateinit var binding: FragmentMenuTabletBinding
     private val sharedViewModel: OrderViewModel by activityViewModels() {
@@ -33,11 +35,12 @@ class MenuTabletFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMenuTabletBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
     }
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -52,9 +55,9 @@ class MenuTabletFragment : Fragment() {
                 2 -> tab.text = "Appetizer"
             }
         }.attach()
-            val staffId = sharedViewModel.staffId
+            val userName = sharedViewModel.userName
             val tablenum = sharedViewModel.selectedTableNumber.value ?: 0
-            binding.idTextView.text = "User name: $staffId"
+            binding.idTextView.text = "User name: $userName"
             binding.tableTextView.text = "Table:$tablenum"
 
             binding.buttonCheck.setOnClickListener {
@@ -111,11 +114,6 @@ class MenuTabletFragment : Fragment() {
 
 
         sharedViewModel.orderForTable.observe(this.viewLifecycleOwner) { items ->
-            if (items.isNullOrEmpty()) {
-                sharedViewModel.updateTableStatus(sharedViewModel.selectedTableNumber.value ?: 0, 0)
-            } else {
-                sharedViewModel.updateTableStatus(sharedViewModel.selectedTableNumber.value ?: 0, 1)
-            }
             var totalAmount = 0.0
             var totalItemCount = 0
             if (items != null && items.isNotEmpty()) {

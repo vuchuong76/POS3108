@@ -44,9 +44,9 @@
         android:textColor="#FFF"
         android:background="@drawable/delete_button"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_margin="5dp"
-        android:layout_height="25dp"
-        android:layout_width="25dp"
+        android:layout_height="18dp"
+        android:layout_width="18dp"
+        android:layout_marginRight="3dp"
         android:textSize="12sp"
         android:textStyle="bold"
         android:onClick="cancelActivity" />

@@ -1,48 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/anh_login"
     android:layout_height="match_parent"
     android:paddingTop="32dp">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="100dp"
-        android:text="Hidakaya"
-        android:textAppearance="?attr/textAppearanceHeadline4"
-        android:textColor="#FF5722" />
-
-    <EditText
-        android:id="@+id/id"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="300dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:ems="10"
-        android:maxLength="9"
-        android:hint="User Name"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        />
+        android:layout_marginTop="250dp"
+        android:hint="User Name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:id="@+id/id"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            android:inputType="text"
+            android:maxLength="9"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Password">
 
     <EditText
         android:id="@+id/pw"
-        android:layout_width="300dp"
-        android:layout_height="48dp"
         android:ems="10"
         android:maxLength="15"
-        android:layout_gravity="center_horizontal"
-        android:hint="Password"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         android:password="true"
         android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:backgroundTint="@color/header_bg"
+        android:backgroundTint="#3C3D34"
         android:id="@+id/loginbt"
+        android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
@@ -50,3 +63,5 @@
 
 
 </LinearLayout>
+
+</ScrollView>

@@ -12,9 +12,9 @@ import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentCouponBinding
 import com.example.pos1.entity.Coupon
-import com.example.pos1.entity.Schedule
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+@Suppress("DEPRECATION")
 class CouponFragment : Fragment() {
     private lateinit var binding: FragmentCouponBinding
 
@@ -27,7 +27,7 @@ class CouponFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCouponBinding.inflate(inflater, container, false)
 
 
@@ -42,9 +42,11 @@ class CouponFragment : Fragment() {
             )
             this.findNavController().navigate(action)
         }
-        val adapter = CouponAdapter { coupon ->
+        val adapter = CouponAdapter (
+            onItemClicked={ coupon ->
             showConfirmationDialog(coupon)
         }
+        )
         viewModel.allCoupons.observe(this.viewLifecycleOwner) { items ->
             items.let {
                 adapter.submitList(it)

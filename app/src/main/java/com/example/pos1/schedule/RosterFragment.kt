@@ -1,30 +1,21 @@
 package com.example.pos1.schedule
 
-import android.annotation.SuppressLint
-import android.app.DatePickerDialog
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pos1.R
-import com.example.pos1.User.StaffListFragmentDirections
-import com.example.pos1.User.UserAdapter
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentRosterBinding
-import com.example.pos1.databinding.FragmentScheduleBinding
-import com.example.pos1.editmenu.MenuListFragmentDirections
-import com.example.pos1.entity.Order
 import com.example.pos1.entity.Roster
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
+@Suppress("DEPRECATION")
 class RosterFragment : Fragment() {
     private lateinit var binding: FragmentRosterBinding
 
@@ -37,7 +28,7 @@ class RosterFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentRosterBinding.inflate(inflater, container, false)
 
 
@@ -73,8 +64,6 @@ class RosterFragment : Fragment() {
                     val action = RosterFragmentDirections.actionRosterFragmentToScheduleFragment()
                     findNavController().navigate(action)
                     true
-                    // by returning 'true' we're saying that the event
-                    // is handled and it shouldn't be propagated further
                 }
                 else -> false
             }

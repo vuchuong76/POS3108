@@ -1,4 +1,5 @@
 package com.example.pos1.order.adapter
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.SystemClock
 import android.view.LayoutInflater
@@ -34,6 +35,7 @@ import com.example.pos1.entity.Item
 //        holder.bind(current)
 //    }
 
+@Suppress("DEPRECATED_IDENTITY_EQUALS")
 class FoodDrinkAppetizerAdapter(
     private val onItemClicked: (Item) -> Unit,
     private val itemType: String
@@ -78,9 +80,10 @@ class FoodDrinkAppetizerAdapter(
     class ItemViewHolder(private val binding: FoodDrinkAppetizerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         //gán giá trị thuộc tính có trong database vào recycleView
+        @SuppressLint("SetTextI18n")
         fun bind(item: Item) {
-            binding.nameTextView.text = item.name.toString()
-            item.image?.let {
+            binding.nameTextView.text = item.name
+            item.image.let {
                 Glide.with(itemView.context)
                     .load(Uri.parse(item.image))
                     .into(binding.imageImageView)
@@ -104,11 +107,11 @@ class FoodDrinkAppetizerAdapter(
     companion object {
         private val ITEMS_COMPARATOR = object : DiffUtil.ItemCallback<Item>() {
             override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
-                return oldItem === newItem
+                return oldItem.id === newItem.id
             }
 
             override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem == newItem
             }
         }
     }

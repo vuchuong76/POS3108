@@ -48,7 +48,6 @@
         android:textColor="#1A0909"
         android:background="@drawable/ic_launcher_background"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_margin="5dp"
         android:layout_height="25dp"
         android:layout_width="25dp"
         android:textSize="12sp"

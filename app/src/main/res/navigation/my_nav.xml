@@ -17,7 +17,7 @@
         android:id="@+id/action_loginFragment_to_chooseTableFragment"
         app:destination="@id/chooseTableFragment" >
         <argument
-            android:name="staff_id"
+            android:name="user_name"
             app:argType="string" />
         </action>
         <action
@@ -95,7 +95,7 @@
             android:name="title"
             app:argType="string" />
         <argument
-            android:name="staff_id"
+            android:name="user_name"
             app:argType="string" />
         <action
             android:id="@+id/action_addStaffFragment_to_loginFragment"
@@ -113,7 +113,7 @@
         android:label="User Detail"
         tools:layout="@layout/fragment_user_detail" >
         <argument
-            android:name="staff_id"
+            android:name="user_name"
             app:argType="string" />
         <action
             android:id="@+id/action_userDetailFragment_to_staffListFragment"
@@ -169,7 +169,7 @@
             android:id="@+id/action_chooseTableFragment_to_orderListFragment"
             app:destination="@id/orderListFragment" />
         <argument
-            android:name="staff_id"
+            android:name="user_name"
             app:argType="string" />
         <argument
             android:name="number"
@@ -190,9 +190,6 @@
             android:id="@+id/action_menuListFragment_to_newItemFragment"
             app:destination="@id/newItemFragment" />
         <action
-            android:id="@+id/action_menuListFragment_to_itemDetailFragment4"
-            app:destination="@id/itemDetailFragment" />
-        <action
             android:id="@+id/action_menuListFragment_to_adminAccessFragment"
             app:destination="@id/adminAccessFragment" />
         <action
@@ -205,33 +202,12 @@
         android:label="fragment_new_item"
         tools:layout="@layout/fragment_new_item" >
         <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
             android:name="item_id"
             android:defaultValue="-1"
             app:argType="integer" />
         <action
             android:id="@+id/action_newItemFragment_to_menuListFragment"
             app:destination="@id/menuListFragment" />
-        <action
-            android:id="@+id/action_newItemFragment_to_itemDetailFragment"
-            app:destination="@id/itemDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/itemDetailFragment"
-        android:name="com.example.pos1.editmenu.ItemDetailFragment"
-        android:label="fragment_user_detail"
-        tools:layout="@layout/fragment_user_detail" >
-        <argument
-            android:name="item_id"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_itemDetailFragment_to_menuListFragment"
-            app:destination="@id/menuListFragment" />
-        <action
-            android:id="@+id/action_itemDetailFragment_to_newItemFragment2"
-            app:destination="@id/newItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderListFragment"

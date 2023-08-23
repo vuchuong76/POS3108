@@ -13,20 +13,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDao {
 
-    @Query("SELECT * from user ORDER BY staffId ASC")
+    @Query("SELECT * from user ORDER BY userName ASC")
     fun getAll():Flow<List<User>>
 
-    @Query("SELECT * from user WHERE staffId = :staffId")
-    fun getByStaffId(staffId: String): Flow<User>
+    @Query("SELECT * from user WHERE userName = :userName")
+    fun getByStaffId(userName: String): Flow<User>
 
-    @Query("SELECT * FROM User WHERE staffId = :staffId AND password = :password")
-    suspend fun loginByIdAndPassword(staffId: String, password: String): User?
-    @Query("SELECT * FROM User WHERE staffId = :staffId")
-    suspend fun loginById(staffId: String): User?
+    @Query("SELECT * FROM User WHERE userName = :userName AND password = :password")
+    suspend fun loginByIdAndPassword(userName: String, password: String): User?
+    @Query("SELECT * FROM User WHERE userName = :userName")
+    suspend fun loginById(userName: String): User?
 
 
-    @Query("SELECT COUNT(*) FROM user WHERE staffId = :staffId")
-    suspend fun countStaffWithId(staffId: String): Int
+    @Query("SELECT COUNT(*) FROM user WHERE userName = :userName")
+    suspend fun countStaffWithId(userName: String): Int
 
     // Chỉ định khi xung đột là BỎ QUA, khi người dùng cố gắng thêm một
     // Mục hiện có vào cơ sở dữ liệu.

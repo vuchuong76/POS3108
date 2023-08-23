@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.pos1.entity.Roster
-import com.example.pos1.entity.Table
 import kotlinx.coroutines.flow.Flow
 @Dao
 interface RosterDao {

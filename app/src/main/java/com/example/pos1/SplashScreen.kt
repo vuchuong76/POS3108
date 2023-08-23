@@ -1,7 +1,7 @@
 package com.example.pos1
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -10,10 +10,11 @@ import android.view.WindowManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {
     private lateinit var imge : ImageView
 
-    private val url = "https://i.ytimg.com/vi/B7rsXruDPJU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLACMfjPTLgQhxvxwNgXZpZT1xiEdA"
+    private val url = "https://img.mandarake.co.jp/webshopimg/03/93/060/0393215060/03932150600.jpg"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -32,6 +33,6 @@ class SplashScreen : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 2000) // 3000 is the delayed time in milliseconds.
+        }, 2000) // delayed time in milliseconds.
     }
 }

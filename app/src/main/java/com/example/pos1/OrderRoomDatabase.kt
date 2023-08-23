@@ -22,7 +22,7 @@ import com.example.pos1.entity.Schedule
 import com.example.pos1.entity.User
 
 @Database(entities = [Order::class, Table::class, Item::class, Orderlist::class, User::class,
-    Roster::class, Schedule::class, Coupon::class], version = 2, exportSchema = false)
+    Roster::class, Schedule::class, Coupon::class], version = 1, exportSchema = false)
 abstract class OrderRoomDatabase : RoomDatabase() {
     abstract fun orderDao(): OrderDao
     abstract fun tableDao(): TableDao

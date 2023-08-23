@@ -29,13 +29,13 @@ class TableDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTableDetailBinding.inflate(inflater, container, false)
-        return binding?.root
+        return binding.root
     }
 
     private fun bind(table: Table) {
-        binding?.apply {
+        binding.apply {
             tableNumber.text = table.number.toString()
             capacity.text = table.capacity.toString()
             deleteItem.setOnClickListener { showConfirmationDialog() }

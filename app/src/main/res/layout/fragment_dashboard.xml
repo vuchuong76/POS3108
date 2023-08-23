@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/screen1"
     android:layout_height="match_parent"
     tools:context=".dashboard.DashboardFragment">
 
@@ -25,23 +31,23 @@
 
         <Button
             android:backgroundTint="@color/header_bg"
-            android:id="@+id/buttonA"
+            android:id="@+id/week"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:text="Week"></Button>
+            android:text="Last 7 days"></Button>
 
         <Button
             android:backgroundTint="@color/header_bg"
-            android:id="@+id/buttonB"
+            android:id="@+id/month"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:text="Month"></Button>
+            android:text="Last Month"></Button>
     </LinearLayout>
 
     <LinearLayout
@@ -54,9 +60,9 @@
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp" />
+            android:layout_height="500dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -64,7 +70,9 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="Daily Turnover"
-            android:textSize="40dp"></TextView>
+            android:textSize="40dp"
+            android:layout_marginBottom="80dp"></TextView>
     </LinearLayout>
 
 </FrameLayout>
+</ScrollView>

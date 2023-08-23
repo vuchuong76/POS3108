@@ -4,28 +4,21 @@ import ScheduleViewModel
 import ScheduleViewModelFactory
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.ContextMenu
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pos1.R
-import com.example.pos1.User.StaffListFragmentDirections
-import com.example.pos1.User.UserAdapter
 import com.example.pos1.UserApplication
-import com.example.pos1.databinding.FragmentRosterBinding
 import com.example.pos1.databinding.FragmentScheduleBinding
-import com.example.pos1.entity.Roster
 import com.example.pos1.entity.Schedule
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Calendar
 
+@Suppress("DEPRECATION")
 class ScheduleFragment : Fragment() {
     private lateinit var binding: FragmentScheduleBinding
     private var selectedDate: String? = null
@@ -38,7 +31,7 @@ class ScheduleFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
 
 

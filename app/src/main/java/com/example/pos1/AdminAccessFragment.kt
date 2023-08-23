@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.pos1.weather.CurrentWeather
@@ -32,24 +31,27 @@ class AdminAccessFragment : Fragment() {
             (activity?.application as UserApplication).orderDatabase.tableDao(),
         )
     }
+
     companion object {
         val q = "35.676919,139.6503106"
         val key = "7a32f1087fda4df59d9154311231508"
         val days = "10"
         val dt = "2023-08-20"
     }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAdminAccessBinding.inflate(inflater, container, false)
 
         setHasOptionsMenu(true)
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dish1TextView: TextView = view.findViewById(R.id.dish1TextView)
@@ -58,7 +60,7 @@ class AdminAccessFragment : Fragment() {
 
         viewModel.topDishes.observe(viewLifecycleOwner) { dishes ->
             dishes?.let {
-                if (dishes.size>0) {
+                if (dishes.isNotEmpty()) {
                     dish1TextView.text = "1. ${dishes[0].name}"
                     binding.dish1quantity.text = dishes[0].total_quantity.toString()
                 }
@@ -80,47 +82,60 @@ class AdminAccessFragment : Fragment() {
                 R.id.home -> {
                     true
                 }
+
                 R.id.staffList -> {
                     findNavController().navigate(R.id.action_adminAccessFragment_to_staffListFragment)
                     true
                 }
+
                 R.id.table -> {
                     findNavController().navigate(R.id.action_adminAccessFragment_to_tableFragment)
                     true
                 }
+
                 R.id.menuEdit -> {
                     findNavController().navigate(R.id.action_adminAccessFragment_to_menuListFragment)
                     true
                 }
+
                 R.id.schedule -> {
                     findNavController().navigate(R.id.action_adminAccessFragment_to_scheduleFragment)
                     true
                 }
+
                 else -> false
             }
         }
         // rest api weather current device
+        //Khởi tạo API call,
+        // getCurrentFuture(key, q, days, dt) là lấy thông tin thời tiết hiện tại và dự báo.
         ApiUtilites.getApiInterface()?.getCurrentFuture(
-            key
-            ,q, days,dt)?.enqueue(object : Callback<CurrentWeather> {
+            key, q, days, dt
+        )?.enqueue(object : Callback<CurrentWeather> {
             @RequiresApi(Build.VERSION_CODES.O)
-            override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
-                if (response.isSuccessful){
+            //Được gọi khi có một phản hồi từ server
+            override fun onResponse(
+                call: Call<CurrentWeather>,
+                response: Response<CurrentWeather>
+            ) {
+                if (response.isSuccessful) {
                     val weatherCurrent = response.body()
-                    binding.tvTemperature.text = "Temperature : ${weatherCurrent?.current?.temp_c.toString()}°C "
-                    binding.tvWeatherDescription.text = "Description : ${weatherCurrent?.current?.condition?.text}"
+                    binding.tvTemperature.text =
+                        "Temperature : ${weatherCurrent?.current?.temp_c.toString()}°C "
+                    binding.tvWeatherDescription.text =
+                        "Description : ${weatherCurrent?.current?.condition?.text}"
                     val urlImage = "http:" + weatherCurrent?.current?.condition?.icon
                     Glide.with(requireContext())
                         .load(urlImage).error(R.drawable.back)
                         .into(binding.imageWeather)
-                }
-                else{
-                    Log.d("ERROR",response.body().toString())
+                } else {
+                    Log.d("ERROR", response.body().toString())
                 }
 
             }
+//Được gọi khi có một lỗi xảy ra trong quá trình gọi API, ví dụ như không có kết nối mạng.
             override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
-                Log.d("ERROR",t.toString())
+                Log.d("ERROR", t.toString())
             }
         })
 
@@ -129,29 +144,33 @@ class AdminAccessFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
 
-                    R.id.logout -> {
-                        val action = AdminAccessFragmentDirections.actionAdminAccessFragmentToLoginFragment()
-                        findNavController().navigate(action)
+                R.id.logout -> {
+                    val action =
+                        AdminAccessFragmentDirections.actionAdminAccessFragmentToLoginFragment()
+                    findNavController().navigate(action)
                     // by returning 'true' we're saying that the event
                     // is handled and it shouldn't be propagated further
                     true
                 }
+
                 R.id.chart -> {
-                        val action = AdminAccessFragmentDirections.actionAdminAccessFragmentToDashboardFragment()
-                        findNavController().navigate(action)
+                    val action =
+                        AdminAccessFragmentDirections.actionAdminAccessFragmentToDashboardFragment()
+                    findNavController().navigate(action)
                     true
                 }
+
                 R.id.coupon -> {
-                        val action = AdminAccessFragmentDirections.actionAdminAccessFragmentToCouponFragment()
-                        findNavController().navigate(action)
+                    val action =
+                        AdminAccessFragmentDirections.actionAdminAccessFragmentToCouponFragment()
+                    findNavController().navigate(action)
                     true
                 }
+
                 else -> false
             }
         }
     }
-
-
 
 
 }

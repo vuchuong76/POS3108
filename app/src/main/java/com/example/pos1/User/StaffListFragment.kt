@@ -2,22 +2,18 @@ package com.example.pos1.User
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pos1.AdminAccessFragmentDirections
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentStaffListBinding
-import com.example.pos1.orlist.OrderListFragmentDirections
 
 
+@Suppress("DEPRECATION")
 class StaffListFragment : Fragment() {
 
     private val viewModel: UserViewModel by activityViewModels {
@@ -41,22 +37,30 @@ class StaffListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UserAdapter { user ->
+        val adapter = UserAdapter(
+        onItemClicked = {user ->
+
+        },
+        onButtonClicked = {user ->
             val action =
-                StaffListFragmentDirections.actionStaffListFragmentToUserDetailFragment(user.staffId)
+                StaffListFragmentDirections.actionStaffListFragmentToUserDetailFragment(user.userName)
             findNavController().navigate(action)
+
         }
+        )
 
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
 
                 R.id.home -> {
-                    val action = StaffListFragmentDirections.actionStaffListFragmentToAdminAccessFragment()
+                    val action =
+                        StaffListFragmentDirections.actionStaffListFragmentToAdminAccessFragment()
                     findNavController().navigate(action)
                     true
                     // by returning 'true' we're saying that the event
                     // is handled and it shouldn't be propagated further
                 }
+
                 else -> false
             }
         }
@@ -72,7 +76,7 @@ class StaffListFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.floatingActionButton.setOnClickListener {
             val action = StaffListFragmentDirections.actionStaffListFragmentToAddStaffFragment(
-                getString(R.string.add_staff),""
+                getString(R.string.add_staff), ""
             )
             findNavController().navigate(action)
         }

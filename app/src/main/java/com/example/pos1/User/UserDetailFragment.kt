@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -40,11 +38,11 @@ class UserDetailFragment : Fragment() {
 
     private fun bindUserDetails(user: User) {
         binding?.apply {
-            staffId.text = user.staffId
+            userName.text = user.userName
             staffName.text = user.staffname
             staffAge.text = user.age.toString()
             position.text = user.position
-            tel.text = user.tel.toString()
+            tel.text = user.tel
             address.text = user.address
 
             editItem.setOnClickListener { editUser() }
@@ -65,7 +63,7 @@ class UserDetailFragment : Fragment() {
             .show()
     }
     private fun deleteUser() {
-        if(user.staffId==viewModel.id){
+        if(user.userName==viewModel.id){
             Toast.makeText(context,"This account is currently in use",Toast.LENGTH_SHORT).show()
         }
 
@@ -104,7 +102,7 @@ class UserDetailFragment : Fragment() {
             .show()
     }
     private fun deleteUser() {
-        if(user.staffId==viewModel.id){
+        if(user.userName==viewModel.userName){
            deleteUsingUserConfirm()
         }
        else {
@@ -116,7 +114,7 @@ class UserDetailFragment : Fragment() {
     private fun editUser() {
         val action = UserDetailFragmentDirections.actionUserDetailFragmentToAddStaffFragment5(
             R.string.edit_user.toString(),
-            user.staffId
+            user.userName
         )
         this.findNavController().navigate(action)
     }
@@ -127,8 +125,8 @@ class UserDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userId = args.staffId
-        viewModel.retrieveItem(userId).observe(viewLifecycleOwner) { user ->
+        val userName = args.userName
+        viewModel.retrieveItem(userName).observe(viewLifecycleOwner) { user ->
             user?.let {
                 this.user = user // Gán giá trị cho thuộc tính user
                 bindUserDetails(user)

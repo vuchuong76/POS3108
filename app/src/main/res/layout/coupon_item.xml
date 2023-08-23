@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginVertical="8dp">
+    android:layout_marginVertical="5dp">
 
 
     <TextView
@@ -19,5 +19,16 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginStart="2dp" />
+    <TextView
+        android:text="X"
+        android:id="@+id/delete"
+        android:textColor="#FFF"
+        android:background="@drawable/delete_button"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="18dp"
+        android:layout_width="18dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:onClick="cancelActivity" />
 
 </LinearLayout>

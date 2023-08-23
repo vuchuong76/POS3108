@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.TableDao
-import com.example.pos1.entity.Order
 import com.example.pos1.entity.Table
 import kotlinx.coroutines.launch
 
@@ -19,7 +18,7 @@ class TableViewModel(private val tableDao: TableDao) : ViewModel() {
     val allTables: LiveData<List<Table>> = tableDao.getTables().asLiveData()
 
     private val _duplicateUserEvent = MutableLiveData<Unit>()
-    val duplicateUserEvent: LiveData<Unit> get() = _duplicateUserEvent
+//    val duplicateUserEvent: LiveData<Unit> get() = _duplicateUserEvent
 
     private fun insertTable(table: Table) {
         viewModelScope.launch {
@@ -47,17 +46,7 @@ fun tableNumberExists(number: Int, onResult: (Boolean) -> Unit) {
         val updatedTable = getUpdatedTableEntry(tableNumber, capacity)
         updateTable(updatedTable)
     }
-    fun updateTableStatusIfNotEmpty(tableNumber: Int, orders: List<Order>) {
-        viewModelScope.launch {
-            if (orders.isNotEmpty()) {
-                tableDao.updateTableStatus(tableNumber, 1)
-            }
-            else{
-                tableDao.updateTableStatus(tableNumber, 0)
 
-            }
-        }
-    }
 
     private fun updateTable(table: Table) {
         viewModelScope.launch {

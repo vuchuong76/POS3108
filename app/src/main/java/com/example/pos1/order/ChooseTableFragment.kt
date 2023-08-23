@@ -1,5 +1,6 @@
 package com.example.pos1.order
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 
@@ -19,6 +20,7 @@ import com.example.pos1.table.TableViewModelFactory
 
 
 //staff chọn bàn ăn
+@Suppress("DEPRECATION")
 class ChooseTableFragment : Fragment() {
     private val viewModel: TableViewModel by activityViewModels {
         TableViewModelFactory(
@@ -38,7 +40,7 @@ class ChooseTableFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentChooseTableBinding.inflate(inflater, container, false)
         // Báo cho hệ thống rằng Fragment này có menu
 
@@ -46,9 +48,10 @@ class ChooseTableFragment : Fragment() {
         setHasOptionsMenu(true)
         return binding.root
     }
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val staffId = sharedViewModel.staffId
+        val userName = sharedViewModel.userName
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 com.example.pos1.R.id.logout -> {
@@ -68,7 +71,7 @@ class ChooseTableFragment : Fragment() {
                 else -> false
             }
         }
-        binding.idLabelTextView.text = "User name: $staffId"
+        binding.idLabelTextView.text = "User name: $userName"
         // Tạo adapter: Tạo một TableListAdapter và chuyển một lambda function vào constructor của adapter.
         // Lambda function này sẽ được gọi khi một mục trong danh sách bàn được nhấp vào.
         val adapter = ChooseTableAdapter { table->
@@ -86,8 +89,14 @@ class ChooseTableFragment : Fragment() {
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 
-
-
+//đổi màu bàn nào có order
+        sharedViewModel.orderForTable1.observe(this.viewLifecycleOwner) { items ->
+            if (items.isNullOrEmpty()) {
+                sharedViewModel.updateTableStatus(sharedViewModel.selectedTableNumber.value ?: 0, 0)
+            } else {
+                sharedViewModel.updateTableStatus(sharedViewModel.selectedTableNumber.value ?: 0, 1)
+            }
+        }
         // Dữ liệu danh sách bàn được quan sát từ ViewModel thông qua viewModel.allTables.observe.
         // Khi danh sách bàn thay đổi, adapter.submitList
         // được gọi để cập nhật danh sách hiển thị trên giao diện người dùng.

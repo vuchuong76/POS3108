@@ -1,5 +1,6 @@
 package com.example.pos1.orlist
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,19 +19,13 @@ import com.example.pos1.order.adapter.CheckoutAdapter
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
 
+@Suppress("DEPRECATION")
 class DetailFragment : Fragment() {
-    // Lấy view model chung sử dụng activityViewModels và OrderViewModelFactory
     private val orderViewModel: OrderViewModel by activityViewModels() {
         OrderViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderDao(),
             (activity?.application as UserApplication).orderDatabase.itemDao(),
             (activity?.application as UserApplication).orderDatabase.tableDao(),
-        )
-    }
-    private val orderListViewModel: OrderlistViewModel by activityViewModels() {
-        OrderListViewModelFactory(
-            (activity?.application as UserApplication).orderDatabase.orderlistDao(),
-            (activity?.application as UserApplication).orderDatabase.orderDao()
         )
     }
     private lateinit var binding: FragmentDetailBinding
@@ -39,25 +34,21 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Gắn layout cho fragment này bằng cách sử dụng binding class được tạo ra
+    ): View {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
-
-
-        // Báo cho hệ thống rằng Fragment này có menu
         setHasOptionsMenu(true)
         return binding.root
     }
 
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         disableBackButton()
-
-        // Khởi tạo OrderAdapter và đặt làm adapter cho RecyclerView
         val adapter = CheckoutAdapter {
         }
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = adapter
         binding.toolbar.setOnMenuItemClickListener {
@@ -70,16 +61,16 @@ class DetailFragment : Fragment() {
                 else -> false
             }}
 
-//Gọi món B3
         // Theo dõi LiveData allItems từ OrderViewModel để tự động cập nhật giao diện
         orderViewModel.orderById.observe(this.viewLifecycleOwner) { items ->
             items.let {
                 var totalAmount = 0.0
                 var totalItemCount = 0
-                var orid =orderViewModel.selectedId.value
-                var lastAmount =orderViewModel.lastAmount1.value
-                var receive =orderViewModel.receive.value
-                var change =orderViewModel.change.value
+                val orid =orderViewModel.selectedId.value
+                val lastAmount =orderViewModel.lastAmount1.value
+                val discount =orderViewModel.discount.value
+                val receive =orderViewModel.receive.value
+                val change =orderViewModel.change.value
 
                 var table=0
                 var date=""
@@ -91,15 +82,13 @@ class DetailFragment : Fragment() {
                 }
                 binding.idTextView.text="Order ID: $orid"
                 binding.tableTextView.text="Table: $table"
-//                binding.amount.text = "Total Amount(tax 10%): $totalAmount $"
-
-                binding.amount.text = "Total Amount(tax 10%):${String.format("%.1f", totalAmount)}$"
-
-                binding.lastAmount.text = "Last Total Amount: $lastAmount $"
-                binding.receive.text = "Receive: $receive $"
-                binding.change.text = "Change: $change $"
+                binding.amount.text = "${String.format("%.1f", totalAmount)}$"
+                binding.lastAmount.text = "$lastAmount $"
+                binding.discount.text = "$discount %"
+                binding.receive.text = "$receive $"
+                binding.change.text = "$change $"
                 binding.count.text = "$totalItemCount items"
-                binding.date.text= "$date"
+                binding.date.text= "Date : $date"
                 adapter.submitList(it)
             }
         }

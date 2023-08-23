@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos1.databinding.UserItemBinding
+import com.example.pos1.entity.Order
 import com.example.pos1.entity.User
 
 class UserAdapter(
-    private val onItemClicked: (User) -> Unit
+    private val onItemClicked: (User) -> Unit,
+    private val onButtonClicked: (User) -> Unit
 ) : ListAdapter<User, UserAdapter.UserViewHolder>(DiffCallback) {
 
 
@@ -35,19 +37,22 @@ class UserAdapter(
     holder.itemView.setOnClickListener {
         onItemClicked(current)
     }
+    holder.binding.infor.setOnClickListener {  // Thay 'yourButtonId' bằng ID thực tế của button
+        onButtonClicked(current)
+    }
     //truyền đối tượng tương ứng với vị trí trong danh sách
         holder.bind(getItem(position))
     }
 
     class UserViewHolder(
-        private var binding: UserItemBinding
+         var binding: UserItemBinding
     ): RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SimpleDateFormat")
         fun bind(user: User) {
             binding.apply {
-                staffIdTextView.text = user.staffId.toString()
-                positionTextView.text = user.position.toString()
-                staffNameTextView.text = user.staffname.toString()
+                userNameTextView.text = user.userName
+                positionTextView.text = user.position
+                staffNameTextView.text = user.staffname
             }
         }
     }
@@ -55,7 +60,7 @@ class UserAdapter(
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<User>() {
             override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-                return oldItem.staffId == newItem.staffId
+                return oldItem.userName == newItem.userName
             }
 
             override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {

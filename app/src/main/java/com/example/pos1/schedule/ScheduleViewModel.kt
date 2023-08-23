@@ -1,5 +1,4 @@
-import android.util.Log
-import android.widget.Toast
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,20 +9,14 @@ import com.example.pos1.dao.ScheduleDao
 import com.example.pos1.entity.Schedule
 import kotlinx.coroutines.launch
 import androidx.lifecycle.switchMap
-import com.example.pos1.entity.Order
 
 class ScheduleViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
 
     val allSchedules: LiveData<List<Schedule>> = scheduleDao.getAll().asLiveData()
 
-    // Để lưu trữ giá trị của selectedEmployee
-    private val _selectedEmployee = MutableLiveData<String?>()
-    val selectedEmployee: LiveData<String?> get() = _selectedEmployee
 
     //chọn ngày để lọc schedule
     private val _selectedDate = MutableLiveData<String?>(null)
-    val selectedDate: LiveData<String?> get()=_selectedDate
-
     fun selectDate(date: String?) {
         _selectedDate.value = date
     }
@@ -51,11 +44,6 @@ class ScheduleViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
         }
     }
 
-    fun updateSchedule(schedule: Schedule) {
-        viewModelScope.launch {
-            scheduleDao.update(schedule)
-        }
-    }
 
     fun deleteSchedule(schedule: Schedule) {
         viewModelScope.launch {
@@ -64,24 +52,15 @@ class ScheduleViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
     }
 
     // Cập nhật giá trị của selectedEmployee
-    fun setSelectedEmployee(employee: String?) {
-        _selectedEmployee.value = employee
-    }
 
     // Thêm tham số employee vào phương thức addNewSchedule()
     fun addNewSchedule(date: String, shift: String, employee: String) {
         val newSchedule = Schedule(date = date, shift = shift, employee = employee)
         insertSchedule(newSchedule)
     }
-    fun getScheduleById(id: Long): LiveData<Schedule> {
-        return scheduleDao.getScheduleById(id.toInt()).asLiveData()
-    }
 
     fun getScheduleByDate(date: String): LiveData<List<Schedule>> {
         return scheduleDao.getAllByDate(date).asLiveData()
-    }
-    fun getScheduleByName(name: String): LiveData<List<Schedule>> {
-        return scheduleDao.getAllByName(name).asLiveData()
     }
 
 

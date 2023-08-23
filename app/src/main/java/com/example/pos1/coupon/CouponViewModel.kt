@@ -7,12 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.CouponDao
-import com.example.pos1.dao.RosterDao
 import com.example.pos1.entity.Coupon
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
@@ -21,20 +18,29 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
 // được lấy từ phương thức getTables() của tableDao.
 // Nó sẽ cung cấp danh sách các bảng Table cho các thành phần giao diện người dùng theo thời gian thực.
     val allCoupons: LiveData<List<Coupon>> = couponDao.getAll().asLiveData()
+
+
+    // Khai báo một lớp sealed để biểu diễn trạng thái của Coupon
     sealed class CouponState {
-        object Loading : CouponState()
-        data class Success(val coupon: Coupon) : CouponState()
-        object Invalid : CouponState()
+        //        object Loading : CouponState() // Trạng thái đang tải (đã bị bình luận lại trong mã)
+        data class Success(val coupon: Coupon) : CouponState() // Trạng thái thành công với dữ liệu là một Coupon
+        object Invalid : CouponState() // Trạng thái không hợp lệ
     }
 
+    // Một luồng có thể thay đổi được để chứa trạng thái của Coupon
     private val _couponFlow = MutableSharedFlow<CouponState>()
+    // Một luồng không thể thay đổi từ bên ngoài để truy cập vào trạng thái của Coupon
     val couponFlow: SharedFlow<CouponState> get() = _couponFlow
 
+    // Hàm lấy thông tin Coupon dựa trên mã code
     fun fetchCouponByCode(code: String) = viewModelScope.launch {
+        // Truy vấn dữ liệu từ cơ sở dữ liệu
         couponDao.getCouponByCode(code).collect { coupon ->
+            // Kiểm tra dữ liệu trả về và phát ra sự kiện tương ứng
             _couponFlow.emit(if (coupon != null) CouponState.Success(coupon) else CouponState.Invalid)
         }
     }
+
 
 
 
@@ -64,10 +70,10 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
         )
     }
 
-    //Phương thức retrieveTable(id: Int) lấy thông tin của một bảng Table dựa trên ID.
-    fun retrieveCoupon(id: Int): LiveData<Coupon> {
-        return couponDao.getCoupon(id).asLiveData()
-    }
+//    //Phương thức retrieveTable(id: Int) lấy thông tin của một bảng Table dựa trên ID.
+//    fun retrieveCoupon(id: Int): LiveData<Coupon> {
+//        return couponDao.getCoupon(id).asLiveData()
+//    }
 
 
     fun isEntryValid(code: EditText, coupon: EditText): Boolean {

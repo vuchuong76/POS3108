@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:paddingBottom="15dp"
-    android:paddingTop="15dp"
-    android:background="@drawable/rounded_background">
+    android:paddingTop="15dp">
 
     <ImageView
         android:id="@+id/imageImageView"
@@ -61,22 +60,24 @@
         android:layout_marginTop="2dp" />
 
     <Button
-        android:backgroundTint="@color/header_bg"
         android:id="@+id/minusButton"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:text="-"
+        android:layout_gravity="center"
+        android:onClick="onMinusClick"
         app:layout_constraintEnd_toStartOf="@+id/addButton"
         app:layout_constraintTop_toTopOf="@+id/stockTextView"
         app:layout_constraintBottom_toBottomOf="@+id/stockTextView"
         android:layout_marginEnd="5dp" />
 
     <Button
-        android:backgroundTint="@color/header_bg"
         android:id="@+id/addButton"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:text="+"
+        android:layout_gravity="center"
+        android:onClick="onPlusClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/stockTextView"
         app:layout_constraintBottom_toBottomOf="@+id/stockTextView"

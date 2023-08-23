@@ -1,18 +1,14 @@
 package com.example.pos1.orlist
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.OrderDao
 import com.example.pos1.dao.OrderlistDao
-import com.example.pos1.entity.Item
 import com.example.pos1.entity.Order
 import com.example.pos1.entity.Orderlist
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -21,23 +17,24 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private val ord
 
     val allItems1: LiveData<List<Orderlist>> = orderlistDao.getAll().asLiveData()
 
-    private val _selectedOrId = MutableLiveData<String>()
-    val selectedOrId: LiveData<String> = _selectedOrId
+//    private val _selectedOrId = MutableLiveData<String>()
+//    val selectedOrId: LiveData<String> = _selectedOrId
     suspend fun addNewOrderlist(
         orId: String,
         tbnum: Int,
-        staffId: String,
+        userName: String,
         date: String,
         amount: Double,
+        discount:Double,
         receive: Double,
         change: Double
     ) {
-        val newOrderlist = getNewOrderListEntry(orId, tbnum, staffId, date, amount, receive, change)
+        val newOrderlist = getNewOrderListEntry(orId, tbnum, userName, date, amount,discount, receive, change)
         insertOrderList(newOrderlist)
 
         val list: List<Order> = orderDao.getOrderForPay(tbnum).firstOrNull() ?: emptyList()
         for (item in list) {
-            var oder: Order = item
+            val oder: Order = item
             oder.date = date
             oder.orderId = orId
             oder.pay_sta = "payed"
@@ -53,18 +50,20 @@ class OrderlistViewModel(private val orderlistDao: OrderlistDao, private val ord
     private fun getNewOrderListEntry(
         orId: String,
         tbnum: Int,
-        staffId: String,
+        userName: String,
         date: String,
         amount: Double,
+        discount: Double,
         receive: Double,
-        change: Double
+        change: Double,
     ): Orderlist {
         return Orderlist(
             orId = orId,
             tbnum = tbnum,
-            staffId = staffId,
+            userName = userName,
             date = date,
             amount = amount,
+            discount=discount,
             receive = receive,
             change = change
         )

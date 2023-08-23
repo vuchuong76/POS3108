@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos1.databinding.KitchenItemBinding
-import com.example.pos1.databinding.OrderItemBinding
 import com.example.pos1.entity.Order
 
 class KitchenAdapter(
@@ -44,7 +43,7 @@ class KitchenAdapter(
         fun bind(order: Order) {
             binding.table.text = order.tableNumber.toString()
             binding.nameView.text = order.name
-            binding.timeView.text = order.time.toString()
+            binding.timeView.text = order.time
             binding.quantityView.text = order.quantity.toString()
             binding.price.text = order.price.toString()
             binding.status.text = order.order_status

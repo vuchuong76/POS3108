@@ -1,5 +1,6 @@
 package com.example.pos1.kitchen
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -26,9 +27,10 @@ class StockAdapter(private val listener: StockItemActionListener) :
     }
 
     class ItemViewHolder(private var binding: StockItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(item: Item, listener: StockItemActionListener) {
             binding.nameTextView.text = "Name : ${item.name}"
-            item.image?.let {
+            item.image.let {
                 Glide.with(itemView.context)
                     .load(item.image)
                     .into(binding.imageImageView)

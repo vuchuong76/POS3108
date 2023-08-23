@@ -40,13 +40,11 @@ class OrderlistAdapter(private val onItemClicked: (Orderlist) -> Unit) :
 
         // Gắn dữ liệu của mục đơn hàng vào thành phần giao diện tương ứng
         fun bind(orderlist: Orderlist) {
-            binding.orIdView.text = orderlist.orId.toString()
+            binding.orIdView.text = orderlist.orId
             binding.tbnumView.text = orderlist.tbnum.toString()
-            binding.staffIdTextView.text = orderlist.staffId.toString()
-            binding.dateView.text = orderlist.date.toString()
+            binding.userNameTextView.text = orderlist.userName
+            binding.dateView.text = orderlist.date
             binding.amountView.text = orderlist.amount.toString()
-//            binding.statusView.text = orderlist.status.toString()
-//            binding.paymentView.text = orderlist.payment.toString()
         }
     }
 

@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#3F51B5"
-        app:title="ADD SHIFT"
+        app:title="ADD SCHEDULE"
         app:titleTextColor="@color/white"
         app:menu="@menu/backmenu"
          />
@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="48dp"
-            android:text="Choose Shift"
+            android:text="Choose Roster"
             android:textSize="20dp" />
         <Spinner
             android:id="@+id/spinnerShift"

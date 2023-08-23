@@ -1,15 +1,13 @@
 package com.example.pos1.coupon
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos1.databinding.CouponItemBinding
-import com.example.pos1.databinding.RosterItemBinding
 import com.example.pos1.entity.Coupon
-import com.example.pos1.entity.Roster
-import com.example.pos1.schedule.RosterAdapter
 
 
 class CouponAdapter(private val onItemClicked: (Coupon) -> Unit) :
@@ -31,17 +29,18 @@ class CouponAdapter(private val onItemClicked: (Coupon) -> Unit) :
     override fun onBindViewHolder(holder: CouponViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current)
-        holder.itemView.setOnClickListener {
+        holder.binding.delete.setOnClickListener {
             // Gọi callback khi mục đơn hàng được nhấp vào
             onItemClicked(current)
         }
     }
 
     // ViewHolder cho mục đơn hàng
-    class CouponViewHolder(private val binding: CouponItemBinding) :
+    class CouponViewHolder(val binding: CouponItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         // Gắn dữ liệu của mục đơn hàng vào thành phần giao diện tương ứng
+        @SuppressLint("SetTextI18n")
         fun bind(coupon: Coupon) {
             binding.codeView.text = coupon.code
             binding.couponView.text = "${coupon.discount.toString()}%"

@@ -39,9 +39,9 @@ class ScheduleAdapter(private val onItemClicked: (Schedule) -> Unit) :
 
         // Gắn dữ liệu của mục đơn hàng vào thành phần giao diện tương ứng
         fun bind(schedule: Schedule) {
-            binding.dateTextView.text=schedule.date.toString()
-            binding.shiftTextView.text = schedule.shift.toString()
-            binding.employeeTextView.text = schedule.employee.toString()
+            binding.dateTextView.text=schedule.date
+            binding.shiftTextView.text = schedule.shift
+            binding.employeeTextView.text = schedule.employee
         }
     }
 

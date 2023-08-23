@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="#F9F6DB"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
@@ -141,7 +142,7 @@
                 android:id="@+id/amountText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="9"
                 android:gravity="left"
                 android:paddingTop="4dp"
                 android:text="Amount (no tax) :"
@@ -151,9 +152,16 @@
                 android:id="@+id/amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:paddingTop="4dp"
+                android:textSize="16dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="$"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -166,19 +174,26 @@
                 android:id="@+id/tax_amountText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="9"
                 android:gravity="left"
-                android:text="Amount (tax 10%) :"
                 android:paddingTop="4dp"
+                android:text="Amount (tax 10%) :"
                 android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/tax_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:paddingTop="4dp"
+                android:textSize="16dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="$"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -189,36 +204,61 @@
 
             <Button
                 android:id="@+id/apply"
-                android:backgroundTint="@color/header_bg"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Apply"
-                android:textColor="@color/white" />
+                android:layout_weight="3"
+                android:gravity="center"
+                android:drawableLeft="@drawable/coupon"
+               />
 
-            <Button
-                android:backgroundTint="@color/header_bg"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:layout_marginRight="10dp"
+                android:hint="Code">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/code"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                    android:inputType="text"
+                    android:textSize="16dp"
+                    android:maxLength="8"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
                 android:id="@+id/clear"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Clear"
-                android:textColor="@color/white" />
-
-            <EditText
-                android:id="@+id/code"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Code" />
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="3dp"
+                android:background="@drawable/delete_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="X"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/coupon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:text="0" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="0%" />
+                android:text="%"
+                android:textSize="16dp" />
+
+
 
 
         </LinearLayout>
@@ -232,7 +272,7 @@
                 android:id="@+id/lastAmountText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="9"
                 android:gravity="left"
                 android:paddingTop="4dp"
                 android:text="Last Amount :"
@@ -242,12 +282,19 @@
                 android:id="@+id/lastAmount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="0.0$"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="$"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -259,18 +306,29 @@
                 android:id="@+id/ok1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="12"
+                android:layout_weight="9"
                 android:gravity="left"
                 android:text="Receive :"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
-            <EditText
-                android:id="@+id/receive"
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="center"
-                android:textSize="18dp" />
+                android:layout_weight="5"
+                android:hint="Receive">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/receive"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:maxLength="7"
+                    android:textSize="16dp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="0dp"
@@ -278,7 +336,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="$"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -290,7 +348,7 @@
                 android:id="@+id/changeText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="9"
                 android:gravity="left"
                 android:paddingTop="4dp"
                 android:text="Change :"
@@ -300,10 +358,17 @@
                 android:id="@+id/change"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:text="0.0$"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="$"
+                android:textSize="16dp" />
         </LinearLayout>
 
 
@@ -313,21 +378,21 @@
             android:orientation="horizontal">
 
             <Button
-                android:backgroundTint="@color/header_bg"
                 android:id="@+id/receipt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/header_bg"
                 android:text="PAY"
                 android:textColor="@color/white" />
 
             <Button
-                android:backgroundTint="@color/header_bg"
                 android:id="@+id/cancel_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/header_bg"
                 android:text="CANCEL"
                 android:textColor="@color/white" />
         </LinearLayout>

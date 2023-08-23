@@ -10,7 +10,7 @@ import com.example.pos1.entity.Order
 
 class OrderAdapter(
     private val onItemClicked: (Order) -> Unit,
-    private val onButtonClicked: (Order) -> Unit  // Thêm callback cho button, onOrderClick: kotlin.Any){}
+    private val onButtonClicked: (Order) -> Unit
 ) : ListAdapter<Order, OrderAdapter.ItemViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -30,8 +30,7 @@ class OrderAdapter(
             onItemClicked(current)
         }
 
-        // Gán sự kiện click cho button
-        holder.binding.delete.setOnClickListener {  // Thay 'yourButtonId' bằng ID thực tế của button
+        holder.binding.delete.setOnClickListener {
             onButtonClicked(current)
         }
     }
@@ -41,9 +40,9 @@ class OrderAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(order: Order) {
-            binding.status.text = order.order_status.toString()
+            binding.status.text = order.order_status
             binding.nameView.text = order.name
-            binding.timeView.text = order.time.toString()
+            binding.timeView.text = order.time
             binding.quantityView.text = order.quantity.toString()
             binding.price.text = order.price.toString()
         }
@@ -52,7 +51,7 @@ class OrderAdapter(
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Order>() {
             override fun areItemsTheSame(oldItem: Order, newItem: Order): Boolean {
-                return oldItem.itemId == newItem.itemId
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: Order, newItem: Order): Boolean {

@@ -38,7 +38,7 @@ class CheckoutAdapter(
 
         fun bind(order: Order) {
             binding.nameView.text = order.name
-            binding.timeView.text = order.time.toString()
+            binding.timeView.text = order.time
             binding.quantityView.text = order.quantity.toString()
             binding.price.text = order.price.toString()
         }

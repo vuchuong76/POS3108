@@ -2,42 +2,25 @@ package com.example.pos1.schedule
 
 import ScheduleViewModel
 import ScheduleViewModelFactory
-import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
 import com.example.pos1.R
 import com.example.pos1.User.UserViewModel
 import com.example.pos1.UserApplication
-import com.example.pos1.databinding.FragmentAddRosterBinding
 import com.example.pos1.databinding.FragmentAddScheduleBinding
-import com.example.pos1.databinding.FragmentNewItemBinding
-import com.example.pos1.editmenu.ItemViewModel
-import com.example.pos1.editmenu.ItemViewModelFactory
-import com.example.pos1.editmenu.NewItemFragmentArgs
-import com.example.pos1.editmenu.NewItemFragmentDirections
-import com.example.pos1.entity.Item
-import com.example.pos1.entity.Roster
-import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
 
+@Suppress("DEPRECATION")
 class AddScheduleFragment : Fragment() {
     private val viewModel: ScheduleViewModel by activityViewModels {
         ScheduleViewModelFactory(

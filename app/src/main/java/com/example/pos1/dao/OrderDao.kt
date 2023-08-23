@@ -29,7 +29,7 @@ interface OrderDao {
     @Query(
         """SELECT name, SUM(quantity) AS total_quantity FROM order_entity WHERE `payment_status` = 'payed'
         GROUP BY name 
-        ORDER BY total_quantity DESC 
+        ORDER BY total_quantity DESC, name ASC
         LIMIT 3"""
     )
     fun getTopDishes(): Flow<List<DishQuantity>>
@@ -41,7 +41,7 @@ interface OrderDao {
     @Query("SELECT * FROM order_entity WHERE tableNumber = :tableNumber AND `payment_status` = 'paying'")
     fun getOrderForPay(tableNumber: Int): Flow<List<Order>>
 
-    @Query("SELECT * FROM order_entity WHERE tableNumber = :tableNumber")
+    @Query("SELECT * FROM order_entity WHERE tableNumber = :tableNumber AND payment_status!='payed'")
     fun getOrderForSelectedTable(tableNumber: Int): Flow<List<Order>>
 
     @Query("SELECT * FROM order_entity WHERE orderId = :orId AND `payment_status` = 'payed'")

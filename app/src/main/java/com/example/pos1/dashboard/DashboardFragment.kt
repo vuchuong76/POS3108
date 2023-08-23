@@ -3,28 +3,19 @@ package com.example.pos1.dashboard
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Half.toFloat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentDashboardBinding
-import com.example.pos1.databinding.FragmentOrderListBinding
 import com.example.pos1.entity.Orderlist
-import com.example.pos1.order.CheckOutFragmentDirections
 import com.example.pos1.orlist.DashboardViewModel
 import com.example.pos1.orlist.DashboardViewModelFactory
-import com.example.pos1.orlist.OrderListFragmentDirections
-import com.example.pos1.orlist.OrderListViewModelFactory
-import com.example.pos1.orlist.OrderlistAdapter
-import com.example.pos1.orlist.OrderlistViewModel
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -37,9 +28,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 // Đây là một Fragment dùng để hiển thị một bảng thông kê.
+@Suppress("DEPRECATION")
 class DashboardFragment : Fragment() {
     // ViewModel giúp lấy dữ liệu và giữ dữ liệu khi xoay màn hình hoặc khi có sự thay đổi cấu hình.
-    private val dashboardViewModel: DashboardViewModel by activityViewModels() {
+    private val dashboardViewModel: DashboardViewModel by activityViewModels {
         DashboardViewModelFactory(
             (activity?.application as UserApplication).orderDatabase.orderlistDao(),
         )
@@ -51,7 +43,7 @@ class DashboardFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Khởi tạo binding và gán layout cho fragment.
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
@@ -68,48 +60,132 @@ class DashboardFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.back -> {
-                    val action = DashboardFragmentDirections.actionDashboardFragmentToAdminAccessFragment()
+                    val action =
+                        DashboardFragmentDirections.actionDashboardFragmentToAdminAccessFragment()
                     findNavController().navigate(action)
                     true
                 }
+
                 else -> false
             }
         }
 
-        // Quan sát dữ liệu và cập nhật UI khi có sự thay đổi.
         dashboardViewModel.allItems1.observe(this.viewLifecycleOwner) { items ->
-            items.let {
-                val listData: MutableList<ThongKeNgay> = ArrayList()
-                var hashSet = HashSet<String>()
+            updateChartData(items)
+        }
 
-                // Lấy ra tất cả các ngày không lặp lại từ dữ liệu.
-                for (ob in it) {
-                    hashSet.add(ob.date)
+        binding.week.setOnClickListener {
+            displayLastSevenDaysData()
+        }
+        binding.month.setOnClickListener {
+            displayLastMonthData()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateChartData(items: List<Orderlist>) { // Thay YourItemType bằng kiểu dữ liệu thật sự của bạn
+        val listData: MutableList<ThongKeNgay> = ArrayList()
+        val hashSet = HashSet<String>()
+
+        for (ob in items) {
+            hashSet.add(ob.date.toString())
+        }
+
+        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val sortedDates = hashSet.sortedBy {
+            LocalDate.parse(it, dateTimeFormatter)
+        }
+
+        var key = 0
+        for (date in sortedDates) {
+            var amount = 0.0
+            for (item in items) {
+                if (item.date == date) {
+                    amount += item.amount!!
                 }
-
-                val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-                // Sắp xếp ngày theo thứ tự từ cũ đến mới.
-                val sortedDates = hashSet.sortedBy {
-                    LocalDate.parse(it, dateTimeFormatter)
-                }
-
-                // Tính tổng số tiền theo từng ngày.
-                var key = 0
-                for (date in sortedDates) {
-                    var amount = 0.0
-                    for (item in it) {
-                        if (item.date == date) {
-                            amount += item.amount
-                        }
-                    }
-                    listData.add(ThongKeNgay(key, date, amount))
-                    key++
-                }
-
-                // Cấu hình cho biểu đồ.
-                setUpChart(listData)
             }
+            listData.add(ThongKeNgay(key, date, amount))
+            key++
+        }
+
+        setUpChart(listData)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun displayLastSevenDaysData() {
+        val items = dashboardViewModel.allItems1.value
+        items?.let {
+            val listData: MutableList<ThongKeNgay> = ArrayList()
+            val hashSet = HashSet<String>()
+
+            for (ob in it) {
+                hashSet.add(ob.date)
+            }
+
+            val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val sortedDates = hashSet.sortedBy {
+                LocalDate.parse(it, dateTimeFormatter)
+            }
+
+            // Lọc ra 7 ngày gần nhất từ danh sách đã sắp xếp:
+            val recentSevenDaysDates = if (sortedDates.size > 7) {
+                sortedDates.takeLast(7)
+            } else {
+                sortedDates
+            }
+
+            var key = 0
+            for (date in recentSevenDaysDates) {
+                var amount = 0.0
+                for (item in it) {
+                    if (item.date == date) {
+                        amount += item.amount
+                    }
+                }
+                listData.add(ThongKeNgay(key, date, amount))
+                key++
+            }
+
+            setUpChart(listData)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun displayLastMonthData() {
+        val items = dashboardViewModel.allItems1.value
+        items?.let {
+            val listData: MutableList<ThongKeNgay> = ArrayList()
+            val hashSet = HashSet<String>()
+
+            for (ob in it) {
+                hashSet.add(ob.date)
+            }
+
+            val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val sortedDates = hashSet.sortedBy {
+                LocalDate.parse(it, dateTimeFormatter)
+            }
+
+            // Lọc ra 7 ngày gần nhất từ danh sách đã sắp xếp:
+            val recentSevenDaysDates = if (sortedDates.size > 30) {
+                sortedDates.takeLast(30)
+            } else {
+                sortedDates
+            }
+
+            var key = 0
+            for (date in recentSevenDaysDates) {
+                var amount = 0.0
+                for (item in it) {
+                    if (item.date == date) {
+                        amount += item.amount
+                    }
+                }
+                listData.add(ThongKeNgay(key, date, amount))
+                key++
+            }
+
+            setUpChart(listData)
         }
     }
 
@@ -144,17 +220,19 @@ class DashboardFragment : Fragment() {
         xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
             setDrawGridLines(false)
-            labelCount = 4
+            labelCount = 8
             granularity = 1f
             isGranularityEnabled = true
             valueFormatter = MyAxits(listData.map { it.date ?: "" } as ArrayList<String>)
         }
     }
 }
+
 // Lớp dùng để format giá trị trên trục x của biểu đồ.
 class MyAxits(private val dates: ArrayList<String>) : ValueFormatter() {
     @RequiresApi(Build.VERSION_CODES.O)
     private val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
     @RequiresApi(Build.VERSION_CODES.O)
     private val outputFormatter = DateTimeFormatter.ofPattern("dd-MM")
 

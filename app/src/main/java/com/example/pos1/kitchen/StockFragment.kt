@@ -18,6 +18,7 @@ import com.example.pos1.editmenu.ItemViewModelFactory
 import com.example.pos1.entity.Item
 
 
+@Suppress("DEPRECATION")
 class StockFragment : Fragment() {
     private val viewModel: ItemViewModel by activityViewModels {
         ItemViewModelFactory(
@@ -29,12 +30,12 @@ class StockFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentStockBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
     }
-    fun showQuantityDialog(item: Item) {
+    fun addQuantityDialog(item: Item) {
         val builder = AlertDialog.Builder(requireContext())
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.dialog_edittext, null)
@@ -51,7 +52,7 @@ class StockFragment : Fragment() {
         builder.setNegativeButton("Cancel") { _, _ -> }
         builder.show()
     }
-    fun showQuantityDialog1(item: Item) {
+    fun minusQuantityDialog(item: Item) {
         val builder = AlertDialog.Builder(requireContext())
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.dialog_edittext, null)
@@ -77,11 +78,11 @@ class StockFragment : Fragment() {
         // Lambda function này sẽ được gọi khi một mục trong danh sách bàn được nhấp vào.
         val adapter = StockAdapter(object: StockItemActionListener {
             override fun onAddButtonClick(item: Item) {
-                showQuantityDialog(item)
+                addQuantityDialog(item)
             }
 
             override fun onMinusButtonClick(item: Item) {
-                showQuantityDialog1(item)
+                minusQuantityDialog(item)
             }
 
             override fun onItemClicked(item: Item) {

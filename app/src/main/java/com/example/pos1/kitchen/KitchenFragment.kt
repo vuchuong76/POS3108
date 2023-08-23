@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentKitchenBinding
-import com.example.pos1.order.adapter.OrderAdapter
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
 
+@Suppress("DEPRECATION")
 class KitchenFragment : Fragment() {
     // Lấy view model chung sử dụng activityViewModels và OrderViewModelFactory
     private val sharedViewModel: OrderViewModel by activityViewModels() {
@@ -30,7 +30,7 @@ class KitchenFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Gắn layout cho fragment này bằng cách sử dụng binding class được tạo ra
         binding = FragmentKitchenBinding.inflate(inflater, container, false)
 

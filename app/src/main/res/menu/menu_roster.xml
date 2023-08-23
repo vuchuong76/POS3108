@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="Roster Setting"
+        android:title="Roster"
         android:icon="@drawable/setting"
         android:id="@+id/setting"
         app:showAsAction="ifRoom|withText"></item>

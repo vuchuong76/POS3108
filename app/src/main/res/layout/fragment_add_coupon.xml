@@ -11,72 +11,72 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Add Roster"
+        app:title="Add Coupon"
         app:titleTextColor="@color/white"
         android:background="#3F51B5"
         app:menu="@menu/backmenu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <TextView
-        android:id="@+id/code_label"
-        android:layout_width="80dp"
-        android:layout_height="48dp"
-        android:text="Code:"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp" />
 
-    <EditText
-        android:id="@+id/code"
-        android:layout_width="0dp"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:ems="10"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-*"
-    android:inputType="text"
-        android:paddingStart="10dp"
+        android:layout_gravity="center"
+        android:id="@+id/code_lay"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/code_label"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:hint="Insert Code" />
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:hint="Insert Code">
 
-    <TextView
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:id="@+id/code"
+            android:ems="10"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+             android:inputType="text"
+            android:maxLength="9"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
         android:id="@+id/finish_label"
-        android:layout_width="80dp"
-        android:layout_height="48dp"
-        android:text="Discount:"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/code"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp" />
-
-    <EditText
-        android:id="@+id/coupon"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:paddingStart="10dp"
-        android:maxLength="2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/finish_label"
-        app:layout_constraintTop_toBottomOf="@+id/code"
-        android:ems="10"
-        android:layout_marginRight="30dp"
-        android:inputType="text"
-        android:hint="number" />
+        app:layout_constraintTop_toBottomOf="@+id/code_lay"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:hint="Discount">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:id="@+id/coupon"
+            android:ems="10"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            android:layout_height="wrap_content"
+            android:maxLength="2"
+            android:inputType="numberDecimal"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <Button
         android:id="@+id/add_bt1"
         android:layout_width="wrap_content"
         android:backgroundTint="@color/header_bg"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/coupon"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/finish_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

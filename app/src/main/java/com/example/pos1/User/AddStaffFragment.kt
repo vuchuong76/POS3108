@@ -40,7 +40,7 @@ class AddStaffFragment : Fragment() {
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, positions)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.position.adapter = spinnerAdapter
-        binding.position.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+        binding.position.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedPosition = positions[position]
             }
@@ -48,13 +48,13 @@ class AddStaffFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Do nothing
             }
-        })
+        }
         return binding.root
     }
 
     private fun isEntryValid(): Boolean {
         return viewModel.isEntryValid(
-            binding.staffId,
+            binding.userName,
             binding.passWord,
             binding.staffName,
             binding.staffAge,
@@ -66,11 +66,11 @@ class AddStaffFragment : Fragment() {
 
     private fun bind(user: User) {
         binding.apply {
-            staffId.text = Editable.Factory.getInstance().newEditable(user.staffId.toString())
+            userName.text = Editable.Factory.getInstance().newEditable(user.userName)
             passWord.text = Editable.Factory.getInstance().newEditable(user.password)
             staffName.text = Editable.Factory.getInstance().newEditable(user.staffname)
             staffAge.text = Editable.Factory.getInstance().newEditable(user.age.toString())
-            tel.text = Editable.Factory.getInstance().newEditable(user.tel.toString())
+            tel.text = Editable.Factory.getInstance().newEditable(user.tel)
             address.text = Editable.Factory.getInstance().newEditable(user.address)
             val positionIndex = positions.indexOf(user.position)
             position.setSelection(positionIndex)
@@ -80,15 +80,15 @@ class AddStaffFragment : Fragment() {
 
     private fun addNewUser() {
         if (isEntryValid()) {
-            val staffIdInput = binding.staffId.text.toString()
+            val userNameInput = binding.userName.text.toString()
 
-            viewModel.staffIdExists(staffIdInput) { exists ->
+            viewModel.userNameExists(userNameInput) { exists ->
                 if (exists) {
                     Toast.makeText(context, "UserName is already exists!", Toast.LENGTH_SHORT).show()
                 } else {
                     val hashedPassword = BCrypt.hashpw(binding.passWord.text.toString(), BCrypt.gensalt())
                     viewModel.addNewUser(
-                        staffIdInput,
+                        userNameInput,
                         hashedPassword,
                         binding.staffName.text.toString(),
                         binding.staffAge.text.toString().toInt(),
@@ -100,37 +100,39 @@ class AddStaffFragment : Fragment() {
                 }
             }
         } else {
-            Toast.makeText(context, "Invalid input data", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Input data is not valid", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun updateUser() {
         if (isEntryValid()) {
+            //gensalt là phần đc thêm vào trước 1 chuỗi,giúp cho mật khẩu đặt giống nhau cũng có mã hàm bưm khác nhau
             val hashedPassword = BCrypt.hashpw(binding.passWord.text.toString(), BCrypt.gensalt())
             viewModel.updateUser(
-                this.args.staffId,
+                args.userName,
                 hashedPassword,
-                this.binding.staffName.text.toString(),
-                this.binding.staffAge.text.toString(),
-                this.binding.position.selectedItem.toString(),
-                this.binding.tel.text.toString(),
-                this.binding.address.text.toString()
+                binding.staffName.text.toString(),
+                binding.staffAge.text.toString(),
+                binding.position.selectedItem.toString(),
+                binding.tel.text.toString(),
+                binding.address.text.toString()
             )
             val action = AddStaffFragmentDirections.actionAddStaffFragmentToStaffListFragment()
             findNavController().navigate(action)
         } else {
-            Toast.makeText(context, "Invalid input data", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Input data is not valid", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val id = args.staffId
-        if (id.length > 0) {
+        val id = args.userName
+        if (id.isNotEmpty()) {
             viewModel.retrieveItem(id).observe(this.viewLifecycleOwner) { selectedItem ->
                 user = selectedItem
                 bind(user)
+                binding.toolbar.title="User Edit"
             }
         } else {
             binding.addBt1.setOnClickListener {

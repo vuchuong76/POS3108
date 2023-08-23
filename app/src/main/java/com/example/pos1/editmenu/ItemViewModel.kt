@@ -1,7 +1,6 @@
 package com.example.pos1.editmenu
 
 import android.content.Context
-import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -11,45 +10,31 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pos1.dao.ItemDao
 import com.example.pos1.entity.Item
-import com.example.pos1.entity.Order
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.withContext
 
 class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
-    //Thuộc tính allTables là một LiveData kiểu danh sách các Table,
-// được lấy từ phương thức getTables() của tableDao.
-// Nó sẽ cung cấp danh sách các bảng Table cho các thành phần giao diện người dùng theo thời gian thực.
     val allItems: LiveData<List<Item>> = itemDao.getItems().asLiveData()
-    private val updateMutex = Mutex()
+//    private val updateMutex = Mutex()
     private fun insertItem(item: Item) {
         viewModelScope.launch {
             itemDao.insert(item)
         }
     }
-
-    var sellItemCount = 0
-    var updateItemCount = 0
+//    var sellItemCount = 0
+//    var updateItemCount = 0
 
 suspend fun sellItem(item: Item) {
-    sellItemCount++
-    Log.d("YourTag", "1 sellItem has been called $sellItemCount times")
+//    sellItemCount++
     if (item.stock > 0) {
-        // Decrease the quantity by 1
         val newItem = item.copy(stock = item.stock - 1)
-        Log.d("MyTag", "2 stock: ${item.stock}")
         updateItem(newItem)
-        Log.d("MyTag", "4 updated stock: ${newItem.stock}")
     }
 }
 
 
     private suspend fun updateItem(item: Item) {
-        updateItemCount++
-        Log.d("YourTag", "3 updateItem has been called $updateItemCount times")
+//        updateItemCount++
         itemDao.update(item)
-        Log.d("MyTag", "4 updated stock: ${item.stock}")
     }
     fun updateItem(
         id: Int,

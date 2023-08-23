@@ -3,8 +3,6 @@ package com.example.pos1.table
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -16,9 +14,9 @@ import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddTableBinding
 import com.example.pos1.entity.Table
-import org.mindrot.jbcrypt.BCrypt
 
 
+@Suppress("DEPRECATION")
 class AddTableFragment : Fragment() {
 
     lateinit var table: Table
@@ -56,21 +54,6 @@ class AddTableFragment : Fragment() {
             buttonSave.setOnClickListener { updateTable() }
         }
     }
-//Phương thức này được gọi khi người dùng nhấn nút thêm bàn mới.
-// Nếu dữ liệu nhập vào hợp lệ, phương thức này gọi ViewModel để
-// thêm bàn mới và sau đó điều hướng đến màn hình danh sách bàn.
-//    private fun addNewTable() {
-//        if (isEntryValid()) {
-//            viewModel.addNewTable(
-//                binding.editNumber.text.toString(),
-//                binding.editCapacity.text.toString()
-//            )
-//            val action = AddTableFragmentDirections.actionAddTableFragmentToTableFragment()
-//            findNavController().navigate(action)
-//        }
-//    else {Toast.makeText(context,"Invalid", Toast.LENGTH_SHORT).show()}
-//    }
-
     private fun addNewTable() {
         if (isEntryValid()) {
             val numberInput = binding.editNumber.text.toString().toInt()
@@ -93,9 +76,7 @@ class AddTableFragment : Fragment() {
         }
     }
 
-    //Phương thức này được gọi khi người dùng nhấn nút cập nhật thông tin bàn.
-// Nếu dữ liệu nhập vào hợp lệ, phương thức này gọi ViewModel để cập nhật
-// thông tin bàn và sau đó điều hướng trở lại màn hình danh sách bàn
+
     private fun updateTable() {
         if (isEntryValid()) {
             viewModel.updateTable(
@@ -120,6 +101,7 @@ class AddTableFragment : Fragment() {
             viewModel.retrieveTable(id).observe(this.viewLifecycleOwner) { selectedTable ->
                 table = selectedTable
                 bind(table)
+                binding.toolbar.title="Edit Table"
             }
         } else {
             binding.buttonSave.setOnClickListener {

@@ -1,14 +1,9 @@
 package com.example.pos1.orlist
 
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +14,7 @@ import com.example.pos1.databinding.FragmentOrderListBinding
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
 
+@Suppress("DEPRECATION")
 class OrderListFragment : Fragment() {
     private val orderViewModel1: OrderlistViewModel by activityViewModels() {
         OrderListViewModelFactory(
@@ -39,12 +35,8 @@ class OrderListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Gắn layout cho fragment này bằng cách sử dụng binding class được tạo ra
+    ): View {
         binding = FragmentOrderListBinding.inflate(inflater, container, false)
-
-
-        // Báo cho hệ thống rằng Fragment này có menu
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -55,6 +47,7 @@ class OrderListFragment : Fragment() {
         val adapter = OrderlistAdapter { order ->
             sharedViewModel.setSelectedId(order.orId)
             sharedViewModel.setLastAmount(order.amount)
+            sharedViewModel.setDiscount(order.discount)
             sharedViewModel.setReceive(order.receive)
             sharedViewModel.setChange(order.change)
             val action = OrderListFragmentDirections.actionOrderListFragmentToDetailFragment()
@@ -62,7 +55,6 @@ class OrderListFragment : Fragment() {
         }
         binding.recyclerView1.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView1.adapter = adapter
-//quay trở về màn hine Choose Table
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.home -> {
@@ -71,13 +63,9 @@ class OrderListFragment : Fragment() {
                     findNavController().navigate(action)
                     true
                 }
-
-
                 else -> false
             }
         }
-
-        // Theo dõi LiveData allItems từ OrderlistViewModel để tự động cập nhật giao diện
         orderViewModel1.allItems1.observe(this.viewLifecycleOwner) { items ->
             items.let {
                 adapter.submitList(it)
