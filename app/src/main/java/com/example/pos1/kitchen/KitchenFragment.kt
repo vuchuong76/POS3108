@@ -69,9 +69,6 @@ class KitchenFragment : Fragment() {
             },
             onButtonClicked = { order ->
                 sharedViewModel.serve(order)
-                // Xử lý sự kiện khi button được nhấn
-                // Ví dụ:
-                // sharedViewModel.someFunction(order)
             }
         )
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)

@@ -55,9 +55,9 @@ class MenuTabletFragment : Fragment() {
                 2 -> tab.text = "Appetizer"
             }
         }.attach()
-            val userName = sharedViewModel.userName
+            val staffName = sharedViewModel.staffName
             val tablenum = sharedViewModel.selectedTableNumber.value ?: 0
-            binding.idTextView.text = "User name: $userName"
+            binding.idTextView.text = "Staff name: $staffName"
             binding.tableTextView.text = "Table:$tablenum"
 
             binding.buttonCheck.setOnClickListener {
@@ -112,7 +112,29 @@ class MenuTabletFragment : Fragment() {
                 }
             }
 
+        sharedViewModel.orderForCheck.observe(this.viewLifecycleOwner) { orders ->
+            if (orders.isNotEmpty()) {
+//                binding.buttonCheck.visibility = View.VISIBLE
+                binding.buttonCheck.alpha = 1.0f
+                binding.buttonCheck.isEnabled = true
+            } else {
+//                binding.buttonCheck.visibility = View.GONE
+                binding.buttonCheck.alpha = 0.3f
+                binding.buttonCheck.isEnabled = false
+            }
+        }
+        sharedViewModel.orderForDeleteAll.observe(this.viewLifecycleOwner) { orders ->
+            if (orders.isNotEmpty()) {
+//                binding.deleteAll.visibility = View.VISIBLE
+                binding.deleteAll.alpha = 1.0f
+                binding.deleteAll.isEnabled = true
+            } else {
+//                binding.deleteAll.visibility = View.GONE
+                binding.deleteAll.alpha = 0.3f
+                binding.deleteAll.isEnabled = false
 
+            }
+        }
         sharedViewModel.orderForTable.observe(this.viewLifecycleOwner) { items ->
             var totalAmount = 0.0
             var totalItemCount = 0

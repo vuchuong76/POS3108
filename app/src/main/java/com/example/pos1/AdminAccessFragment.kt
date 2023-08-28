@@ -58,6 +58,7 @@ class AdminAccessFragment : Fragment() {
         val dish2TextView: TextView = view.findViewById(R.id.dish2TextView)
         val dish3TextView: TextView = view.findViewById(R.id.dish3TextView)
 
+
         viewModel.topDishes.observe(viewLifecycleOwner) { dishes ->
             dishes?.let {
                 if (dishes.isNotEmpty()) {

@@ -49,6 +49,8 @@ interface OrderDao {
 
     @Query("SELECT * FROM order_entity WHERE `order_status` = 'waiting' AND `payment_status` = 'waiting'")
     fun getOrderForKitchen(): Flow<List<Order>>
+    @Query("SELECT * FROM order_entity WHERE tableNumber = :tableNumber AND `order_status` = 'checking'")
+    fun getOrderForCheck(tableNumber: Int): Flow<List<Order>>
 
     @Query("SELECT * FROM order_entity WHERE payment_status != 'waiting'")
     fun getOrderforChangeColor(): Flow<List<Order>>

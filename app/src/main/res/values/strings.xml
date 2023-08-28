@@ -14,7 +14,7 @@
 
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Table not saved because it is empty.</string>
-    <string name="action_select_image">Select img\n</string>
+    <string name="action_select_image">Select image\n</string>
     <string name="capital_off">OFF</string>
     <string-array name="spinner">
         <item>Admin</item>

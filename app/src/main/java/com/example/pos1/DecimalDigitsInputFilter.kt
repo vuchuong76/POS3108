@@ -19,8 +19,12 @@ class DecimalDigitsInputFilter(digitsAfterZero: Int) : InputFilter {
         dstart: Int,
         dend: Int
     ): CharSequence? {
-        val matcher = mPattern.matcher(dest)
-        if (!matcher.matches()) return ""
+        val newString = dest.substring(0, dstart) + source.subSequence(start, end) + dest.substring(dend)
+        val matcher = mPattern.matcher(newString)
+
+        if (!matcher.matches() || newString.length > 6) {
+            return ""
+        }
         return null
     }
 }

@@ -1,7 +1,9 @@
 package com.example.pos1.User
 
+import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(private val userDao: UserDao): ViewModel() {
     var userName: String = ""
+    var staffName: String = ""
     val allItems: LiveData<List<User>> = userDao.getAll().asLiveData()
     fun getAllUserNames(): LiveData<List<String>> {
         return userDao.getAllUserNames()
@@ -109,36 +112,55 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
         var isValid = true
 
         if (userNameEditText.text.isBlank() || userNameEditText.text.length < 3) {
-            userNameEditText.error = "Username is not valid"
+            userNameEditText.error = "Username must be longer than 3 characters\n"
             isValid = false
         }
 
         if (passwordEditText.text.isBlank() || passwordEditText.text.length < 3) {
-            passwordEditText.error = "Password is not valid"
+            passwordEditText.error = "Password must be longer than 3 characters"
             isValid = false
         }
 
         if (staffnameEditText.text.isBlank() || staffnameEditText.text.length < 2) {
-            staffnameEditText.error = "Staff Name is not valid"
+            staffnameEditText.error = "Staff Name must be longer than 2 characters"
             isValid = false
         }
 
-        if (ageEditText.text.isBlank() || ageEditText.text.length < 2) {
-            ageEditText.error = "The age is not valid"
+        if (ageEditText.text.isBlank() || ageEditText.text.toString().toInt() <16||ageEditText.text.toString().toInt()>150) {
+            ageEditText.error = "The age must between 16 and 150"
             isValid = false
         }
 
         if (telEditText.text.isBlank() || telEditText.text.length < 8) {
-            telEditText.error = "Telephone Number is not valid"
+            telEditText.error = "Telephone Number must be longer than 8 characters"
             isValid = false
         }
 
-        if (addressEditText.text.isBlank() || addressEditText.text.length < 4) {
-            addressEditText.error = "Address is not valid"
+        if (addressEditText.text.isBlank() || addressEditText.text.length < 2) {
+            addressEditText.error = "Address must be longer than 2 characters"
             isValid = false
         }
 
         return isValid
+    }
+
+    fun blank(
+        userNameEditText: EditText,
+        passwordEditText: EditText,
+        staffnameEditText: EditText,
+        ageEditText: EditText,
+        positionEditText: String,
+        telEditText: EditText,
+        addressEditText: EditText,
+        context:Context
+    ): Boolean {
+        var backPossible = false
+        if (userNameEditText.text.isBlank() &&addressEditText.text.isBlank() && addressEditText.text.isBlank()
+            && telEditText.text.isBlank() && ageEditText.text.isBlank()
+            && staffnameEditText.text.isBlank() && passwordEditText.text.isBlank()) {
+            backPossible = true
+        }
+        return backPossible
     }
 
     private fun getUpdatedItemEntry(

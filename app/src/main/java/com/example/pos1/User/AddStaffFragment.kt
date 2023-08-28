@@ -1,5 +1,6 @@
 package com.example.pos1.User
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddStaffBinding
 import com.example.pos1.entity.User
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.mindrot.jbcrypt.BCrypt
 
 class AddStaffFragment : Fragment() {
@@ -63,6 +65,32 @@ class AddStaffFragment : Fragment() {
             binding.address
         )
     }
+    private fun blank(): Boolean {
+        return viewModel.blank(
+            binding.userName,
+            binding.passWord,
+            binding.staffName,
+            binding.staffAge,
+            binding.position.selectedItem.toString(),
+            binding.tel,
+            binding.address,
+            requireContext()
+        )
+    }
+
+    private fun showConfirmationDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("You are entering information, do you really want to exit?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                val action =
+                    AddStaffFragmentDirections.actionAddStaffFragmentToStaffListFragment()
+                findNavController().navigate(action)
+            }
+            .show()
+    }
 
     private fun bind(user: User) {
         binding.apply {
@@ -84,7 +112,7 @@ class AddStaffFragment : Fragment() {
 
             viewModel.userNameExists(userNameInput) { exists ->
                 if (exists) {
-                    Toast.makeText(context, "UserName is already exists!", Toast.LENGTH_SHORT).show()
+                    binding.userName.error = "UserName is already exists!"
                 } else {
                     val hashedPassword = BCrypt.hashpw(binding.passWord.text.toString(), BCrypt.gensalt())
                     viewModel.addNewUser(
@@ -133,9 +161,11 @@ class AddStaffFragment : Fragment() {
                 user = selectedItem
                 bind(user)
                 binding.toolbar.title="User Edit"
+                binding.userName.isEnabled = false
             }
         } else {
             binding.addBt1.setOnClickListener {
+                binding.userName.isEnabled = true
                 addNewUser()
             }
         }
@@ -143,8 +173,14 @@ class AddStaffFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.back -> {
-                    val action = AddStaffFragmentDirections.actionAddStaffFragmentToStaffListFragment()
-                    findNavController().navigate(action)
+                   if (!blank()) {
+                        showConfirmationDialog()
+                    }
+                    else{
+                       val action =
+                           AddStaffFragmentDirections.actionAddStaffFragmentToStaffListFragment()
+                       findNavController().navigate(action)
+                    }
                     true
                 }
                 else -> false

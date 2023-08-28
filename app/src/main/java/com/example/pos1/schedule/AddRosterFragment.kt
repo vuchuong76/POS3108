@@ -78,7 +78,7 @@ class AddRosterFragment : Fragment() {
                 }
             }
         } else {
-            Toast.makeText(context, "Not correct time", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Time must between 0 and 24", Toast.LENGTH_SHORT).show()
         }
     }
 

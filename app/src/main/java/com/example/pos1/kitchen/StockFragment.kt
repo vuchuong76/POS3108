@@ -1,10 +1,12 @@
 package com.example.pos1.kitchen
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -60,15 +62,26 @@ class StockFragment : Fragment() {
 
         builder.setView(dialogLayout)
         builder.setTitle("Insert Quantity")
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton("OK", null) // Chú ý không set listener ở đây
+        builder.setNegativeButton("Cancel", null)
+
+        val dialog = builder.create()
+        dialog.show()
+
+        // Thiết lập sự kiện click cho nút OK sau khi dialog đã được hiển thị
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
             val quantity = editText.text.toString().toIntOrNull()
             if (quantity != null) {
-                viewModel.minusStock(item, quantity)  // Gọi hàm updateStock
+                if (quantity >item.stock) {
+                    editText.error = "You have only ${item.stock} items"
+                } else {
+                    viewModel.minusStock(item, quantity)  // Gọi hàm updateStock
+                    dialog.dismiss()  // Đóng dialog chỉ khi điều kiện được thỏa mãn
+                }
             }
         }
-        builder.setNegativeButton("Cancel") { _, _ -> }
-        builder.show()
     }
+
 
 
 

@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_loginFragment_to_kitchenFragment"
             app:destination="@id/kitchenFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_adminFragment"
+            app:destination="@id/adminFragment" />
     </fragment>
     <fragment
         android:id="@+id/staffListFragment"
@@ -219,6 +222,9 @@
         <action
             android:id="@+id/action_orderListFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_orderListFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/checkOutFragment"
@@ -247,7 +253,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.pos1.orlist.DetailFragment"
+        android:name="com.example.pos1.order.DetailFragment"
         android:label="DetailFragment" >
         <action
             android:id="@+id/action_detailFragment_to_chooseTableFragment"
@@ -341,4 +347,16 @@
             android:id="@+id/action_menuTabletFragment_to_checkOutFragment"
             app:destination="@id/checkOutFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.example.pos1.AdminFragment"
+        android:label="AdminFragment" >
+        <action
+            android:id="@+id/action_adminFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.example.pos1.orlist.OrderDetailFragment"
+        android:label="OrderDetailFragment" />
 </navigation>

@@ -60,7 +60,7 @@ class AddTableFragment : Fragment() {
 
             viewModel.tableNumberExists(numberInput) { exists ->
                 if (exists) {
-                    Toast.makeText(context, "Table Number already exists!", Toast.LENGTH_SHORT).show()
+                    binding.editNumber.error="This number is already exist"
                 } else {
                     viewModel.addNewTable(
                         numberInput.toString(),
@@ -102,10 +102,12 @@ class AddTableFragment : Fragment() {
                 table = selectedTable
                 bind(table)
                 binding.toolbar.title="Edit Table"
+                binding.editNumber.isEnabled=false
             }
         } else {
             binding.buttonSave.setOnClickListener {
                 addNewTable()
+                binding.editNumber.isEnabled=true
             }
         }
         binding.toolbar.setOnMenuItemClickListener {

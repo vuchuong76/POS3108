@@ -22,9 +22,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.pos1.User.AddStaffFragmentDirections
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentNewItemBinding
 import com.example.pos1.entity.Item
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 @Suppress("DEPRECATION")
@@ -53,6 +55,30 @@ class NewItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                com.example.pos1.R.id.back -> {
+                    Log.d("DEBUG", "Tên: ${binding.name.text}")
+                    Log.d("DEBUG", "Số lượng: ${binding.stock.text}")
+                    Log.d("DEBUG", "Giá: ${binding.price.text}")
+                    Log.d("DEBUG", "Hình ảnh: $binding.image")
+                    if (!blank()) {
+                        showConfirmationDialog()
+                        Log.d("DEBUG", "Tên: ${binding.name.text}")
+                        Log.d("DEBUG", "Số lượng: ${binding.stock.text}")
+                        Log.d("DEBUG", "Giá: ${binding.price.text}")
+                        Log.d("DEBUG", "Hình ảnh: $binding.image")
+                    }
+                    else{
+                        val action =
+                            NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+                        findNavController().navigate(action)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
 
         // Tạo mảng chứa các mục bạn muốn hiển thị trong Spinner
         val items = arrayOf("Food", "Drink", "Appetizer")
@@ -72,6 +98,7 @@ class NewItemFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
+                //view là phần tử được chọn, nếu không null thì thực hiện let
                 view?.let {
 //                    // Lấy mục được chọn
 //                    val selectedItem = parent.getItemAtPosition(position).toString()
@@ -85,23 +112,23 @@ class NewItemFragment : Fragment() {
             }
         }
 
-        binding.back.setOnClickListener {
-            val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
-            findNavController().navigate(action)
-        }
+//        binding.back.setOnClickListener {
+//            val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+//            findNavController().navigate(action)
+//        }
         val id = args.itemId
         if (id > 0) {
             viewModel.retrieveItem(id).observe(this.viewLifecycleOwner) { selectedItem ->
                 item = selectedItem
+                binding.name.isEnabled=false
                 binding.toolbar.title = "Editing"
                 bind(item)
             }
         } else {
             binding.save.setOnClickListener {
+                binding.name.isEnabled=true
                 addNewItem()
-
             }
-
         }
         initControls()
     }
@@ -115,6 +142,7 @@ class NewItemFragment : Fragment() {
     }
 
     //hàm yêu cầu 1 hình ảnh
+    //kết quả sẽ được trả lại thông qua resultLauncher
     private fun pickImage() {
         val intent = Intent()
         intent.type = "image/*"
@@ -140,7 +168,28 @@ class NewItemFragment : Fragment() {
             }
         }
 
+    private fun blank(): Boolean {
+        return viewModel.blank(
+            binding.name,
+            binding.stock,
+            binding.price,
+            imageSelected
+        )
+    }
 
+    private fun showConfirmationDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("You are entering information, do you really want to exit?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                val action =
+                    NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+                findNavController().navigate(action)
+            }
+            .show()
+    }
     private fun isEntryValid(): Boolean {
         return viewModel.isEntryValid(
             binding.name,
@@ -155,6 +204,8 @@ class NewItemFragment : Fragment() {
     @SuppressLint("SuspiciousIndentation")
     private fun bind(item: Item) {
         binding.apply {
+            // hai dòng mã này đảm bảo rằng Spinner type sẽ hiển thị mục có giá trị là item.type
+            // từ đối tượng item mà bạn đang liên kết (bind) thông qua hàm bind(item: Item).
             val position = (type.adapter as ArrayAdapter<String>).getPosition(item.type)
             type.setSelection(position)
             name.setText(item.name, TextView.BufferType.SPANNABLE)
@@ -164,9 +215,6 @@ class NewItemFragment : Fragment() {
             Glide.with(requireContext())
                 .load(item.image)
                 .into(binding.ivImage)
-
-            Log.d("testthu1", imageSelected)
-
 
             save.setOnClickListener { updateItem() }
         }
@@ -188,7 +236,7 @@ class NewItemFragment : Fragment() {
                     val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
                     findNavController().navigate(action)
                 } else {
-                    Toast.makeText(context, "Item Name is already exist", Toast.LENGTH_SHORT).show()
+                    binding.name.error="This name is already exist"
                 }
             }
         } else {
@@ -207,7 +255,6 @@ class NewItemFragment : Fragment() {
                 imageSelected
 
             )
-            Log.d("testthu2", binding.ivImage.toString())
             val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
             findNavController().navigate(action)
         } else {

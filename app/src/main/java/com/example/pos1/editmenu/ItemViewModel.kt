@@ -20,11 +20,8 @@ class ItemViewModel(private val itemDao: ItemDao) : ViewModel() {
             itemDao.insert(item)
         }
     }
-//    var sellItemCount = 0
-//    var updateItemCount = 0
 
 suspend fun sellItem(item: Item) {
-//    sellItemCount++
     if (item.stock > 0) {
         val newItem = item.copy(stock = item.stock - 1)
         updateItem(newItem)
@@ -33,7 +30,6 @@ suspend fun sellItem(item: Item) {
 
 
     private suspend fun updateItem(item: Item) {
-//        updateItemCount++
         itemDao.update(item)
     }
     fun updateItem(
@@ -132,6 +128,20 @@ suspend fun sellItem(item: Item) {
         }
 
         return isValid
+    }
+
+    fun blank(
+        name: EditText,
+        stock: EditText,
+        price: EditText,
+        image: String
+    ): Boolean {
+        var backPossible = false
+        if (name.text.isBlank() && stock.text.isBlank()
+            && price.text.isBlank() && image.isBlank()) {
+            backPossible = true
+        }
+        return backPossible
     }
 
     fun itemNameExist(name: String, onResult: (Boolean) -> Unit) {

@@ -42,8 +42,6 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
     }
 
 
-
-
     private fun insertCoupon(coupon: Coupon) {
         viewModelScope.launch {
             couponDao.insert(coupon)
@@ -70,10 +68,6 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
         )
     }
 
-//    //Phương thức retrieveTable(id: Int) lấy thông tin của một bảng Table dựa trên ID.
-//    fun retrieveCoupon(id: Int): LiveData<Coupon> {
-//        return couponDao.getCoupon(id).asLiveData()
-//    }
 
 
     fun isEntryValid(code: EditText, coupon: EditText): Boolean {

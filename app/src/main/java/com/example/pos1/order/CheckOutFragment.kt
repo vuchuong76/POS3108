@@ -90,21 +90,21 @@ class CheckOutFragment : Fragment() {
 
                 val recieveAmount = s.toString().toDoubleOrNull() ?: 0.0
                 val lastAmount = orderViewModel.lastAmount.value ?: 0.0
-                if (lastAmount < recieveAmount) {
+//                if (lastAmount < recieveAmount) {
                     val changeAmount = recieveAmount - lastAmount
                     binding.change.text = "${String.format("%.1f", changeAmount)}"
-                }
-                else{
-                    binding.change.text="0.0"
-                }
+//                }
+//                else{
+//                    binding.change.text="0.0"
+//                }
 
             }
         })
 
 
-        val userName = orderViewModel.userName
+        val staffName = orderViewModel.staffName
         val tablenum = orderViewModel.selectedTableNumber.value ?: 0
-        binding.idTextView.text = "User name : $userName"
+        binding.idTextView.text = "Staff name : $staffName"
         binding.tableTextView.text = "Table : $tablenum"
         val adapter = CheckoutAdapter {
         }
@@ -212,7 +212,7 @@ class CheckOutFragment : Fragment() {
                 }
 
 
-                binding.receive.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(0))
+                binding.receive.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(1))
 
 
 
@@ -273,8 +273,6 @@ class CheckOutFragment : Fragment() {
                 }
             }
         }
-
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -297,7 +295,7 @@ class CheckOutFragment : Fragment() {
 
     fun getChangeMoney(newTotal: Double?): Double {
         val rev = binding.receive.text.toString().trim().toDoubleOrNull() ?: 0.0
-        return if (rev == 0.0 || newTotal == null || rev < newTotal) 0.0
+        return if (rev == 0.0 || newTotal == null ) 0.0
         else
             ((rev - newTotal) * 10).roundToInt() / 10.0
     }

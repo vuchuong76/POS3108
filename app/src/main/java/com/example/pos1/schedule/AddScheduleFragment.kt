@@ -18,6 +18,7 @@ import com.example.pos1.R
 import com.example.pos1.User.UserViewModel
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddScheduleBinding
+import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
 
 @Suppress("DEPRECATION")
@@ -174,7 +175,7 @@ class AddScheduleFragment : Fragment() {
                         AddScheduleFragmentDirections.actionAddScheduleFragmentToScheduleFragment()
                     findNavController().navigate(action)
                 } else {
-                    Toast.makeText(context,"Schedule is already exist",Toast.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(), "This Schedule is already exist", Snackbar.LENGTH_LONG).show()
                 }
             }
         }

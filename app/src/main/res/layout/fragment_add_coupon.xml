@@ -22,7 +22,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/code_lay"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,14 +39,14 @@
             android:ems="10"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
              android:inputType="text"
-            android:maxLength="9"
+            android:maxLength="8"
             android:layout_height="wrap_content"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/finish_label"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,9 +60,9 @@
             android:layout_width="match_parent"
             android:id="@+id/coupon"
             android:ems="10"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            android:digits="0123456789.,"
             android:layout_height="wrap_content"
-            android:maxLength="2"
+            android:maxLength="3"
             android:inputType="numberDecimal"
             />
 

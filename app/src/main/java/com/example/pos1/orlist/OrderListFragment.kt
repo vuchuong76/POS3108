@@ -50,7 +50,7 @@ class OrderListFragment : Fragment() {
             sharedViewModel.setDiscount(order.discount)
             sharedViewModel.setReceive(order.receive)
             sharedViewModel.setChange(order.change)
-            val action = OrderListFragmentDirections.actionOrderListFragmentToDetailFragment()
+            val action = OrderListFragmentDirections.actionOrderListFragmentToOrderDetailFragment()
             findNavController().navigate(action)
         }
         binding.recyclerView1.layoutManager = LinearLayoutManager(this.context)

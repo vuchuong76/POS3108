@@ -71,10 +71,12 @@
         <TextView
             android:id="@+id/delete"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_margin="5dp"
-            android:layout_height="25dp"
-            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_width="100dp"
             android:textSize="12sp"
+            android:background="#E0E4E8"
+            android:text="Serve"
             />
 
     </LinearLayout>

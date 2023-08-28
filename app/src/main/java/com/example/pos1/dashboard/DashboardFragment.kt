@@ -88,10 +88,11 @@ class DashboardFragment : Fragment() {
         val hashSet = HashSet<String>()
 
         for (ob in items) {
-            hashSet.add(ob.date.toString())
+            hashSet.add(ob.date)
         }
 
         val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        //sortedByDescending để sắp xếp ngược lại
         val sortedDates = hashSet.sortedBy {
             LocalDate.parse(it, dateTimeFormatter)
         }
@@ -200,12 +201,16 @@ class DashboardFragment : Fragment() {
             axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
             axisRight.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         }
-
+//Tạo một danh sách yValues chứa các điểm dữ liệu.
+// Mỗi điểm dữ liệu được lấy từ listData, với trục X là giá trị key và trục Y
+// là giá trị amount của mỗi đối tượng ThongKeNgay trong listData.
         val yValues: ArrayList<Entry> = ArrayList()
         for (data in listData) {
             yValues.add(Entry(data.key!!.toFloat(), data.amount!!.toFloat()))
         }
 
+        //Mỗi LineDataSet biểu diễn một chuỗi dữ liệu trên biểu đồ đường.
+        //Đặt màu, chế độ vẽ, và các thuộc tính khác cho chuỗi dữ liệu.
         val set1 = LineDataSet(yValues, "ĐƠN VỊ $").apply {
             fillAlpha = 110
             color = Color.RED
@@ -235,13 +240,16 @@ class MyAxits(private val dates: ArrayList<String>) : ValueFormatter() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private val outputFormatter = DateTimeFormatter.ofPattern("dd-MM")
-
+//Được ghi đè từ lớp ValueFormatter và trả về một chuỗi biểu diễn giá trị Float dưới dạng chuỗi.
     override fun getFormattedValue(value: Float): String {
         return value.toString()
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
+    //xác định cách các ngày được hiển thị trên trục X của biểu đồ.
     override fun getAxisLabel(value: Float, axis: AxisBase): String {
+        //Nếu giá trị đầu vào (biểu diễn bằng Float) nằm trong phạm vi của danh sách dates,
+        // nó sẽ lấy ra chuỗi ngày tương ứng, chuyển đổi nó sang LocalDate và sau đó định dạng
+        // lại chuỗi ngày theo dạng mong muốn (ví dụ: từ "2023-08-23" thành "23-08").
         return if (value.toInt() in 0 until dates.size) {
             val localDate = LocalDate.parse(dates[value.toInt()], inputFormatter)
             outputFormatter.format(localDate)

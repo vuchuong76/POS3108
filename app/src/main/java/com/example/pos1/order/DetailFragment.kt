@@ -1,4 +1,4 @@
-package com.example.pos1.orlist
+package com.example.pos1.order
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -16,8 +16,6 @@ import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentDetailBinding
 import com.example.pos1.order.adapter.CheckoutAdapter
-import com.example.pos1.order.OrderViewModel
-import com.example.pos1.order.OrderViewModelFactory
 
 @Suppress("DEPRECATION")
 class DetailFragment : Fragment() {
@@ -54,7 +52,8 @@ class DetailFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.home -> {
-                    val action = DetailFragmentDirections.actionDetailFragmentToChooseTableFragment("")
+                    val action =
+                        DetailFragmentDirections.actionDetailFragmentToChooseTableFragment("")
                     findNavController().navigate(action)
                     true
                 }

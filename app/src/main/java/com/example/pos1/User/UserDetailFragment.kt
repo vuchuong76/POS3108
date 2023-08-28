@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -46,11 +47,11 @@ class UserDetailFragment : Fragment() {
             address.text = user.address
 
             editItem.setOnClickListener { editUser() }
-            deleteItem.setOnClickListener { deleteUser() }
-        //            deleteItem.setOnClickListener { showConfirmationDialog() }
+//            deleteItem.setOnClickListener { deleteUserLogOut() }
+                    deleteItem.setOnClickListener { showConfirmationDialog() }
         }
     }
-/**
+
     private fun showConfirmationDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(android.R.string.dialog_alert_title))
@@ -63,7 +64,7 @@ class UserDetailFragment : Fragment() {
             .show()
     }
     private fun deleteUser() {
-        if(user.userName==viewModel.id){
+        if(user.userName==viewModel.userName){
             Toast.makeText(context,"This account is currently in use",Toast.LENGTH_SHORT).show()
         }
 
@@ -72,36 +73,36 @@ class UserDetailFragment : Fragment() {
             findNavController().navigateUp()
         }
     }
- */
 
 
 
-    private fun showConfirmationDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(android.R.string.dialog_alert_title))
-            .setMessage("Do you want to delete this user?")
-            .setCancelable(false)
-            .setNegativeButton("No") { _, _ -> }
-            .setPositiveButton("Yes") { _, _ ->
-                viewModel.deleteUser(user)
-                findNavController().navigateUp()
-            }
-            .show()
-    }
-    private fun deleteUsingUserConfirm() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(android.R.string.dialog_alert_title))
-            .setMessage("This account is currently in use,Do you want to delete and log out?")
-            .setCancelable(false)
-            .setNegativeButton("No") { _, _ -> }
-            .setPositiveButton("Yes") { _, _ ->
-                viewModel.deleteUser(user)
-                val action= UserDetailFragmentDirections.actionUserDetailFragmentToLoginFragment()
-                findNavController().navigate(action)
-            }
-            .show()
-    }
-    private fun deleteUser() {
+
+//    private fun showConfirmationDialog() {
+//        MaterialAlertDialogBuilder(requireContext())
+//            .setTitle(getString(android.R.string.dialog_alert_title))
+//            .setMessage("Do you want to delete this user?")
+//            .setCancelable(false)
+//            .setNegativeButton("No") { _, _ -> }
+//            .setPositiveButton("Yes") { _, _ ->
+//                viewModel.deleteUser(user)
+//                findNavController().navigateUp()
+//            }
+//            .show()
+//    }
+//    private fun deleteUsingUserConfirm() {
+//        MaterialAlertDialogBuilder(requireContext())
+//            .setTitle(getString(android.R.string.dialog_alert_title))
+//            .setMessage("This account is currently in use,Do you want to delete and log out?")
+//            .setCancelable(false)
+//            .setNegativeButton("No") { _, _ -> }
+//            .setPositiveButton("Yes") { _, _ ->
+//                viewModel.deleteUser(user)
+//                val action= UserDetailFragmentDirections.actionUserDetailFragmentToLoginFragment()
+//                findNavController().navigate(action)
+//            }
+//            .show()
+//    }
+   /* private fun deleteUserLogOut() {
         if(user.userName==viewModel.userName){
            deleteUsingUserConfirm()
         }
@@ -109,7 +110,7 @@ class UserDetailFragment : Fragment() {
             showConfirmationDialog()
 
         }
-    }
+    }*/
 
     private fun editUser() {
         val action = UserDetailFragmentDirections.actionUserDetailFragmentToAddStaffFragment5(

@@ -323,12 +323,24 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/receive"
                     android:gravity="center"
-                    android:inputType="numberDecimal"
-                    android:maxLength="7"
+                    android:inputType="text"
+                    android:digits="0123456789."
+                    android:maxLength="8"
                     android:textSize="16dp"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/receive1"
+                android:gravity="center"
+                android:inputType="text"
+                android:digits="0123456789."
+                android:maxLength="7"
+                android:textSize="16dp"/>-->
+
 
             <TextView
                 android:layout_width="0dp"

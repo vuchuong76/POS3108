@@ -42,7 +42,7 @@ class AddCouponFragment : Fragment() {
             addNewCoupon()
 
         }
-        binding.coupon.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(0))
+        binding.coupon.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(1))
 
 
         binding.toolbar.setOnMenuItemClickListener {
@@ -82,7 +82,7 @@ class AddCouponFragment : Fragment() {
             }
         }
             else{
-                Toast.makeText(context, "Invalid Coupon", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "The Coupon is not valid", Toast.LENGTH_SHORT).show()
             }
         }
 

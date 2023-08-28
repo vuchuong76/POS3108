@@ -16,14 +16,15 @@ import com.google.firebase.messaging.RemoteMessage
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
+    //Khi một thông báo được gửi từ FCM đến thiết bị, phương thức này sẽ được gọi.
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // handle a notification payload.
+        //  kiểm tra xem thông báo có chứa nội dung payload không
         if (remoteMessage.notification != null) {
 Log.d("Notification", remoteMessage.data.toString())
             sendNotification(remoteMessage.notification!!.body)
         }
     }
-
+//Khi một mã thông báo mới được tạo cho ứng dụng, phương thức này sẽ được gọi.
     override fun onNewToken(token: String) {
         sendRegistrationToServer(token)
     }
@@ -48,13 +49,15 @@ Log.d("Notification", remoteMessage.data.toString())
             val name = channelId
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(channelId, name, importance)
-            // Register the channel with the system. You can't change the importance
-            // or other notification behaviors after this.
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannel)
         }
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+        //Xây dựng và hiển thị thông báo sử dụng NotificationCompat.Builder.
+        // Thông báo này sẽ có tiêu đề là "POST", nội dung là messageBody,
+        // và một số thuộc tính khác như biểu tượng, âm thanh, vv.
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_lock_idle_alarm)

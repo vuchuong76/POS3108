@@ -35,6 +35,7 @@ class OrderViewModel(
     private val _amount1: MutableLiveData<Double> = MutableLiveData(0.0)
 
     var userName: String = ""
+    var staffName: String = ""
 
 
     // LiveData foodsForTable sẽ tự động cập nhật khi giá trị của _tableNumber thay đổi
@@ -58,11 +59,16 @@ class OrderViewModel(
     val orderForTable: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
         orderDao.getOrderForTableAndStatus(tableNumber).asLiveData()
     }
+    val orderForCheck: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
+        orderDao.getOrderForCheck(tableNumber).asLiveData()
+    }
+    val orderForDeleteAll: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
+        orderDao.getOrderforback(tableNumber).asLiveData()
+    }
     //danh sách order trong bàn
     val orderForTable1: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->
         orderDao.getOrderForSelectedTable(tableNumber).asLiveData()
     }
-
 
     //    danh sách order đang ở trạng thái tính tiền paying
     val orderForPay: LiveData<List<Order>> = _selectedTableNumber.switchMap { tableNumber ->

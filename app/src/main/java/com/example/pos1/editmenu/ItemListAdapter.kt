@@ -45,15 +45,15 @@ class ItemListAdapter(private val onItemClicked: (Item) -> Unit,
     class ItemViewHolder(var binding: MenuItemBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: Item) {
-            binding.nameTextView.text = "Name:"+item.name
+            binding.nameTextView.text = "Name :"+item.name
             item.image.let {
                 Glide.with(itemView.context)
                     .load(item.image)
                     .into(binding.imageImageView)
             }
-            binding.priceTextView.text = "Price:"+item.price.toString()+"$"
-            binding.stockTextView.text = "Stock:"+ item.stock.toString()
-            binding.type.text = "Type:"+item.type
+            binding.priceTextView.text = "Price :"+item.price.toString()+"$"
+            binding.stockTextView.text = "Stock :"+ item.stock.toString()
+            binding.type.text = "Type :"+item.type
 
         }
     }

@@ -113,14 +113,17 @@ class LoginFragment : Fragment() {
             if (user != null && BCrypt.checkpw(password, user.password)) {
                 if (user.position == "Admin") {
                     userViewModel.userName = id
+                    userViewModel.staffName = user.staffname
                     findNavController().navigate(R.id.action_loginFragment_to_adminAccessFragment)
                 } else if (user.position == "Staff") {
                     orderViewModel.userName = id
+                    orderViewModel.staffName = user.staffname
                     val action =
                         LoginFragmentDirections.actionLoginFragmentToChooseTableFragment(userName = user.userName)
                     findNavController().navigate(action)
                 }
                 else if (user.position == "Kitchen") {
+                    userViewModel.staffName = user.staffname
                     val action =
                         LoginFragmentDirections.actionLoginFragmentToKitchenFragment()
                     findNavController().navigate(action)

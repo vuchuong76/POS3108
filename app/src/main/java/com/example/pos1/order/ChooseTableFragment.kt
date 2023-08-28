@@ -51,7 +51,7 @@ class ChooseTableFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userName = sharedViewModel.userName
+        val userName = sharedViewModel.staffName
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 com.example.pos1.R.id.logout -> {
@@ -71,7 +71,7 @@ class ChooseTableFragment : Fragment() {
                 else -> false
             }
         }
-        binding.idLabelTextView.text = "User name: $userName"
+        binding.idLabelTextView.text = "Staff name: $userName"
         // Tạo adapter: Tạo một TableListAdapter và chuyển một lambda function vào constructor của adapter.
         // Lambda function này sẽ được gọi khi một mục trong danh sách bàn được nhấp vào.
         val adapter = ChooseTableAdapter { table->
