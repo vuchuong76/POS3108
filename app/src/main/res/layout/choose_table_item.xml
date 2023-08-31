@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="30dp"
+    android:paddingBottom="30dp">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tbnumber"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:background="@drawable/layout1"
+        android:gravity="center"
+        android:padding="18dp"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tbnumber"
+        android:layout_alignStart="@id/tbnumber"
+        android:textSize="16sp" />
+
+
+</RelativeLayout>
