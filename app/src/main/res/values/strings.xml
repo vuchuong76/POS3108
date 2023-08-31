@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">POS1</string>
+    <string name="app_name">POS</string>
     <string name="add_staff">Add Staff</string>
     <string name="edit_user">Edit User</string>
     <string name="edit_fragment_title">Edit User</string>

@@ -146,7 +146,8 @@ suspend fun sellItem(item: Item) {
 
     fun itemNameExist(name: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
-            val count = itemDao.countItemWithName(name)
+            val name1=name.trim()
+            val count = itemDao.countItemWithName(name1)
             onResult(count > 0)
         }
     }

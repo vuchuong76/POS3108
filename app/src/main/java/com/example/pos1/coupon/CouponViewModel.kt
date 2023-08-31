@@ -34,9 +34,7 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
 
     // Hàm lấy thông tin Coupon dựa trên mã code
     fun fetchCouponByCode(code: String) = viewModelScope.launch {
-        // Truy vấn dữ liệu từ cơ sở dữ liệu
         couponDao.getCouponByCode(code).collect { coupon ->
-            // Kiểm tra dữ liệu trả về và phát ra sự kiện tương ứng
             _couponFlow.emit(if (coupon != null) CouponState.Success(coupon) else CouponState.Invalid)
         }
     }
@@ -76,7 +74,7 @@ class CouponViewModel(private val couponDao: CouponDao) : ViewModel() {
             code.error = "The length of the code must be between 4 and 8 characters."
             isValid = false
         }
-        if (coupon.text.isBlank() || coupon.text.toString().toInt()<= 0||coupon.text.toString().toInt()>=100) {
+        if (coupon.text.isBlank() || coupon.text.toString().toDouble()<= 0||coupon.text.toString().toDouble()>=100) {
             coupon.error = "The value of the coupon must be between 0 and 100."
             isValid = false
         }

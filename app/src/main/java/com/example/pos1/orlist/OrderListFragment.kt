@@ -40,8 +40,6 @@ class OrderListFragment : Fragment() {
         setHasOptionsMenu(true)
         return binding.root
     }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = OrderlistAdapter { order ->

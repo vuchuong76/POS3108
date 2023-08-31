@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/home"
+    tools:ignore="MissingDefaultResource">
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.pos1.AdminAccessFragment"
+        android:label="Admin/Home">
+        <action
+            android:id="@+id/action_adminAccessFragment_to_couponFragment"
+            app:destination="@id/couponFragment2" />
+        <action
+            android:id="@+id/action_adminAccessFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/staff"
+        android:name="com.example.pos1.User.StaffListFragment"
+        android:label="Admin/Staff">
+        <action
+            android:id="@+id/action_staffListFragment_to_addStaffFragment"
+            app:destination="@id/addStaffFragment" />
+        <action
+            android:id="@+id/action_staff_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/schedule"
+        android:name="com.example.pos1.schedule.ScheduleFragment"
+        android:label="Admin/Schedule">
+        <action
+            android:id="@+id/action_scheduleFragment_to_rosterFragment"
+            app:destination="@id/rosterFragment2" />
+        <action
+            android:id="@+id/action_scheduleFragment_to_addScheduleFragment"
+            app:destination="@id/addScheduleFragment2" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/table"
+        android:name="com.example.pos1.table.TableFragment"
+        android:label="Admin/Table">
+        <action
+            android:id="@+id/action_table_to_addTableFragment"
+            app:destination="@id/addTableFragment" />
+        <action
+            android:id="@+id/action_table_to_tableDetailFragment"
+            app:destination="@id/tableDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuEdit"
+        android:name="com.example.pos1.editmenu.MenuListFragment"
+        android:label="Admin/Menu">
+        <action
+            android:id="@+id/action_menuEdit_to_newItemFragment"
+            app:destination="@id/newItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/couponFragment2"
+        android:name="com.example.pos1.coupon.CouponFragment"
+        android:label="CouponFragment">
+        <action
+            android:id="@+id/action_couponFragment_to_addCouponFragment"
+            app:destination="@id/addCouponFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardFragment2"
+        android:name="com.example.pos1.dashboard.DashboardFragment"
+        android:label="DashboardFragment" />
+    <fragment
+        android:id="@+id/addCouponFragment2"
+        android:name="com.example.pos1.coupon.AddCouponFragment"
+        android:label="AddCouponFragment" />
+    <fragment
+        android:id="@+id/rosterFragment2"
+        android:name="com.example.pos1.schedule.RosterFragment"
+        android:label="RosterFragment">
+        <action
+            android:id="@+id/action_rosterFragment_to_addRosterFragment"
+            app:destination="@id/addRosterFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/addScheduleFragment2"
+        android:name="com.example.pos1.schedule.AddScheduleFragment"
+        android:label="AddScheduleFragment" />
+    <fragment
+        android:id="@+id/addRosterFragment2"
+        android:name="com.example.pos1.schedule.AddRosterFragment"
+        android:label="AddRosterFragment" />
+    <fragment
+        android:id="@+id/addStaffFragment"
+        android:name="com.example.pos1.User.AddStaffFragment"
+        android:label="AddStaffFragment">
+        <argument
+            android:name="user_name"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_addStaffFragment_to_staff"
+            app:destination="@id/staff" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTableFragment"
+        android:name="com.example.pos1.table.AddTableFragment"
+        android:label="AddTableFragment">
+        <argument
+            android:name="table_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_addTableFragment_to_table"
+            app:destination="@id/table" />
+    </fragment>
+    <fragment
+        android:id="@+id/newItemFragment"
+        android:name="com.example.pos1.editmenu.NewItemFragment"
+        android:label="NewItemFragment" >
+        <argument
+            android:name="item_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_newItemFragment_to_menuEdit"
+            app:destination="@id/menuEdit" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.example.pos1.User.UserDetailFragment"
+        android:label="fragment_user_detail"
+        tools:layout="@layout/fragment_user_detail">
+        <argument
+            android:name="user_name"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_userDetailFragment_to_addStaffFragment"
+            app:destination="@id/addStaffFragment" />
+        <action
+            android:id="@+id/action_userDetailFragment_to_staff"
+            app:destination="@id/staff" />
+    </fragment>
+    <fragment
+        android:id="@+id/tableDetailFragment"
+        android:name="com.example.pos1.table.TableDetailFragment"
+        android:label="TableDetailFragment">
+        <argument
+            android:name="table_id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_tableDetailFragment_to_addTableFragment"
+            app:destination="@id/addTableFragment" />
+    </fragment>
+
+
+</navigation>

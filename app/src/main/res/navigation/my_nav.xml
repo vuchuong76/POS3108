@@ -9,10 +9,6 @@
         android:id="@+id/loginFragment"
         android:name="com.example.pos1.LoginFragment"
         android:label="LoginFragment" >
-
-        <action
-            android:id="@+id/action_loginFragment_to_adminAccessFragment"
-            app:destination="@id/adminAccessFragment" />
         <action
         android:id="@+id/action_loginFragment_to_chooseTableFragment"
         app:destination="@id/chooseTableFragment" >
@@ -24,144 +20,8 @@
             android:id="@+id/action_loginFragment_to_kitchenFragment"
             app:destination="@id/kitchenFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_adminFragment"
-            app:destination="@id/adminFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/staffListFragment"
-        android:name="com.example.pos1.User.StaffListFragment"
-        android:label="StaffListFragment" >
-        <action
-            android:id="@+id/action_staffListFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_staffListFragment_to_addStaffFragment"
-            app:destination="@id/addStaffFragment" />
-        <action
-            android:id="@+id/action_staffListFragment_to_userDetailFragment"
-            app:destination="@id/userDetailFragment" />
-        <action
-            android:id="@+id/action_staffListFragment_to_adminAccessFragment"
-            app:destination="@id/adminAccessFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/tableFragment"
-        android:name="com.example.pos1.table.TableFragment"
-        android:label="fragment_table"
-        tools:layout="@layout/fragment_table" >
-        <action
-            android:id="@+id/action_tableFragment_to_tableDetailFragment"
-            app:destination="@id/tableDetailFragment" />
-        <action
-            android:id="@+id/action_tableFragment_to_addTableFragment"
-            app:destination="@id/addTableFragment" />
-        <action
-            android:id="@+id/action_tableFragment_to_tableDetailFragment2"
-            app:destination="@id/tableDetailFragment" />
-        <action
-            android:id="@+id/action_tableFragment_to_adminAccessFragment"
-            app:destination="@id/adminAccessFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/adminAccessFragment"
-        android:name="com.example.pos1.AdminAccessFragment"
-        android:label="AdminAccessFragment" >
-        <action
-            android:id="@+id/action_adminAccessFragment_to_staffListFragment"
-            app:destination="@id/staffListFragment" />
-        <action
-            android:id="@+id/action_adminAccessFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_adminAccessFragment_to_tableFragment"
-            app:destination="@id/tableFragment" />
-        <action
-            android:id="@+id/action_adminAccessFragment_to_menuListFragment"
-            app:destination="@id/menuListFragment" />
-        <action
-            android:id="@+id/action_adminAccessFragment_to_scheduleFragment"
-            app:destination="@id/scheduleFragment" />
-        <action
-            android:id="@+id/action_adminAccessFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
-        <action
-            android:id="@+id/action_adminAccessFragment_to_couponFragment"
-            app:destination="@id/couponFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addStaffFragment"
-        android:name="com.example.pos1.User.AddStaffFragment"
-        android:label="{title}"
-        tools:layout="@layout/fragment_add_staff" >
-
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
-            android:name="user_name"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_addStaffFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_addStaffFragment_to_userDetailFragment"
-            app:destination="@id/userDetailFragment" />
-        <action
-            android:id="@+id/action_addStaffFragment_to_staffListFragment"
-            app:destination="@id/staffListFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/userDetailFragment"
-        android:name="com.example.pos1.User.UserDetailFragment"
-        android:label="User Detail"
-        tools:layout="@layout/fragment_user_detail" >
-        <argument
-            android:name="user_name"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_userDetailFragment_to_staffListFragment"
-            app:destination="@id/staffListFragment"
-            />
-        <action
-            android:id="@+id/action_userDetailFragment_to_addStaffFragment5"
-            app:destination="@id/addStaffFragment"
-            app:popUpTo="@id/staffListFragment"
-            app:popUpToInclusive="true"/>
-        <action
-            android:id="@+id/action_userDetailFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addTableFragment"
-        android:name="com.example.pos1.table.AddTableFragment"
-        android:label="AddTableFragment" >
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
-            android:name="table_id"
-            android:defaultValue="-1"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_addTableFragment_to_tableDetailFragment"
-            app:destination="@id/tableDetailFragment" />
-        <action
-            android:id="@+id/action_addTableFragment_to_tableFragment"
-            app:destination="@id/tableFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/tableDetailFragment"
-        android:name="com.example.pos1.table.TableDetailFragment"
-        android:label="TableDetailFragment" >
-        <argument
-            android:name="table_id"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_tableDetailFragment_to_addTableFragment"
-            app:destination="@id/addTableFragment" />
-        <action
-            android:id="@+id/action_tableDetailFragment_to_tableFragment"
-            app:destination="@id/tableFragment" />
+            android:id="@+id/action_loginFragment_to_adminFragment2"
+            app:destination="@id/adminFragment2" />
     </fragment>
     <fragment
         android:id="@+id/chooseTableFragment"
@@ -185,33 +45,8 @@
             android:id="@+id/action_chooseTableFragment_to_menuTabletFragment"
             app:destination="@id/menuTabletFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/menuListFragment"
-        android:name="com.example.pos1.editmenu.MenuListFragment"
-        android:label="MenuListFragment" >
-        <action
-            android:id="@+id/action_menuListFragment_to_newItemFragment"
-            app:destination="@id/newItemFragment" />
-        <action
-            android:id="@+id/action_menuListFragment_to_adminAccessFragment"
-            app:destination="@id/adminAccessFragment" />
-        <action
-            android:id="@+id/action_menuListFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/newItemFragment"
-        android:name="com.example.pos1.editmenu.NewItemFragment"
-        android:label="fragment_new_item"
-        tools:layout="@layout/fragment_new_item" >
-        <argument
-            android:name="item_id"
-            android:defaultValue="-1"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_newItemFragment_to_menuListFragment"
-            app:destination="@id/menuListFragment" />
-    </fragment>
+
+
     <fragment
         android:id="@+id/orderListFragment"
         android:name="com.example.pos1.orlist.OrderListFragment"
@@ -240,17 +75,7 @@
             android:id="@+id/action_checkOutFragment_to_menuTabletFragment"
             app:destination="@id/menuTabletFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/rosterFragment"
-        android:name="com.example.pos1.schedule.RosterFragment"
-        android:label="RosterFragment" >
-        <action
-            android:id="@+id/action_rosterFragment_to_addRosterFragment"
-            app:destination="@id/addRosterFragment" />
-        <action
-            android:id="@+id/action_rosterFragment_to_scheduleFragment"
-            app:destination="@id/scheduleFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.pos1.order.DetailFragment"
@@ -271,45 +96,6 @@
             app:destination="@id/stockFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addRosterFragment"
-        android:name="com.example.pos1.schedule.AddRosterFragment"
-        android:label="AddRosterFragment" >
-        <action
-            android:id="@+id/action_addRosterFragment_to_rosterFragment"
-            app:destination="@id/rosterFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/scheduleFragment"
-        android:name="com.example.pos1.schedule.ScheduleFragment"
-        android:label="ScheduleFragment" >
-        <action
-            android:id="@+id/action_scheduleFragment_to_adminAccessFragment"
-            app:destination="@id/adminAccessFragment" />
-        <action
-            android:id="@+id/action_scheduleFragment_to_rosterFragment"
-            app:destination="@id/rosterFragment" />
-        <action
-            android:id="@+id/action_scheduleFragment_to_addScheduleFragment"
-            app:destination="@id/addScheduleFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addScheduleFragment"
-        android:name="com.example.pos1.schedule.AddScheduleFragment"
-        android:label="AddScheduleFragment" >
-        <action
-            android:id="@+id/action_addScheduleFragment_to_scheduleFragment"
-            app:destination="@id/scheduleFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/dashboardFragment"
-        android:name="com.example.pos1.dashboard.DashboardFragment"
-        android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" >
-        <action
-            android:id="@+id/action_dashboardFragment_to_adminAccessFragment"
-            app:destination="@id/adminAccessFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/stockFragment"
         android:name="com.example.pos1.kitchen.StockFragment"
         android:label="StockFragment" >
@@ -317,25 +103,7 @@
             android:id="@+id/action_stockFragment_to_kitchenFragment"
             app:destination="@id/kitchenFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/couponFragment"
-        android:name="com.example.pos1.coupon.CouponFragment"
-        android:label="CouponFragment" >
-        <action
-            android:id="@+id/action_couponFragment_to_addCouponFragment"
-            app:destination="@id/addCouponFragment" />
-        <action
-            android:id="@+id/action_couponFragment_to_adminAccessFragment"
-            app:destination="@id/adminAccessFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addCouponFragment"
-        android:name="com.example.pos1.coupon.AddCouponFragment"
-        android:label="AddCouponFragment" >
-        <action
-            android:id="@+id/action_addCouponFragment_to_couponFragment"
-            app:destination="@id/couponFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/menuTabletFragment"
         android:name="com.example.pos1.order.MenuTabletFragment"
@@ -348,15 +116,11 @@
             app:destination="@id/checkOutFragment" />
     </fragment>
     <fragment
-        android:id="@+id/adminFragment"
-        android:name="com.example.pos1.AdminFragment"
-        android:label="AdminFragment" >
-        <action
-            android:id="@+id/action_adminFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.example.pos1.orlist.OrderDetailFragment"
         android:label="OrderDetailFragment" />
+    <fragment
+        android:id="@+id/adminFragment2"
+        android:name="com.example.pos1.AdminFragment"
+        android:label="AdminFragment" />
 </navigation>

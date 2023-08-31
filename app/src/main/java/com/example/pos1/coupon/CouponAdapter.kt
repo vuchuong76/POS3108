@@ -43,7 +43,7 @@ class CouponAdapter(private val onItemClicked: (Coupon) -> Unit) :
         @SuppressLint("SetTextI18n")
         fun bind(coupon: Coupon) {
             binding.codeView.text = coupon.code
-            binding.couponView.text = "${coupon.discount.toString()}%"
+            binding.couponView.text = "${coupon.discount}%"
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.pos1.schedule
 import ScheduleViewModel
 import ScheduleViewModelFactory
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.pos1.MainActivity
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentScheduleBinding
@@ -91,9 +93,8 @@ class ScheduleFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
 
-                R.id.home -> {
-                    val action = ScheduleFragmentDirections.actionScheduleFragmentToAdminAccessFragment()
-                    findNavController().navigate(action)
+                R.id.logout -> {
+                    logOutDialog()
                     true
                 }
                 R.id.setting -> {
@@ -104,8 +105,20 @@ class ScheduleFragment : Fragment() {
                 else -> false
             }
         }
-    }
 
+    }
+    private fun logOutDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("Do you really want to log out?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            }
+            .show()
+    }
     private fun showDatePicker() {
         val dateString = binding.etDate.text.toString()
 

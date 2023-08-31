@@ -11,33 +11,33 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_weight="2" />
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/timeView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_weight="2" />
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/quantityView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2" />
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2" />
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_weight="2" />
+        android:layout_weight="5" />
     <TextView
         android:text="X"
         android:id="@+id/delete"
@@ -46,7 +46,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:layout_height="18dp"
         android:layout_width="18dp"
-        android:layout_marginRight="3dp"
+        android:layout_marginRight="10dp"
         android:textSize="12sp"
         android:textStyle="bold"
         android:onClick="cancelActivity" />

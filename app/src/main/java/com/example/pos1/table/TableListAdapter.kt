@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pos1.R
 import com.example.pos1.databinding.TableItemBinding
 import com.example.pos1.entity.Table
 
@@ -26,7 +27,13 @@ class TableListAdapter(private val onItemClicked: (Table) -> Unit) :
     override fun onBindViewHolder(holder: TableViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current)
-        holder.binding.tbnumber.setOnClickListener {
+        if (current.status==1) {
+            holder.binding.tbnumber.setBackgroundResource(R.drawable.layout2)
+        } else {
+            holder.binding.tbnumber.setBackgroundResource(R.drawable.layout1)
+
+        }
+        holder.binding.delete.setOnClickListener {
             onItemClicked(current)
         }
     }

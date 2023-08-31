@@ -86,7 +86,10 @@ class DetailFragment : Fragment() {
                 binding.discount.text = "$discount %"
                 binding.receive.text = "$receive $"
                 binding.change.text = "$change $"
-                binding.count.text = "$totalItemCount items"
+                if (totalItemCount==1){
+                    binding.count.text = "Total : $totalItemCount item"
+                }
+                else{ binding.count.text = "Total : $totalItemCount items" }
                 binding.date.text= "Date : $date"
                 adapter.submitList(it)
             }

@@ -35,7 +35,8 @@ private val _duplicateUserEvent = MutableLiveData<Unit>()
     }
     fun userNameExists(userName: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
-            val count = userDao.countStaffWithId(userName)
+            val name1=userName.trim()
+            val count = userDao.countStaffWithId(name1)
             onResult(count > 0)
         }
     }

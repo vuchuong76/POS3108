@@ -1,5 +1,7 @@
 package com.example.pos1.schedule
 
+import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
@@ -43,12 +45,24 @@ class RosterViewModel(private val rosterDao: RosterDao) : ViewModel() {
     }
 
     // kiểm tra xem thông tin đầu vào (số bàn và sức chứa) có hợp lệ không.
-    fun isEntryValid(startTime: String,finishTime: String): Boolean {
-        if( startTime.isBlank()|| finishTime.isBlank()|| startTime.toInt()>24|| finishTime.toInt()>24||finishTime==startTime)
-        {return false}
-        return true
+    fun isEntryValid(startTime: EditText,finishTime: EditText): Boolean {
+            var isValid = true
+            if (startTime.text.isBlank() || startTime.text.toString().toInt() > 24) {
+                startTime.error = "Start time must be between 0 and 24."
+                isValid = false
+            }
+
+            if (finishTime.text.isBlank() || finishTime.text.toString().toInt() > 24) {
+                finishTime.error = "Finish time must be between 0 and 24"
+                isValid = false
+            }
+            if (finishTime == startTime) {
+                startTime.error = "Start and finish time must be different"
+                isValid = false
+            }
+            return isValid
+        }
     }
-}
 
 class RosterViewModelFactory(private val rosterDao: RosterDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

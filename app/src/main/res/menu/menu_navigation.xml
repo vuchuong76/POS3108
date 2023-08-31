@@ -6,25 +6,21 @@
         android:icon="@drawable/home"
         android:title="Home" />
     <item
-        android:id="@+id/staffList"
-        android:checked="false"
+        android:id="@+id/staff"
         android:icon="@drawable/ic_staff_list"
         android:title="Staff List" />
     <item
         android:id="@+id/schedule"
-        android:checked="false"
         android:icon="@drawable/schedule"
         android:title="Schedule" />
 
     <item
         android:id="@+id/table"
-        android:checked="false"
         android:icon="@drawable/ic_table"
         android:title="Table" />
 
     <item
         android:id="@+id/menuEdit"
-        android:checked="false"
         android:icon="@drawable/ic_menu_edit"
         android:title="Menu Edit" />
 

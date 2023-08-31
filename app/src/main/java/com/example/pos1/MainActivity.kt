@@ -23,16 +23,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-
-
-
-
-
-
-
-
-
     override fun onBackPressed() {
         // Lấy fragment đang hiển thị
         val fragment = supportFragmentManager.findFragmentById(R.id.fragment)

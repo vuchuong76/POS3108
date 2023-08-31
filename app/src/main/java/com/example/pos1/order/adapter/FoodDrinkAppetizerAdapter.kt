@@ -13,28 +13,6 @@ import com.bumptech.glide.Glide
 import com.example.pos1.R
 import com.example.pos1.databinding.FoodDrinkAppetizerItemBinding
 import com.example.pos1.entity.Item
-//hiển thị menu ra 3 fragment drink, food, appetizer
-//class FoodDrinkAppetizerAdapter(
-//    private val onItemClicked: (Item) -> Unit,
-//    private val itemType: String
-//) : ListAdapter<Item, FoodDrinkAppetizerAdapter.ItemViewHolder>(ITEMS_COMPARATOR) {
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-//        return ItemViewHolder(
-//            FoodDrinkAppetizerItemBinding.inflate(
-//                LayoutInflater.from(parent.context),
-//                parent,
-//                false
-//            )
-//        )
-//    }
-//    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-//        val current = getItem(position)
-//        holder.itemView.setOnClickListener {
-//            onItemClicked(current)
-//        }
-//        holder.bind(current)
-//    }
-
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
 class FoodDrinkAppetizerAdapter(
     private val onItemClicked: (Item) -> Unit,

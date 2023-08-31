@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -60,9 +61,7 @@ class DashboardFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.back -> {
-                    val action =
-                        DashboardFragmentDirections.actionDashboardFragmentToAdminAccessFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigateUp()
                     true
                 }
 
@@ -111,7 +110,19 @@ class DashboardFragment : Fragment() {
 
         setUpChart(listData)
     }
+    override fun onResume() {
+        super.onResume()
 
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE // Ẩn hoặc hiển thị dựa vào điều kiện cụ thể của bạn
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.VISIBLE // Đảm bảo nó được hiển thị trở lại khi rời khỏi Fragment (nếu cần)
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayLastSevenDaysData() {
         val items = dashboardViewModel.allItems1.value

@@ -311,7 +311,6 @@ class OrderViewModel(
         // Lấy giá trị của tableNumber hoặc 0 nếu chưa được đặt
         val tableNumber = selectedTableNumber.value ?: 0
 
-        // Trả về đối tượng Order mới với tableNumber đã được đặt
         return Order(
             itemId = itemId,
             tableNumber = tableNumber,

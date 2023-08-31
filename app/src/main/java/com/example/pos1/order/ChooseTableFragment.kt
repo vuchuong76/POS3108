@@ -1,22 +1,26 @@
 package com.example.pos1.order
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.pos1.MainActivity
 
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentChooseTableBinding
 import com.example.pos1.order.adapter.ChooseTableAdapter
 import com.example.pos1.table.TableViewModel
 import com.example.pos1.table.TableViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 //staff chọn bàn ăn
@@ -51,13 +55,12 @@ class ChooseTableFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        disableBackButton()
         val userName = sharedViewModel.staffName
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 com.example.pos1.R.id.logout -> {
-                    val action =
-                        ChooseTableFragmentDirections.actionChooseTableFragmentToLoginFragment2()
-                    findNavController().navigate(action)
+                   logOutDialog()
 
                     true
                 }
@@ -105,6 +108,26 @@ class ChooseTableFragment : Fragment() {
                 adapter.submitList(it)
             }
         }
+    }
+    private fun logOutDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("Do you really want to log out?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            }
+            .show()
+    }
+    private fun disableBackButton() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {}
+            }
+        )
     }
 
 

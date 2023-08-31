@@ -1,13 +1,17 @@
 package com.example.pos1.editmenu
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.pos1.AdminAccessFragmentDirections
+import com.example.pos1.MainActivity
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentMenuListBinding
@@ -68,22 +72,32 @@ class MenuListFragment : Fragment() {
                 adapter.submitList(it)
             }
         }
-        binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.home -> {
-                    val action =
-                        MenuListFragmentDirections.actionMenuListFragmentToAdminAccessFragment()
-                    findNavController().navigate(action)
-                    true
-                }
-
-                else -> false
-            }
-        }
+//        binding.toolbar.setOnMenuItemClickListener {
+//            when (it.itemId) {
+//                R.id.home -> {
+//                    val action =
+//                        MenuListFragmentDirections.actionMenuListFragmentToAdminAccessFragment()
+//                    findNavController().navigate(action)
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
         binding.floatingActionButton.setOnClickListener {
-            val action = MenuListFragmentDirections.actionMenuListFragmentToNewItemFragment(
+            val action = MenuListFragmentDirections.actionMenuEditToNewItemFragment(
             )
             this.findNavController().navigate(action)
+        }
+
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.logout -> {
+                    logOutDialog()
+                    true
+                }
+                else -> false
+            }
         }
     }
     private fun showConfirmationDialog(item:Item) {
@@ -97,11 +111,29 @@ class MenuListFragment : Fragment() {
             }
             .show()
     }
+
+    private fun logOutDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("Do you really want to log out?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            }
+            .show()
+    }
     private fun deleteItem(item: Item) {
-        viewModel.deleteItem(item)
+        if(item.stock==0) {
+            viewModel.deleteItem(item)
+        }
+        else{
+            Toast.makeText(context,"Cannot delete this item because there is still stock remaining",Toast.LENGTH_SHORT).show()
+        }
     }
     private fun editItem(item:Item) {
-        val action = MenuListFragmentDirections.actionMenuListFragmentToNewItemFragment(
+        val action = MenuListFragmentDirections.actionMenuEditToNewItemFragment(
             item.id
         )
         this.findNavController().navigate(action)

@@ -14,6 +14,7 @@ import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddTableBinding
 import com.example.pos1.entity.Table
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 @Suppress("DEPRECATION")
@@ -42,8 +43,8 @@ class AddTableFragment : Fragment() {
 
     private fun isEntryValid(): Boolean {
         return viewModel.isEntryValid(
-            binding.editNumber.text.toString(),
-            binding.editCapacity.text.toString()
+            binding.editNumber,
+            binding.editCapacity
         )
     }
 
@@ -67,7 +68,7 @@ class AddTableFragment : Fragment() {
                         binding.editCapacity.text.toString()
 
                     )
-                    val action = AddTableFragmentDirections.actionAddTableFragmentToTableFragment()
+                    val action = AddTableFragmentDirections.actionAddTableFragmentToTable()
                     findNavController().navigate(action)
                 }
             }
@@ -83,7 +84,7 @@ class AddTableFragment : Fragment() {
                 this.args.tableId.toString(),
                 this.binding.editCapacity.text.toString(),
             )
-            val action = AddTableFragmentDirections.actionAddTableFragmentToTableFragment()
+            val action = AddTableFragmentDirections.actionAddTableFragmentToTable()
             findNavController().navigate(action)
         } else {
             Toast.makeText(context, "Invalid", Toast.LENGTH_SHORT).show()
@@ -110,16 +111,29 @@ class AddTableFragment : Fragment() {
                 binding.editNumber.isEnabled=true
             }
         }
+
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.back -> {
-                    val action = AddTableFragmentDirections.actionAddTableFragmentToTableFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigateUp()
                     true
                 }
 
                 else -> false
             }
         }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE // Ẩn hoặc hiển thị dựa vào điều kiện cụ thể của bạn
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.VISIBLE // Đảm bảo nó được hiển thị trở lại khi rời khỏi Fragment (nếu cần)
     }
 }

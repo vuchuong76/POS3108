@@ -60,7 +60,7 @@ class DrinkFragment : Fragment() {
         //hiển thị những item có type là 2 vào fragment
         adapter = FoodDrinkAppetizerAdapter({ item ->
             if (!viewModel.isStockAvailable(item)) {
-                Toast.makeText(context, "\n" +
+                Toast.makeText(context,
                         "Out of stock", Toast.LENGTH_SHORT).show()
             } else {
                 lifecycleScope.launch {

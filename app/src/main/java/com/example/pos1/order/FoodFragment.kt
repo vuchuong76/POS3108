@@ -57,7 +57,7 @@ class FoodFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = FoodDrinkAppetizerAdapter({ item ->
             if (!viewModel.isStockAvailable(item)) {
-                Toast.makeText(context, "\n" +
+                Toast.makeText(context,
                         "Out of stock", Toast.LENGTH_SHORT).show()
             } else {
                 lifecycleScope.launch {

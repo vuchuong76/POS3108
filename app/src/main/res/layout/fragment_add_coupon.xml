@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:background="@drawable/screen1">
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -60,10 +61,9 @@
             android:layout_width="match_parent"
             android:id="@+id/coupon"
             android:ems="10"
-            android:digits="0123456789.,"
+            android:digits="0123456789."
             android:layout_height="wrap_content"
-            android:maxLength="3"
-            android:inputType="numberDecimal"
+            android:inputType="text"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

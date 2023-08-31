@@ -12,6 +12,7 @@ import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentTableDetailBinding
 import com.example.pos1.entity.Table
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class TableDetailFragment : Fragment() {
@@ -44,7 +45,6 @@ class TableDetailFragment : Fragment() {
     }
     private fun editTable() {
         val action = TableDetailFragmentDirections.actionTableDetailFragmentToAddTableFragment(
-            getString(R.string.edit_user),
             table.number
         )
         this.findNavController().navigate(action)
@@ -59,6 +59,19 @@ class TableDetailFragment : Fragment() {
                 deleteTable()
             }
             .show()
+    }
+    override fun onResume() {
+        super.onResume()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE // Ẩn hoặc hiển thị dựa vào điều kiện cụ thể của bạn
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.VISIBLE // Đảm bảo nó được hiển thị trở lại khi rời khỏi Fragment (nếu cần)
     }
 
     private fun deleteTable() {
@@ -77,8 +90,7 @@ class TableDetailFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.back -> {
-                    val action = TableDetailFragmentDirections.actionTableDetailFragmentToTableFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigateUp()
                     true
                 }
                 else -> false

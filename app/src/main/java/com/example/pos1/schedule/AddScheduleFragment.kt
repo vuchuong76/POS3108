@@ -18,6 +18,7 @@ import com.example.pos1.R
 import com.example.pos1.User.UserViewModel
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddScheduleBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
 
@@ -114,8 +115,7 @@ class AddScheduleFragment : Fragment() {
             when (it.itemId) {
 
                 R.id.back -> {
-                    val action = AddScheduleFragmentDirections.actionAddScheduleFragmentToScheduleFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigateUp()
                     true
                     // by returning 'true' we're saying that the event
                     // is handled and it shouldn't be propagated further
@@ -158,7 +158,19 @@ class AddScheduleFragment : Fragment() {
         return String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
     }
 
+    override fun onResume() {
+        super.onResume()
 
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE // Ẩn hoặc hiển thị dựa vào điều kiện cụ thể của bạn
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.VISIBLE // Đảm bảo nó được hiển thị trở lại khi rời khỏi Fragment (nếu cần)
+    }
     private fun addNewSchedule() {
         if (isEntryValid()) {
             val pickedDate=binding.etDate.text.toString()
@@ -171,9 +183,7 @@ class AddScheduleFragment : Fragment() {
                         selectedShift,
                         selectedEmployee
                     )
-                    val action =
-                        AddScheduleFragmentDirections.actionAddScheduleFragmentToScheduleFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigateUp()
                 } else {
                     Snackbar.make(requireView(), "This Schedule is already exist", Snackbar.LENGTH_LONG).show()
                 }

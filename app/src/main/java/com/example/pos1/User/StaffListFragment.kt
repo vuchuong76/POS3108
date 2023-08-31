@@ -1,5 +1,6 @@
 package com.example.pos1.User
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pos1.MainActivity
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentStaffListBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 @Suppress("DEPRECATION")
@@ -33,7 +36,6 @@ class StaffListFragment : Fragment() {
         setHasOptionsMenu(true)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -43,27 +45,12 @@ class StaffListFragment : Fragment() {
         },
         onButtonClicked = {user ->
             val action =
-                StaffListFragmentDirections.actionStaffListFragmentToUserDetailFragment(user.userName)
+                StaffListFragmentDirections.actionStaffToUserDetailFragment(user.userName)
             findNavController().navigate(action)
 
         }
         )
 
-        binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-
-                R.id.home -> {
-                    val action =
-                        StaffListFragmentDirections.actionStaffListFragmentToAdminAccessFragment()
-                    findNavController().navigate(action)
-                    true
-                    // by returning 'true' we're saying that the event
-                    // is handled and it shouldn't be propagated further
-                }
-
-                else -> false
-            }
-        }
 
         binding.recyclerView.adapter = adapter
 
@@ -76,10 +63,31 @@ class StaffListFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.floatingActionButton.setOnClickListener {
             val action = StaffListFragmentDirections.actionStaffListFragmentToAddStaffFragment(
-                getString(R.string.add_staff), ""
+                 ""
             )
             findNavController().navigate(action)
         }
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.logout -> {
+                   logOutDialog()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+    private fun logOutDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("Do you really want to log out?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            }
+            .show()
     }
 }
 

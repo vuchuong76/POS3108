@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos1.R
+import com.example.pos1.databinding.ChooseTableItemBinding
 import com.example.pos1.databinding.TableItemBinding
 import com.example.pos1.entity.Table
 
@@ -19,7 +20,7 @@ class ChooseTableAdapter(private val onItemClicked: (Table) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TableViewHolder {
 
         return TableViewHolder(
-            TableItemBinding.inflate(
+            ChooseTableItemBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 )
@@ -48,7 +49,7 @@ class ChooseTableAdapter(private val onItemClicked: (Table) -> Unit) :
     //TableViewHolder: Lớp này là một lớp con của RecyclerView.ViewHolder.
     // Nó giữ các tham chiếu đến các thành phần trong layout của mục danh sách.
     // Phương thức bind được gọi để gán dữ liệu từ mục hiện tại vào các thành phần tương ứng trong ViewHolder.
-    class TableViewHolder(var binding: TableItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class TableViewHolder(var binding: ChooseTableItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(table: Table) {
             binding.tbnumber.text = table.number.toString()

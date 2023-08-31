@@ -13,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddRosterBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 @Suppress("DEPRECATION")
 class AddRosterFragment : Fragment() {
     private val viewModel: RosterViewModel by activityViewModels {
@@ -44,9 +46,7 @@ class AddRosterFragment : Fragment() {
             when (it.itemId) {
 
                 R.id.back -> {
-                    val action =
-                        AddRosterFragmentDirections.actionAddRosterFragmentToRosterFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigateUp()
                     true
                     // by returning 'true' we're saying that the event
                     // is handled and it shouldn't be propagated further
@@ -68,9 +68,7 @@ class AddRosterFragment : Fragment() {
                         start,
                         finish
                     )
-                    val action =
-                        AddRosterFragmentDirections.actionAddRosterFragmentToRosterFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigateUp()
                 } else {
                     Toast.makeText(context, "This roster is already exist", Toast.LENGTH_SHORT)
                         .show()
@@ -82,10 +80,25 @@ class AddRosterFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE // Ẩn hoặc hiển thị dựa vào điều kiện cụ thể của bạn
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.VISIBLE // Đảm bảo nó được hiển thị trở lại khi rời khỏi Fragment (nếu cần)
+    }
+
+
     private fun isEntryValid(): Boolean {
         return viewModel.isEntryValid(
-            binding.start.text.toString(),
-            binding.finish.text.toString()
+            binding.start,
+            binding.finish
         )
     }
 

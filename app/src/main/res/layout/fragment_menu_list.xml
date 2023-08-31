@@ -19,9 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="Menu List"
+        app:menu="@menu/log_out"
         app:titleTextColor="@color/white"
         android:background="#3F51B5"
-        app:menu="@menu/menu1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

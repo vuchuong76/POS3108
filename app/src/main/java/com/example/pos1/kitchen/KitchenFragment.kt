@@ -1,18 +1,22 @@
 package com.example.pos1.kitchen
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pos1.MainActivity
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentKitchenBinding
 import com.example.pos1.order.OrderViewModel
 import com.example.pos1.order.OrderViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 @Suppress("DEPRECATION")
 class KitchenFragment : Fragment() {
@@ -42,13 +46,12 @@ class KitchenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        disableBackButton()
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
 
                 R.id.logout -> {
-                    val action = KitchenFragmentDirections.actionKitchenFragmentToLoginFragment()
-                    findNavController().navigate(action)
+                    logOutDialog()
                     true
                 }
                 R.id.stock -> {
@@ -81,9 +84,26 @@ class KitchenFragment : Fragment() {
             }
         }
     }
-
-
-
+    private fun logOutDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage("Do you really want to log out?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            }
+            .show()
+    }
+    private fun disableBackButton() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {}
+            }
+        )
+    }
 
 
 }

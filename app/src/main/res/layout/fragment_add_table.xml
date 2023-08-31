@@ -24,7 +24,7 @@
         android:minHeight="@dimen/min_height"
         android:fontFamily="sans-serif-light"
         android:hint="number"
-        android:maxLength="4"
+        android:maxLength="3"
         android:inputType="number"
         android:layout_margin="@dimen/big_padding"
         android:textSize="20dp" />

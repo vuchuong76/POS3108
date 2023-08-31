@@ -21,7 +21,7 @@
         app:title="Table"
         app:titleTextColor="@color/white"
         android:background="#3F51B5"
-        app:menu="@menu/menu1"
+        app:menu="@menu/log_out"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

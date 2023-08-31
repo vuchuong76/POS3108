@@ -15,6 +15,7 @@ import com.example.pos1.DecimalDigitsInputFilter
 import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddCouponBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @Suppress("DEPRECATION")
 class AddCouponFragment : Fragment() {
@@ -40,26 +41,35 @@ class AddCouponFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.addBt1.setOnClickListener {
             addNewCoupon()
-
         }
+
         binding.coupon.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(1))
 
 
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-
                 R.id.back -> {
-                    val action =
-                        AddCouponFragmentDirections.actionAddCouponFragmentToCouponFragment()
-                    findNavController().navigate(action)
+                    findNavController().navigateUp()
                     true
-                    // by returning 'true' we're saying that the event
-                    // is handled and it shouldn't be propagated further
                 }
 
                 else -> false
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.VISIBLE
     }
 
     private fun addNewCoupon() {
@@ -71,20 +81,17 @@ class AddCouponFragment : Fragment() {
                         codeInput,
                         binding.coupon.text.toString().toDouble()
                     )
-                    val action =
-                        AddCouponFragmentDirections.actionAddCouponFragmentToCouponFragment()
-                    findNavController().navigate(action)
-                }
-                else{
-                    Toast.makeText(context, "Coupon Code is already exist", Toast.LENGTH_SHORT).show()
+                    findNavController().navigateUp()
+                } else {
+                    Toast.makeText(context, "Coupon Code is already exist", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
             }
+        } else {
+            Toast.makeText(context, "The Coupon is not valid", Toast.LENGTH_SHORT).show()
         }
-            else{
-                Toast.makeText(context, "The Coupon is not valid", Toast.LENGTH_SHORT).show()
-            }
-        }
+    }
 
     private fun isEntryValid(): Boolean {
         return viewModel.isEntryValid(

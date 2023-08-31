@@ -17,6 +17,7 @@ import com.example.pos1.R
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentAddStaffBinding
 import com.example.pos1.entity.User
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.mindrot.jbcrypt.BCrypt
 
@@ -86,7 +87,7 @@ class AddStaffFragment : Fragment() {
             .setNegativeButton("No") { _, _ -> }
             .setPositiveButton("Yes") { _, _ ->
                 val action =
-                    AddStaffFragmentDirections.actionAddStaffFragmentToStaffListFragment()
+                    AddStaffFragmentDirections.actionAddStaffFragmentToStaff()
                 findNavController().navigate(action)
             }
             .show()
@@ -102,7 +103,20 @@ class AddStaffFragment : Fragment() {
             address.text = Editable.Factory.getInstance().newEditable(user.address)
             val positionIndex = positions.indexOf(user.position)
             position.setSelection(positionIndex)
-            addBt1.setOnClickListener { updateUser() }
+            addBt1.setOnClickListener {
+                val nameInput = user.userName
+                val name= binding.userName.text.toString()
+                viewModel.userNameExists(name) { exist ->
+                    if (!exist||name==nameInput) {
+                        updateUser()
+                    }
+                    else{
+
+                        binding.userName.setError("This name is already exist"
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -124,7 +138,7 @@ class AddStaffFragment : Fragment() {
                         binding.tel.text.toString(),
                         binding.address.text.toString(),
                     )
-                    findNavController().navigate(R.id.action_addStaffFragment_to_staffListFragment)
+                    findNavController().navigateUp()
                 }
             }
         } else {
@@ -145,7 +159,7 @@ class AddStaffFragment : Fragment() {
                 binding.tel.text.toString(),
                 binding.address.text.toString()
             )
-            val action = AddStaffFragmentDirections.actionAddStaffFragmentToStaffListFragment()
+            val action = AddStaffFragmentDirections.actionAddStaffFragmentToStaff()
             findNavController().navigate(action)
         } else {
             Toast.makeText(context, "Input data is not valid", Toast.LENGTH_SHORT).show()
@@ -161,11 +175,11 @@ class AddStaffFragment : Fragment() {
                 user = selectedItem
                 bind(user)
                 binding.toolbar.title="User Edit"
-                binding.userName.isEnabled = false
+//                binding.userName.isEnabled = false
             }
         } else {
             binding.addBt1.setOnClickListener {
-                binding.userName.isEnabled = true
+//                binding.userName.isEnabled = true
                 addNewUser()
             }
         }
@@ -178,7 +192,7 @@ class AddStaffFragment : Fragment() {
                     }
                     else{
                        val action =
-                           AddStaffFragmentDirections.actionAddStaffFragmentToStaffListFragment()
+                           AddStaffFragmentDirections.actionAddStaffFragmentToStaff()
                        findNavController().navigate(action)
                     }
                     true
@@ -186,5 +200,18 @@ class AddStaffFragment : Fragment() {
                 else -> false
             }
         }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE // Ẩn hoặc hiển thị dựa vào điều kiện cụ thể của bạn
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.VISIBLE // Đảm bảo nó được hiển thị trở lại khi rời khỏi Fragment (nếu cần)
     }
 }

@@ -71,6 +71,7 @@ class CheckOutFragment : Fragment() {
 //vô hiệu hoá nút back
         disableBackButton()
 
+        //lưu trạng thái khi xoay màn hình
         if (savedInstanceState != null) {
             val discount = savedInstanceState.getDouble("coupon")
             val receive = savedInstanceState.getDouble("receive")
@@ -142,36 +143,30 @@ class CheckOutFragment : Fragment() {
         }
         // Theo dõi dữ liệu 'orderForPay' từ 'orderViewModel'.
         orderViewModel.orderForPay.observe(this.viewLifecycleOwner) { items ->
-            // Sử dụng 'let' để xử lý danh sách 'items'
             items.let {
-                var amount = 0.0 // Biến lưu tổng số tiền của tất cả các items
-                var totalItemCount = 0 // Biến lưu tổng số lượng item
+                var amount = 0.0
+                var totalItemCount = 0
 
-                // Duyệt qua từng item trong danh sách
                 for (order in it) {
-                    amount += order.quantity * order.price // Tính tổng số tiền của từng item và cộng dồn
-                    totalItemCount += order.quantity // Tính tổng số lượng
+                    amount += order.quantity * order.price
+                    totalItemCount += order.quantity
                 }
-
-                // Cập nhật UI với tổng số lượng item
-                binding.count.text = "Total : $totalItemCount items"
-                // Cập nhật UI với tổng số tiền
+                if (totalItemCount==1){
+                    binding.count.text = "Total : $totalItemCount item"
+                }
+                else{ binding.count.text = "Total : $totalItemCount items" }
                 binding.amount.text = "${String.format("%.1f", amount)} "
 
-                // Thêm thuế (ở đây giả định thuế là 10%, vì vậy ta nhân với 11 và làm tròn)
                 val taxAmount = (amount * 11).roundToInt() / 10.0
-                orderViewModel.setAmountAllItems(taxAmount) // Cập nhật ViewModel với tổng số tiền sau thuế
-                binding.taxAmount.text = "${String.format("%.1f", taxAmount)}" // Cập nhật UI với tổng số tiền sau thuế
+                orderViewModel.setAmountAllItems(taxAmount)
+                binding.taxAmount.text = "${String.format("%.1f", taxAmount)}"
 
-                // Khởi tạo giá trị giảm giá ban đầu là 0
                 var discount: Double = binding.coupon.text.toString().toDouble()
-                var lastAmount = (amount * 11).roundToInt() / 10.0 // Làm tròn tổng số tiền
+                var lastAmount = (amount * 11).roundToInt() / 10.0
 
-                // Khi nút 'apply' (áp dụng mã giảm giá) được nhấn
                 binding.apply.setOnClickListener {
-                    val enteredCode = binding.code.text.toString().trim() // Lấy mã giảm giá đã nhập
+                    val enteredCode = binding.code.text.toString().trim()
 
-                    // Kiểm tra mã giảm giá có được nhập hay không
                     if (enteredCode.isEmpty()) {
                         Toast.makeText(context, "Please insert Code!", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
@@ -184,19 +179,15 @@ class CheckOutFragment : Fragment() {
                     lifecycleScope.launch {
                         couponViewModel.couponFlow.collect { state ->
                             when (state) {
-                                // Trong trường hợp mã giảm giá hợp lệ
                                 is CouponViewModel.CouponState.Success -> {
                                     val coupon = state.coupon
-                                    discount = coupon.discount // Lấy giá trị giảm giá từ coupon
-                                    binding.coupon.text =
-                                        "$discount" // Cập nhật UI với giá trị giảm giá
+                                    discount = coupon.discount
+                                    binding.coupon.text = "$discount"
 
-                                    // Tính toán và cập nhật tổng số tiền sau khi đã áp dụng giảm giá
                                     lastAmount =
                                         (taxAmount * (1 - discount / 100) * 10).roundToInt() / 10.0
                                     orderViewModel.updateData(lastAmount)
                                 }
-                                // Trong trường hợp mã giảm giá không hợp lệ
                                 CouponViewModel.CouponState.Invalid -> {
                                     Toast.makeText(
                                         context,

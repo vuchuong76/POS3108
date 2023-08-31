@@ -96,7 +96,7 @@ class LoginFragment : Fragment() {
 
         if (id == "1" && password == "12") {
             // Đăng nhập thành công trong trường hợp đặc biệt khác (ví dụ: nhân viên)
-            findNavController().navigate(R.id.action_loginFragment_to_adminAccessFragment)
+            findNavController().navigate(R.id.action_loginFragment_to_adminFragment2)
             return
         }
 
@@ -114,19 +114,17 @@ class LoginFragment : Fragment() {
                 if (user.position == "Admin") {
                     userViewModel.userName = id
                     userViewModel.staffName = user.staffname
-                    findNavController().navigate(R.id.action_loginFragment_to_adminAccessFragment)
+                    findNavController().navigate(R.id.action_loginFragment_to_adminFragment2)
                 } else if (user.position == "Staff") {
                     orderViewModel.userName = id
                     orderViewModel.staffName = user.staffname
-                    val action =
-                        LoginFragmentDirections.actionLoginFragmentToChooseTableFragment(userName = user.userName)
-                    findNavController().navigate(action)
+                    findNavController().navigate(R.id.action_loginFragment_to_chooseTableFragment)
                 }
                 else if (user.position == "Kitchen") {
                     userViewModel.staffName = user.staffname
-                    val action =
-                        LoginFragmentDirections.actionLoginFragmentToKitchenFragment()
-                    findNavController().navigate(action)
+//                    val action =
+//                        LoginFragmentDirections.actionLoginFragmentToKitchenFragment()
+                    findNavController().navigate(R.id.action_loginFragment_to_kitchenFragment)
                 }
             } else {
                 // Đăng nhập thất bại

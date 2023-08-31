@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -145,7 +146,10 @@ class MenuTabletFragment : Fragment() {
                 }
                 totalAmount = (totalAmount * 10).roundToInt() / 10.0
                 binding.amount.text = "Total Amount: $totalAmount $"
-                binding.count.text = "$totalItemCount items"
+                if (totalItemCount==1){
+                    binding.count.text = "Total : $totalItemCount item"
+                }
+                else{ binding.count.text = "Total : $totalItemCount items" }
             } else {
                 binding.amount.text = "Total Amount: 0 $"
                 binding.count.text = "0 item"

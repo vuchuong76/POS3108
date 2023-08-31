@@ -7,7 +7,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast
+
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -26,6 +26,7 @@ import com.example.pos1.User.AddStaffFragmentDirections
 import com.example.pos1.UserApplication
 import com.example.pos1.databinding.FragmentNewItemBinding
 import com.example.pos1.entity.Item
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
@@ -58,20 +59,14 @@ class NewItemFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 com.example.pos1.R.id.back -> {
-                    Log.d("DEBUG", "Tên: ${binding.name.text}")
-                    Log.d("DEBUG", "Số lượng: ${binding.stock.text}")
-                    Log.d("DEBUG", "Giá: ${binding.price.text}")
-                    Log.d("DEBUG", "Hình ảnh: $binding.image")
+
                     if (!blank()) {
                         showConfirmationDialog()
-                        Log.d("DEBUG", "Tên: ${binding.name.text}")
-                        Log.d("DEBUG", "Số lượng: ${binding.stock.text}")
-                        Log.d("DEBUG", "Giá: ${binding.price.text}")
-                        Log.d("DEBUG", "Hình ảnh: $binding.image")
+
                     }
                     else{
                         val action =
-                            NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+                            NewItemFragmentDirections.actionNewItemFragmentToMenuEdit()
                         findNavController().navigate(action)
                     }
                     true
@@ -111,22 +106,17 @@ class NewItemFragment : Fragment() {
                 // TODO: Xử lý trường hợp không có mục nào được chọn, nếu cần
             }
         }
-
-//        binding.back.setOnClickListener {
-//            val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
-//            findNavController().navigate(action)
-//        }
         val id = args.itemId
         if (id > 0) {
             viewModel.retrieveItem(id).observe(this.viewLifecycleOwner) { selectedItem ->
                 item = selectedItem
-                binding.name.isEnabled=false
+//                binding.name.isEnabled=false
                 binding.toolbar.title = "Editing"
                 bind(item)
             }
         } else {
             binding.save.setOnClickListener {
-                binding.name.isEnabled=true
+//                binding.name.isEnabled=true
                 addNewItem()
             }
         }
@@ -185,7 +175,7 @@ class NewItemFragment : Fragment() {
             .setNegativeButton("No") { _, _ -> }
             .setPositiveButton("Yes") { _, _ ->
                 val action =
-                    NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+                    NewItemFragmentDirections.actionNewItemFragmentToMenuEdit()
                 findNavController().navigate(action)
             }
             .show()
@@ -216,7 +206,20 @@ class NewItemFragment : Fragment() {
                 .load(item.image)
                 .into(binding.ivImage)
 
-            save.setOnClickListener { updateItem() }
+            save.setOnClickListener {
+                val nameInput = item.name
+                val name= binding.name.text.toString()
+                viewModel.itemNameExist(name) { exist ->
+                    if (!exist||name==nameInput) {
+                        updateItem()
+                    }
+                    else{
+
+                        binding.name.setError("This name is already exist"
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -233,7 +236,7 @@ class NewItemFragment : Fragment() {
                         roundedPrice.toString(),
                         imageSelected
                     )
-                    val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+                    val action = NewItemFragmentDirections.actionNewItemFragmentToMenuEdit()
                     findNavController().navigate(action)
                 } else {
                     binding.name.error="This name is already exist"
@@ -241,6 +244,19 @@ class NewItemFragment : Fragment() {
             }
         } else {
         }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(com.example.pos1.R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE // Ẩn hoặc hiển thị dựa vào điều kiện cụ thể của bạn
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val bottomNav = activity?.findViewById<BottomNavigationView>(com.example.pos1.R.id.bottom_navigation)
+        bottomNav?.visibility = View.VISIBLE // Đảm bảo nó được hiển thị trở lại khi rời khỏi Fragment (nếu cần)
     }
 
     private fun updateItem() {
@@ -255,14 +271,13 @@ class NewItemFragment : Fragment() {
                 imageSelected
 
             )
-            val action = NewItemFragmentDirections.actionNewItemFragmentToMenuListFragment()
+            val action = NewItemFragmentDirections.actionNewItemFragmentToMenuEdit()
             findNavController().navigate(action)
         } else {
         }
 
     }
 
-    //hàm chuyển sang float có 1 chữ số sau dấu phẩy
     fun roundToOneDecimalPlace(value: Float): Float {
         return (value * 10).toInt().toFloat() / 10
     }

@@ -32,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
             android:text="ID" />
 
         <TextView
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
             android:text="Table" />
     </LinearLayout>
 
@@ -59,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#E0E4E8"
+            android:textStyle="bold"
             android:text="Name" />
 
         <TextView
@@ -67,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#E0E4E8"
+            android:textStyle="bold"
             android:text="Time" />
 
         <TextView
@@ -75,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#E0E4E8"
+            android:textStyle="bold"
             android:text="Quantity" />
 
         <TextView
@@ -83,6 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#E0E4E8"
+            android:textStyle="bold"
             android:text="Price" />
 
     </LinearLayout>
@@ -147,12 +153,15 @@
                 android:paddingTop="4dp"
                 android:text="Amount (no tax) :"
                 android:textSize="16dp" />
-
+            <TextView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="3dp" />
             <TextView
                 android:id="@+id/amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:textSize="16dp" />
@@ -179,12 +188,16 @@
                 android:paddingTop="4dp"
                 android:text="Amount (tax 10%) :"
                 android:textSize="16dp" />
+            <TextView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="3dp" />
 
             <TextView
                 android:id="@+id/tax_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:textSize="16dp" />
@@ -277,12 +290,15 @@
                 android:paddingTop="4dp"
                 android:text="Last Amount :"
                 android:textSize="16dp" />
-
+            <TextView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="3dp" />
             <TextView
                 android:id="@+id/lastAmount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
@@ -311,11 +327,14 @@
                 android:text="Receive :"
                 android:textSize="16dp" />
 
-
+            <TextView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="3dp" />
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:hint="Receive">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -365,12 +384,15 @@
                 android:paddingTop="4dp"
                 android:text="Change :"
                 android:textSize="16dp" />
-
+            <TextView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="3dp" />
             <TextView
                 android:id="@+id/change"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:gravity="center"
                 android:text="0.0$"
                 android:textSize="16dp" />

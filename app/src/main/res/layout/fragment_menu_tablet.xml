@@ -45,7 +45,7 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_width="2dp"
+        android:layout_width="1dp"
         android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,6 +58,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/divider"
@@ -68,18 +70,19 @@
             android:id="@+id/idTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="ID" />
 
         <TextView
             android:id="@+id/tableTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="Table" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -87,6 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:textStyle="bold"
                 android:background="#E0E4E8"
                 android:text="Name" />
 
@@ -95,6 +99,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:textStyle="bold"
                 android:background="#E0E4E8"
                 android:text="Time" />
 
@@ -103,6 +108,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:textStyle="bold"
                 android:background="#E0E4E8"
                 android:text="Quantity" />
 
@@ -111,6 +117,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:textStyle="bold"
                 android:background="#E0E4E8"
                 android:text="price" />
 
@@ -119,6 +126,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:textStyle="bold"
                 android:background="#E0E4E8"
                 android:text="Status" />
         </LinearLayout>
@@ -127,7 +135,6 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
